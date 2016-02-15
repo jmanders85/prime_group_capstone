@@ -25,6 +25,7 @@
 - Sport Ngin
   - Technology preference?
     - Database? Server? Client Logic?
+  - Style preferences?
   - Contact preferences?
     - How often?
     - What is an expected timeline if we have questions?
