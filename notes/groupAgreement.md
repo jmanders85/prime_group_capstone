@@ -9,6 +9,7 @@
 - Commitment to communication
   - Asking for help early
   - Voicing desires
+  - respectful communication
 
 - Project Management
   - Use of Trello
