@@ -24,3 +24,5 @@ Potential Issues:
 - API/OAuth is going to be the "hardest part"
 
 Work Practices:  Adam is available for daily stand up any other time but 930.  There are desks available for us to work at.
+
+"change" - Brisket
