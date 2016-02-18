@@ -9,6 +9,7 @@
 - Commitment to communication
   - Asking for help early
   - Voicing desires
+  - respectful communication
 
 - Project Management
   - Use of Trello
@@ -18,3 +19,6 @@
     - Use branches, commit often, push when functionality is complete
     - Don't push broken code
     - Merge conflicts require another set of eyes
+
+
+This is a line written by Liz to practice with the cloning/pushing branches thing.
