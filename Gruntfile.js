@@ -51,6 +51,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
 
   // Default task(s).
-  grunt.registerTask('default', ['copy', 'uglify', 'sass']);
+  grunt.registerTask('default', ['copy', 'uglify', 'sass', 'watch']);
 
 };

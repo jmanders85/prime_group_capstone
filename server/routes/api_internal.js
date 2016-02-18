@@ -3,14 +3,13 @@ var pg = require('pg');
 var router = express.Router();
 var connectionString = process.env.DATABASE_URL || require('./databaseurl.json').data;
 
-router.get('/test', function(){
+router.get('/test', function(request, response){
   pg.connect(connectionString, function(err, client){
     if (err) throw err;
-    var query;
     var results = [];
     console.log("Connected to Postgres!");
 
-    query = client.query('SELECT * FROM assets;');
+    var query = client.query('SELECT * FROM assets;');
 
     query.on('row', function(row){
       console.log(JSON.stringify(row));
@@ -19,7 +18,7 @@ router.get('/test', function(){
 
     query.on('end', function(){
       client.end();
-      response.json(results);
+      response.send(results);
     });
   });
 });
