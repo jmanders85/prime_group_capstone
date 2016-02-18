@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="sportApp">
   <head>
     <meta charset="utf-8">
     <title>Team Sports Ball</title>
@@ -7,8 +7,10 @@
     <script src="vendor/angular/angular.min.js"></script>
     <script src="vendor/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="assets/scripts/client.min.js"></script>
+    <link href="https://s3.amazonaws.com/sportngin-snap-staging/ui_themes/platform/latest/main.css" rel="stylesheet">
+    <base href="/"></base>
   </head>
   <body>
-    <h1>'Ello Guv!</h1>
+    <div ui-view></div>
   </body>
 </html>
