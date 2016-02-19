@@ -47,5 +47,26 @@ router.post('/newAsset', function(request, response){
   });
 });
 
+router.get('/getAssets', function(request, response){
+  pg.connect(connectionString, function(err, client){
+    var results = [];
+    var query = client.query('SELECT * FROM assets;');
+
+    query.on('row', function(row){
+      results.push(row);
+    });
+
+    query.on('end', function(){
+      client.end();
+      response.send(results);
+    });
+
+    if(err) {
+        console.log(error);
+        response.send('error');
+    }
+  });
+});
+
 
 module.exports = router;
