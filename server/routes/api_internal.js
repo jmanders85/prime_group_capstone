@@ -23,5 +23,29 @@ router.get('/test', function(request, response){
   });
 });
 
+router.get('/newAsset', function(request, response){
+  pg.connect(connectionString, function(err, client){
+
+    var newAsset = {name: request.query.name,
+                    description: request.query.description,
+                    category: request.query.category,
+                    notes: request.query.notes
+    };
+
+    var query = client.query('INSERT INTO assets (name, description, category, notes) VALUES ($1, $2, $3, $4)', [newAsset.name, newAsset.description, newAsset.category, newAsset.notes]);
+
+
+    query.on('end', function(){
+      client.end();
+      response.send("sumbission_success");
+    });
+
+    if(err) {
+        console.log(error);
+        response.send('error');
+    }
+  });
+});
+
 
 module.exports = router;
