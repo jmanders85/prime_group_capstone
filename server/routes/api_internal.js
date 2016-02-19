@@ -23,7 +23,7 @@ router.get('/test', function(request, response){
   });
 });
 
-router.get('/newAsset', function(request, response){
+router.post('/newAsset', function(request, response){
   pg.connect(connectionString, function(err, client){
 
     var newAsset = {name: request.query.name,
@@ -37,7 +37,7 @@ router.get('/newAsset', function(request, response){
 
     query.on('end', function(){
       client.end();
-      response.send("sumbission_success");
+      response.send("assets");
     });
 
     if(err) {
