@@ -3,3 +3,16 @@
 <a ui-sref="home">
   <button>Login</button>
 </a>
+
+<button ng-click="userInfo()">Get User Info</button>
+<button ng-click="siteList()">Get Site List</button>
+<button ng-click="eventsList()">Get List of Events</button>
+<span ng-if="!siteId">Click get site list so we can get events</span>
+<div ng-repeat="event in eventsList">
+  <p>
+    id# {{event.id}} -- {{event.title}}
+  </p>
+  <p>
+    At: {{event.start_date_time | date: 'medium'}}
+  </p>
+</div>
