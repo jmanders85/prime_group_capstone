@@ -37,7 +37,7 @@ router.post('/newAsset', function(request, response){
 
     query.on('end', function(){
       client.end();
-      response.send("sumbission_success");
+      response.send("assets");
     });
 
     if(err) {
