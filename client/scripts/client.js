@@ -27,6 +27,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/new_asset.html',
       controller: 'NewAssetController'
     })
+    .state('view_assets', {
+      url: '/view_assets',
+      templateUrl: 'views/view_assets.html',
+      controller: 'ViewAssetsController'
+    })
     .state('calendar', {
       url: '/calendar',
       templateUrl: 'views/calendar.html',
@@ -106,6 +111,17 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
   };
 }]);
 
-app.controller('view-editAssetsController', ['$scope', function($scope){
+app.controller('ViewAssetsController', ['$scope', '$http', '$location', function($scope, $http, $location){
+  $scope.assets = [];
+
+  $scope.getAssets = function(){
+    $http.get('internal/getAssets').then(function(response){
+      $scope.assets = response.data;
+    });
+  };
+
+  $scope.editAsset = function(assetID){
+    console.log(assetID);
+  };
 
 }]);

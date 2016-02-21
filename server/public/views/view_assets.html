@@ -1,0 +1,13 @@
+<p>Find An Asset!</p>
+
+<button ng-click="getAssets()">View Inventory</button>
+
+<div ng-repeat="asset in assets">
+  <h4>{{asset.name}}</h4>
+  <p>
+    {{asset.description}}<br />
+    {{asset.category}}<br />
+    {{asset.notes}}
+  </p>
+  <button ng-click="editAsset(asset.id)">Edit</button>
+</div>
