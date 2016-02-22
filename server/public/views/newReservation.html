@@ -1,1 +1,10 @@
 <p>New Reservation Page!</p>
+
+<select ng-model="selectedEvent" ng-options="event as event.title for event in data.events track by event.id">
+</select> Select Event From Drop Down
+
+<div ng-repeat="asset in data.assets">
+  <input type="checkbox" ng-model="asset.selected"/>{{asset.name}}
+</div>
+
+<input type="submit" ng-click="createReservation()" value="Create Reservation" />
