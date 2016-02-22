@@ -1,0 +1,18 @@
+<p>Edit Asset!</p>
+
+<form name="edit-asset" novalidate>
+
+  <label>Item Name: </label><input name="name" type="text" ng-model="data.name"/><br/>
+  <label>Item Description: </label><input name="description" type="text" ng-model="data.description"/><br/>
+  <label>Category: </label>
+      <select ng-model="data.category" name="category">
+        <option ng-repeat="category in categoryList">{{category}}</option>
+      </select>
+    <br />
+  <label>Additional Notes: </label><br />
+  <textarea rows="4" cols="50" ng-model="data.notes"/></textarea>
+  <br />
+  <button ng-click="updateAsset()">Submit Update</button><br/>
+  <br />
+  <button ng-click="goBack()">Cancel</button>
+</form>

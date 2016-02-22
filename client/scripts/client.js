@@ -37,10 +37,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/calendar.html',
       controller: 'CalendarController'
     })
-    .state('view-editAssets', {
-      url: '/viewEditAssets',
-      templateUrl: 'views/viewEditAssets.html',
-      controller: 'viewEditAssetsController'
+    .state('edit_asset', {
+      url: '/edit_asset',
+      templateUrl: 'views/edit_asset.html',
+      controller: 'EditAssetController'
     })
     .state('availableAssets', {
       url: '/viewEditAssets',
@@ -94,7 +94,7 @@ app.controller('CalendarController', ['$scope', '$http', function($scope, $http)
 
 app.controller('NewAssetController', ['$scope', '$http', '$location', function($scope, $http, $location){
   $scope.data = {};
-  $scope.categoryList = ["Practice", "Player Equipment", "Game", "Other"]; //***We still need to decide what categories!
+  $scope.categoryList = ["Practice", "Player Equipment", "Game", "Other"]; //***If you change these, change the ones in the EditAssetController!
 
   $scope.submitAsset = function(){
     console.log($scope.data);
@@ -112,7 +112,7 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
   };
 }]);
 
-app.controller('ViewAssetsController', ['$scope', '$http', '$location', function($scope, $http, $location){
+app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
   $scope.assets = [];
 
   $scope.getAssets = function(){
@@ -121,8 +121,65 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', function
     });
   };
 
-  $scope.editAsset = function(assetID){
-    console.log(assetID);
+  $scope.editAsset = function(asset){
+    // console.log(asset);
+    currentAsset.setAsset(asset);
+    $location.path('edit_asset');
+  };
+
+}]);
+
+app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
+  $scope.data = currentAsset.currentAsset;
+  $scope.categoryList = ["Practice", "Player Equipment", "Game", "Other"]; //***If you change these, change the ones in the NewAssetController
+
+  $scope.updateAsset = function(){
+    console.log($scope.data);
+    $http({
+        url: '/internal/updateAsset',
+        method: 'POST',
+        params: {name: $scope.data.name,
+                description: $scope.data.description,
+                category: $scope.data.category,
+                notes: $scope.data.notes,
+                id: $scope.data.id
+                }
+    }).then(function(response){
+      $location.path(response.data);
+    });
+  };
+
+  $scope.goBack = function(){
+    window.history.back();
+  };
+
+}]);
+
+
+
+//[][][][][][][]][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+//                            Factories
+//[][][][][][][]][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+app.factory('currentAsset', ['$http', function($http){
+  var currentAsset = {};
+
+  var setAsset = function(asset){
+    currentAsset.id = asset.id;
+    currentAsset.name = asset.name;
+    currentAsset.description = asset.description;
+    currentAsset.category = asset.category;
+    currentAsset.notes = asset.notes;
+  };
+
+  var clearCurrentAsset = function(){
+    currentAsset = {};
+  };
+
+  return {
+    currentAsset: currentAsset,
+    setAsset: setAsset,
+    clearCurrentAsset: clearCurrentAsset
   };
 
 }]);
