@@ -47,10 +47,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/edit_asset.html',
       controller: 'EditAssetController'
     })
-    .state('availableAssets', {
-      url: '/viewEditAssets',
-      templateUrl: 'views/viewEditAssets.html',
-      controller: 'viewEditAssetsController'
+    .state('available_assets', {
+      url: '/available_assets',
+      templateUrl: 'views/available_assets.html',
+      controller: 'AvailableAssetsController'
     });
   $locationProvider.html5Mode(true);
 }]);
@@ -129,6 +129,10 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
       $location.path(response.data);
     });
   };
+}]);
+
+app.controller('AvailableAssetsController', ['$scope', function($scope){
+
 }]);
 
 app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
