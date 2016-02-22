@@ -26,10 +26,11 @@ router.get('/test', function(request, response){
 router.post('/newAsset', function(request, response){
   pg.connect(connectionString, function(err, client){
 
-    var newAsset = {name: request.query.name,
-                    description: request.query.description,
-                    category: request.query.category,
-                    notes: request.query.notes
+    var newAsset = {
+      name: request.query.name,
+      description: request.query.description,
+      category: request.query.category,
+      notes: request.query.notes
     };
 
     var query = client.query('INSERT INTO assets (name, description, category, notes) VALUES ($1, $2, $3, $4)', [newAsset.name, newAsset.description, newAsset.category, newAsset.notes]);
@@ -41,8 +42,8 @@ router.post('/newAsset', function(request, response){
     });
 
     if(err) {
-        console.log(error);
-        response.send('error');
+      console.log(err);
+      response.send('error');
     }
   });
 });
@@ -62,8 +63,8 @@ router.get('/getAssets', function(request, response){
     });
 
     if(err) {
-        console.log(error);
-        response.send('error');
+      console.log(err);
+      response.send('error');
     }
   });
 });
