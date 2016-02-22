@@ -17,9 +17,9 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/assets.html',
       controller: 'AssetsController'
     })
-    .state('newReservation', {
-      url: '/newReservation',
-      templateUrl: 'views/newReservation.html',
+    .state('new_reservation', {
+      url: '/new_reservation',
+      templateUrl: 'views/new_reservation.html',
       controller: 'NewReservationController'
     })
     .state('new_asset', {
@@ -37,16 +37,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/calendar.html',
       controller: 'CalendarController'
     })
-    .state('view-editAssets', {
-      url: '/viewEditAssets',
-      templateUrl: 'views/viewEditAssets.html',
-      controller: 'viewEditAssetsController'
-    })
-    .state('availableAssets', {
-      url: '/viewEditAssets',
-      templateUrl: 'views/viewEditAssets.html',
-      controller: 'viewEditAssetsController'
-    });
   $locationProvider.html5Mode(true);
 }]);
 
