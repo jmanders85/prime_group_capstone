@@ -1,7 +1,31 @@
-.login-container {
-  margin: auto;
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+.em-section-all {
+  width: 500px;
+  margin: auto; }
+
+.em-heading-login {
+  text-align: center; }
+
+.em-button-login {
+  margin-left: 23%; }
+
+.em-heading-home {
+  text-align: center; }
+
+.em-button-home {
   width: 100%;
-  margin-top: 20%;
+  text-align: center; }
+
+.em-heading-asset {
+  text-align: center; }
+
+.em-button-asset {
+  width: 100%;
+  text-align: center; }
+
+.em-heading-new-asset, .em-button-newAsset {
   text-align: center; }
 
 /*# sourceMappingURL=stylesheet.css.map */
