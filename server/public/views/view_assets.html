@@ -1,12 +1,16 @@
 <p>Find An Asset!</p>
 
-<label>Category: </label>
-    <select ng-model="sortBy" ng-change="getAssets()">
+<label>Item Name: </label><input type="text" ng-model="searchKeyword"/>
+<br />
+
+<label>Sort By: </label>
+    <select ng-model="sortBy">
       <option ng-repeat="option in sortOptions">{{option}}</option>
     </select>
   <br />
+  <br />
 <button ng-click="getAssets()">View Inventory</button>
-
+<a ui-sref="assets"><button>Go Back</button></a>
 
 <div ng-repeat="asset in assets">
   <h4>{{asset.name}}</h4>

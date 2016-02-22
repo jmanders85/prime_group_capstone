@@ -52,20 +52,20 @@ router.post('/updateAsset', function(request, response){
   });
 });
 
-router.get('/getAssets/:sortBy', function(request, response){
+router.get('/getAssets', function(request, response){
   pg.connect(connectionString, function(err, client){
     var results = [];
-    var sortBy = 'name';
+    var orderBy = 'name';
 
-    if(request.params.sortBy == 'Category'){
-        sortBy = 'category';
-    }else if (request.params.sortBy == 'Recently Created'){
-      sortBy = 'id';
-    }else{
-      sortBy = 'name';
+    if(request.query.sortBy == 'Category'){
+      orderBy = 'category';
+    }else if (request.query.sortBy == 'Recently Created'){
+      orderBy = 'id';
+    }else if (request.query.sortBy == 'Name'){
+      orderBy = 'name';
     }
 
-    var query = client.query('SELECT * FROM assets ORDER BY $1', [sortBy]);
+    var query = client.query('SELECT * FROM assets WHERE LOWER(name) LIKE LOWER($1) ORDER BY ' + orderBy + ';', [request.query.keyword]);
 
     query.on('row', function(row){
       results.push(row);
