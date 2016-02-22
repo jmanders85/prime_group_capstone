@@ -6,10 +6,11 @@ var connectionString = process.env.DATABASE_URL || require('./databaseurl.json')
 router.post('/newAsset', function(request, response){
   pg.connect(connectionString, function(err, client){
 
-    var newAsset = {name: request.query.name,
-                    description: request.query.description,
-                    category: request.query.category,
-                    notes: request.query.notes
+    var newAsset = {
+      name: request.query.name,
+      description: request.query.description,
+      category: request.query.category,
+      notes: request.query.notes
     };
 
     var query = client.query('INSERT INTO assets (name, description, category, notes) VALUES ($1, $2, $3, $4)', [newAsset.name, newAsset.description, newAsset.category, newAsset.notes]);
@@ -30,11 +31,12 @@ router.post('/newAsset', function(request, response){
 router.post('/updateAsset', function(request, response){
   pg.connect(connectionString, function(err, client){
 
-    var asset = {id: request.query.id,
-                name: request.query.name,
-                description: request.query.description,
-                category: request.query.category,
-                notes: request.query.notes
+    var asset = {
+      id: request.query.id,
+      name: request.query.name,
+      description: request.query.description,
+      category: request.query.category,
+      notes: request.query.notes
     };
 
     var query = client.query('UPDATE assets SET name=$1, description=$2, category=$3, notes=$4 WHERE id=$5', [asset.name, asset.description, asset.category, asset.notes, asset.id]);
@@ -57,11 +59,11 @@ router.get('/getAssets', function(request, response){
     var results = [];
     var orderBy = 'name';
 
-    if(request.query.sortBy == 'Category'){
+    if(request.query.sortBy === 'Category'){
       orderBy = 'category';
-    }else if (request.query.sortBy == 'Recently Created'){
+    }else if (request.query.sortBy === 'Recently Created'){
       orderBy = 'id';
-    }else if (request.query.sortBy == 'Name'){
+    }else if (request.query.sortBy === 'Name'){
       orderBy = 'name';
     }
 
@@ -96,7 +98,7 @@ router.get('/getReservations', function(request, response){
       done();
       return response.json(results);
     });
-  })
+  });
 });
 
 
