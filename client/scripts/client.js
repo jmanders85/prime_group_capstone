@@ -55,8 +55,9 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
   $locationProvider.html5Mode(true);
 }]);
 
-app.controller('LoginController', ['$location', function($location){
+app.controller('LoginController', ['$location', 'ReservationService',  function($location, ReservationService){
   if ($location.search().auth_token) {
+    ReservationService.data.auth_token = $location.search().auth_token;
     $location.search('auth_token', null);
     $location.path('/home');
   }
