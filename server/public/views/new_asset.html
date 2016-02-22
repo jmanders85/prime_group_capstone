@@ -1,18 +1,36 @@
-<p>New Asset!</p>
-
-<form name="new-asset" novalidate>
-
-  <label>Item Name: </label><input name="name" type="text" ng-model="data.name"/><br/>
-  <label>Item Description: </label><input name="description" type="text" ng-model="data.description"/><br/>
-  <label>Category: </label>
-      <select ng-model="data.category" name="category">
-        <option ng-repeat="category in categoryList">{{category}}</option>
-      </select>
-    <br />
-  <label>Additional Notes: </label><br />
-  <textarea rows="4" cols="50" ng-model="data.notes"/></textarea>
-  <br />
-  <button ng-click="submitAsset()">Submit</button><br/>
-  <br />
-  <a ui-sref="assets"><button>Cancel</button></a>
-</form>
+<div class="em-section-all pl-centered-section">
+    <div class="pl-subsection--border">
+      <h2 class="em-heading-new-asset pl-heading--xxlarge">Add New Asset</h2>
+    </div>
+    <div class="pl-subsection--border">
+      <form>
+        <div class="pl-split__container">
+          <div class="pl-field__container">
+            <label for="asset-name" class="pl-field__label">Name:</label>
+            <input id="asset-name" name="name" type="text" class="pl-field" ng-model="data.name">
+          </div>
+          <div class="pl-field__container">
+            <label for="asset-category" class="pl-field__label">Category</label>
+            <select id="asset-category" class="pl-select" ng-model="data.category" name="category">
+              <option ng-repeat="category in categoryList">{{category}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="pl-field__container">
+          <label for="asset-description" class="pl-field__label">Item Description</label>
+          <input id="asset-description" name="description" type="text" class="pl-field--large pl-field--full" ng-model="data.description">
+        </div>
+        <div class="pl-field__container">
+          <label for="asset-additional-notes" class="pl-field__label">Additional Notes:</label>
+          <textarea id="asset-additional-notes" class="pl-field--full" ng-model="data.notes"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="pl-subsection--border pl-form-actions">
+      <div class="pl-form-actions__button-container">
+        <a class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="submitAsset()">Submit</a>
+        <a class="em-button-newAsset pl-form-actions__button pl-button" ui-sref="assets">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
