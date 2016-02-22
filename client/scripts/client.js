@@ -22,6 +22,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/newReservation.html',
       controller: 'NewReservationController'
     })
+    .state('reservations', {
+      url: '/reservations',
+      templateUrl: 'views/reservations.html',
+      controller: 'ReservationsController'
+    })
     .state('new_asset', {
       url: '/new_asset',
       templateUrl: 'views/new_asset.html',
@@ -62,7 +67,7 @@ app.controller('AssetsController', ['$scope', function($scope){
 
 }]);
 
-app.controller('NewReservationController', ['$scope', '$http', 'ReservationService',  function($scope, $http, ReservationService) {
+app.controller('NewReservationController', ['$scope', '$http', '$location',  'ReservationService',  function($scope, $http, $location, ReservationService) {
 
   ReservationService.getEvents();
   ReservationService.getAssets();
@@ -70,6 +75,7 @@ app.controller('NewReservationController', ['$scope', '$http', 'ReservationServi
 
   $scope.selectedEvent = '';
   $scope.selectedAssets = [];
+  $scope.reservedBy = '';
 
 
   $scope.createReservation = function() {
@@ -79,10 +85,24 @@ app.controller('NewReservationController', ['$scope', '$http', 'ReservationServi
       }
     }
 
-    $http.post('internal/reservation', {"eventId": $scope.selectedEvent.id, "selectedAssets": $scope.selectedAssets});
+    $http.post('internal/reservation', {
+      "eventId": $scope.selectedEvent.id,
+      "selectedAssets": $scope.selectedAssets,
+      "reservedBy": $scope.reservedBy
+    }).then(function(response) {
+      if (response.status === 200) {
+        $location.path('/reservations');
+      } else {
+        console.log("error");
+      }
+    });
   };
 
 }]);
+
+app.controller('ReservationsController', function(){
+
+});
 
 app.controller('CalendarController', ['$scope', '$http', 'ReservationService',  function($scope, $http, ReservationService){
   ReservationService.getEvents();

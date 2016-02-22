@@ -19,9 +19,9 @@ router.post('/newAsset', function(request, response){
       client.end();
       response.send("assets");
     });
-
+    
     if(err) {
-        console.log(error);
+        console.log(err);
         response.send('error');
     }
   });
@@ -81,7 +81,7 @@ router.post('/reservation', function(request, response){
     var assetsReservationsQuery = 'INSERT INTO assets_reservations (asset_id, reservation_id) VALUES ';
 
     client
-      .query('INSERT INTO reservations (event_id) VALUES ($1)', [parseInt(request.body.eventId)]);
+      .query('INSERT INTO reservations (event_id, reserved_by) VALUES ($1, $2)', [parseInt(request.body.eventId), request.body.reservedBy]);
 
     client
       .query('SELECT * FROM reservations ORDER BY id DESC LIMIT 1')
