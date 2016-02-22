@@ -3,26 +3,6 @@ var pg = require('pg');
 var router = express.Router();
 var connectionString = process.env.DATABASE_URL || require('./databaseurl.json').data;
 
-router.get('/test', function(request, response){
-  pg.connect(connectionString, function(err, client){
-    if (err) throw err;
-    var results = [];
-    console.log("Connected to Postgres!");
-
-    var query = client.query('SELECT * FROM assets;');
-
-    query.on('row', function(row){
-      console.log(JSON.stringify(row));
-      results.push(row);
-    });
-
-    query.on('end', function(){
-      client.end();
-      response.send(results);
-    });
-  });
-});
-
 router.post('/newAsset', function(request, response){
   pg.connect(connectionString, function(err, client){
 
@@ -38,6 +18,31 @@ router.post('/newAsset', function(request, response){
     query.on('end', function(){
       client.end();
       response.send("assets");
+    });
+
+    if(err) {
+        console.log(error);
+        response.send('error');
+    }
+  });
+});
+
+router.post('/updateAsset', function(request, response){
+  pg.connect(connectionString, function(err, client){
+
+    var asset = {id: request.query.id,
+                name: request.query.name,
+                description: request.query.description,
+                category: request.query.category,
+                notes: request.query.notes
+    };
+
+    var query = client.query('UPDATE assets SET name=$1, description=$2, category=$3, notes=$4 WHERE id=$5', [asset.name, asset.description, asset.category, asset.notes, asset.id]);
+
+
+    query.on('end', function(){
+      client.end();
+      response.send('view_assets');
     });
 
     if(err) {
