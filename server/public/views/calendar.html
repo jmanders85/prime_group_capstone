@@ -1,1 +1,10 @@
 <p>calendar Page!</p>
+
+<button ng-click="siteList()">Get Events</button>
+
+<div ng-repeat="event in events">
+  <h4>{{event.title}}</h4>
+  <p>
+    {{event.start_date_time | date: 'medium'}}
+  </p>
+</div>

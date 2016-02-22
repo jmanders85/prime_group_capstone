@@ -51,28 +51,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
 }]);
 
 app.controller('LoginController', ['$scope', '$http', function($scope, $http){
-  $scope.siteDetails = {};
-  $scope.eventsList = [];
-  $scope.siteId;
 
-  $scope.userInfo = function() {
-    $http.get('/api/userInfo').then(function(response){
-      console.log(response.data.result);
-    });
-  };
-
-  $scope.siteList = function() {
-    $http.get('/api/siteList').then(function(response){
-      $scope.siteDetails = response.data[0];
-      $scope.siteId = $scope.siteDetails.id;
-    });
-  };
-
-  $scope.eventsList = function() {
-    $http.get('/api/eventList/' + $scope.siteId).then(function(response){
-      $scope.eventsList = response.data.events;
-    });
-  };
 }]);
 
 app.controller('HomeController', ['$scope', function($scope){
@@ -87,8 +66,30 @@ app.controller('NewReservationController', ['$scope', function($scope){
 
 }]);
 
-app.controller('CalendarController', ['$scope', function($scope){
+app.controller('CalendarController', ['$scope', '$http', function($scope, $http){
+  $scope.siteDetails = {};
+  $scope.events = [];
+  $scope.siteId;
 
+  $scope.userInfo = function() {
+    $http.get('/api/userInfo').then(function(response){
+      console.log(response.data.result);
+    });
+  };
+
+  $scope.siteList = function() {
+    $http.get('/api/siteList').then(function(response){
+      $scope.siteDetails = response.data[0];
+      $scope.siteId = $scope.siteDetails.id;
+      $scope.eventsList();
+    });
+  };
+
+  $scope.eventsList = function() {
+    $http.get('/api/eventList/' + $scope.siteId).then(function(response){
+      $scope.events = response.data.events;
+    });
+  };
 }]);
 
 app.controller('NewAssetController', ['$scope', '$http', '$location', function($scope, $http, $location){
