@@ -148,6 +148,10 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
     });
   };
 
+  $scope.goBack = function(){
+    window.history.back();
+  };
+
 }]);
 
 
