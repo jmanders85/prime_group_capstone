@@ -83,6 +83,23 @@ router.get('/getAssets', function(request, response){
   });
 });
 
+router.get('/getReservations', function(request, response){
+  pg.connect(connectionString, function(err, client, done){
+   if (err) throw err;
+
+    var results = [];
+    var query = client.query('SELECT * FROM reservations ORDER BY id');
+    query.on('row', function(row){
+      results.push(row);
+    });
+    query.on('end', function(){
+      done();
+      return response.json(results);
+    });
+  })
+});
+
+
 router.post('/reservation', function(request, response){
   pg.connect(connectionString, function(err, client, done){
     if (err) throw err;

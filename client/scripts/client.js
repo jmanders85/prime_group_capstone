@@ -100,9 +100,10 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
 
 }]);
 
-app.controller('ReservationsController', function(){
-
-});
+app.controller('ReservationsController', ['$scope', '$http', 'ReservationService', function($scope, $http, ReservationService){
+  ReservationService.getReservations();
+  $scope.data = ReservationService.data;
+  }]);
 
 app.controller('CalendarController', ['$scope', '$http', 'ReservationService',  function($scope, $http, ReservationService){
   ReservationService.getEvents();
@@ -237,10 +238,17 @@ app.factory('ReservationService', ['$http', function($http){
       });
   };
 
+  var getReservations = function() {
+    $http.get('internal/getReservations').then(function (response) {
+      data.reservations = response.data
+    });
+  };
+
   return {
     data: data,
     getEvents: getEvents,
-    getAssets: getAssets
+    getAssets: getAssets,
+    getReservations: getReservations
   };
 
 }]);
