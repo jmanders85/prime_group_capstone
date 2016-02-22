@@ -55,8 +55,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
   $locationProvider.html5Mode(true);
 }]);
 
-app.controller('LoginController', ['$scope', '$http', function($scope, $http){
-
+app.controller('LoginController', ['$location', function($location){
+  if ($location.search().auth_token) {
+    $location.search('auth_token', null);
+    $location.path('/home');
+  }
 }]);
 
 app.controller('HomeController', ['$scope', function($scope){
@@ -106,7 +109,7 @@ app.controller('ReservationsController', ['$scope', '$http', 'ReservationService
   ReservationService.getEvents();
   $scope.data = ReservationService.data;
 
-  
+
 
 }]);
 
