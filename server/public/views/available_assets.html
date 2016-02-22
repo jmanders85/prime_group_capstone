@@ -1,1 +1,21 @@
 <h4>Available Assets!</h4>
+
+<label>Start Date: </label><input type="date" ng-model="startDate"/>
+<label>Start Time: </label><input type="time" ng-model="startTime"/>
+<br />
+<label>End Date: </label><input type="date" ng-model="endDate"/>
+<label>End Time: </label><input type="time" ng-model="endTime"/>
+
+<button ng-click="getAvailable()">Search</button>
+<a ui-sref="assets"><button>Go Back</button></a>
+
+<div ng-repeat="asset in assets">
+  <h4>{{asset.name}}</h4>
+  <p>
+    {{asset.description}}<br />
+    {{asset.category}}<br />
+    {{asset.notes}}
+  </p>
+  <button ng-click="editAsset(asset)">Edit</button>
+  <br />
+</div>

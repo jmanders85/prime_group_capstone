@@ -131,7 +131,10 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
   };
 }]);
 
-app.controller('AvailableAssetsController', ['$scope', function($scope){
+app.controller('AvailableAssetsController', ['$scope', '$http', function($scope, $http){
+
+
+
 
 }]);
 
