@@ -51,6 +51,19 @@
 ///////////////////////////////
 // New Assets page
 ///////////////////////////////
+
 .em-heading-new-asset, .em-button-newAsset {
   text-align: center;
+}
+
+///////////////////////////////
+// View Assets page
+///////////////////////////////
+
+.em-list-asset-key{
+  width: 40%
+}
+
+.em-list-asset-value{
+  width: 60%
 }

@@ -28,4 +28,10 @@
 .em-heading-new-asset, .em-button-newAsset {
   text-align: center; }
 
+.em-list-asset-key {
+  width: 40%; }
+
+.em-list-asset-value {
+  width: 60%; }
+
 /*# sourceMappingURL=stylesheet.css.map */
