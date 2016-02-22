@@ -121,15 +121,15 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   };
 
   $scope.editAsset = function(asset){
-    console.log(asset);
+    // console.log(asset);
     currentAsset.setAsset(asset);
-    // $location.path('edit_asset');
+    $location.path('edit_asset');
   };
 
 }]);
 
 app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
-  $scope.data = {};
+  $scope.data = currentAsset.currentAsset;
   $scope.categoryList = ["Practice", "Player Equipment", "Game", "Other"]; //***If you change these, change the ones in the NewAssetController
 
   $scope.updateAsset = function(){
@@ -140,7 +140,8 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
         params: {name: $scope.data.name,
                 description: $scope.data.description,
                 category: $scope.data.category,
-                notes: $scope.data.notes
+                notes: $scope.data.notes,
+                id: $scope.data.id
                 }
     }).then(function(response){
       $location.path(response.data);
