@@ -114,9 +114,12 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
 
 app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
   $scope.assets = [];
+  $scope.sortBy = "Name";
+  $scope.sortOptions = ["Category", "Name", "Recently Created"];
 
   $scope.getAssets = function(){
-    $http.get('internal/getAssets').then(function(response){
+    var params = '/' + $scope.sortBy;
+    $http.get('internal/getAssets' + params).then(function(response){
       $scope.assets = response.data;
     });
   };

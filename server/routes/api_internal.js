@@ -52,10 +52,20 @@ router.post('/updateAsset', function(request, response){
   });
 });
 
-router.get('/getAssets', function(request, response){
+router.get('/getAssets/:sortBy', function(request, response){
   pg.connect(connectionString, function(err, client){
     var results = [];
-    var query = client.query('SELECT * FROM assets;');
+    var sortBy = 'name';
+
+    if(request.params.sortBy == 'Category'){
+        sortBy = 'category';
+    }else if (request.params.sortBy == 'Recently Created'){
+      sortBy = 'id';
+    }else{
+      sortBy = 'name';
+    }
+
+    var query = client.query('SELECT * FROM assets ORDER BY $1', [sortBy]);
 
     query.on('row', function(row){
       results.push(row);

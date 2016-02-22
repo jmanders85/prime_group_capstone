@@ -1,6 +1,12 @@
 <p>Find An Asset!</p>
 
+<label>Category: </label>
+    <select ng-model="sortBy" ng-change="getAssets()">
+      <option ng-repeat="option in sortOptions">{{option}}</option>
+    </select>
+  <br />
 <button ng-click="getAssets()">View Inventory</button>
+
 
 <div ng-repeat="asset in assets">
   <h4>{{asset.name}}</h4>
@@ -10,4 +16,5 @@
     {{asset.notes}}
   </p>
   <button ng-click="editAsset(asset)">Edit</button>
+  <br />
 </div>
