@@ -91,6 +91,7 @@ router.get('/getAvailable', function(request, response){
    if (err) throw err;
 
     var results = [];
+//Start adding stuff here!!! vv
     var query = client.query('SELECT * FROM ');
 
     query.on('row', function(row){
@@ -114,7 +115,7 @@ router.get('/getReservations', function(request, response){
       row.assets = [];
       results.push(row);
     });
-    
+
     query.on('end', function(){
       client
         .query('select assets.name, assets_reservations.reservation_id FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id')

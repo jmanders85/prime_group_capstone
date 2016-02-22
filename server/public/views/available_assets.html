@@ -5,7 +5,7 @@
 <br />
 <label>End Date: </label><input type="date" ng-model="endDate"/>
 <label>End Time: </label><input type="time" ng-model="endTime"/>
-
+<br />
 <button ng-click="getAvailable()">Search</button>
 <a ui-sref="assets"><button>Go Back</button></a>
 
@@ -19,3 +19,5 @@
   <button ng-click="reserveAsset(asset)">Reserve</button>
   <br />
 </div>
+
+<h4 ng-repeat="data in data">{{data.events}}</h4>

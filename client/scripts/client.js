@@ -137,24 +137,30 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
   $scope.startTime;
   $scope.endDate;
   $scope.endTime;
+  ReservationService.getEvents();
+  ReservationService.getAssets();
 
-//get events/reservations???
-  var events = ReservationService.getEvents;
   var reservatione = ReservationService.getReservations;
   var assets = ReservationService.getAssets;
 
   $scope.getAvailable = function(){
     //format the date time!
+    var startDateTime = ($scope.startDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
 
-    $http({
-      url: '/internal/getAvailable',
-      method: 'GET',
-      params: {
-        //All the date time!
-      }
-    }).then(function(response){
-      $scope.assets = response.data;
-    });
+
+    // $http({
+    //   url: '/internal/getAvailable',
+    //   method: 'GET',
+    //   params: {
+    //     //All the date time!
+    //   }
+    // }).then(function(response){
+    //   $scope.assets = response.data;
+    // });
+    console.log($scope.startDate.toISOString());
+    console.log($scope.startTime.toISOString());
+    console.log(startDateTime);
+    console.log(ReservationService.data);
   };
 
   $scope.reserveAsset = function(asset){
