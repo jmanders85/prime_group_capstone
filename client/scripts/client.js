@@ -131,10 +131,35 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
   };
 }]);
 
-app.controller('AvailableAssetsController', ['$scope', '$http', function($scope, $http){
+app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationService', 'currentAsset', function($scope, $http, ReservationService, currentAsset){
+  $scope.assets = [];
+  $scope.startDate;
+  $scope.startTime;
+  $scope.endDate;
+  $scope.endTime;
 
+//get events/reservations???
+  var events = ReservationService.getEvents;
+  var reservatione = ReservationService.getReservations;
+  var assets = ReservationService.getAssets;
 
+  $scope.getAvailable = function(){
+    //format the date time!
 
+    $http({
+      url: '/internal/getAvailable',
+      method: 'GET',
+      params: {
+        //All the date time!
+      }
+    }).then(function(response){
+      $scope.assets = response.data;
+    });
+  };
+
+  $scope.reserveAsset = function(asset){
+    console.log(asset.id);
+  };
 
 }]);
 
@@ -248,7 +273,7 @@ app.factory('ReservationService', ['$http', function($http){
 
   var getReservations = function() {
     $http.get('internal/getReservations').then(function (response) {
-      data.reservations = response.data
+      data.reservations = response.data;
     });
   };
 
