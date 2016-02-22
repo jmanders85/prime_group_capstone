@@ -58,6 +58,7 @@ router.get('/getAssets', function(request, response){
   pg.connect(connectionString, function(err, client){
     var results = [];
     var orderBy = 'name';
+    var keyword = request.query.keyword || '%%';
 
     if(request.query.sortBy === 'Category'){
       orderBy = 'category';
@@ -67,7 +68,7 @@ router.get('/getAssets', function(request, response){
       orderBy = 'name';
     }
 
-    var query = client.query('SELECT * FROM assets WHERE LOWER(name) LIKE LOWER($1) ORDER BY ' + orderBy + ';', [request.query.keyword]);
+    var query = client.query('SELECT * FROM assets WHERE LOWER(name) LIKE LOWER($1) ORDER BY ' + orderBy + ';', [keyword]);
 
     query.on('row', function(row){
       results.push(row);
@@ -92,11 +93,26 @@ router.get('/getReservations', function(request, response){
     var results = [];
     var query = client.query('SELECT * FROM reservations ORDER BY id');
     query.on('row', function(row){
+      row.assets = [];
       results.push(row);
     });
+    
     query.on('end', function(){
-      done();
-      return response.json(results);
+      client
+        .query('select assets.name, assets_reservations.reservation_id FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id')
+        .on('row', function(row){
+          for (var i = 0; i < results.length; i++) {
+            if (results[i].id === row.reservation_id) {
+              results[i].assets.push(row.name);
+              continue;
+            }
+          }
+        })
+        .on('end', function() {
+          done();
+          return response.json(results);
+        });
+
     });
   });
 });

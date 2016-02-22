@@ -147,8 +147,9 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
     $http({
       url: '/internal/getAssets',
       method: 'GET',
-      params: {sortBy: $scope.sortBy,
-              keyword: keyword
+      params: {
+        sortBy: $scope.sortBy,
+        keyword: keyword
       }
     }).then(function(response){
       $scope.assets = response.data;
