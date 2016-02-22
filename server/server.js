@@ -1,5 +1,6 @@
 var express = require('express');
 var passport = require('passport');
+var bodyParser = require('body-parser');
 
 var OAuth2Strategy = require('passport-oauth2');
 
@@ -27,7 +28,9 @@ passport.use('oauth', new OAuth2Strategy(
   }
 ));
 
+app.use(bodyParser.json());
 app.use(express.static('server/public'));
+
 app.use('/internal', internal);
 app.use('/', index);
 

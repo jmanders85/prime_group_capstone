@@ -22,6 +22,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/newReservation.html',
       controller: 'NewReservationController'
     })
+    .state('reservations', {
+      url: '/reservations',
+      templateUrl: 'views/reservations.html',
+      controller: 'ReservationsController'
+    })
     .state('new_asset', {
       url: '/new_asset',
       templateUrl: 'views/new_asset.html',
@@ -62,34 +67,46 @@ app.controller('AssetsController', ['$scope', function($scope){
 
 }]);
 
-app.controller('NewReservationController', ['$scope', function($scope){
+app.controller('NewReservationController', ['$scope', '$http', '$location',  'ReservationService',  function($scope, $http, $location, ReservationService) {
+
+  ReservationService.getEvents();
+  ReservationService.getAssets();
+  $scope.data = ReservationService.data;
+
+  $scope.selectedEvent = '';
+  $scope.selectedAssets = [];
+  $scope.reservedBy = '';
+
+
+  $scope.createReservation = function() {
+    for (var i = 0; i < $scope.data.assets.length; i++) {
+      if ($scope.data.assets[i].selected === true) {
+        $scope.selectedAssets.push(parseInt($scope.data.assets[i].id));
+      }
+    }
+
+    $http.post('internal/reservation', {
+      "eventId": $scope.selectedEvent.id,
+      "selectedAssets": $scope.selectedAssets,
+      "reservedBy": $scope.reservedBy
+    }).then(function(response) {
+      if (response.status === 200) {
+        $location.path('/reservations');
+      } else {
+        console.log("error");
+      }
+    });
+  };
 
 }]);
 
-app.controller('CalendarController', ['$scope', '$http', function($scope, $http){
-  $scope.siteDetails = {};
-  $scope.events = [];
-  $scope.siteId;
+app.controller('ReservationsController', function(){
 
-  $scope.userInfo = function() {
-    $http.get('/api/userInfo').then(function(response){
-      console.log(response.data.result);
-    });
-  };
+});
 
-  $scope.siteList = function() {
-    $http.get('/api/siteList').then(function(response){
-      $scope.siteDetails = response.data[0];
-      $scope.siteId = $scope.siteDetails.id;
-      $scope.eventsList();
-    });
-  };
-
-  $scope.eventsList = function() {
-    $http.get('/api/eventList/' + $scope.siteId).then(function(response){
-      $scope.events = response.data.events;
-    });
-  };
+app.controller('CalendarController', ['$scope', '$http', 'ReservationService',  function($scope, $http, ReservationService){
+  ReservationService.getEvents();
+  $scope.data = ReservationService.data;
 }]);
 
 app.controller('NewAssetController', ['$scope', '$http', '$location', function($scope, $http, $location){
@@ -101,11 +118,12 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
     $http({
         url: '/internal/newAsset',
         method: 'POST',
-        params: {name: $scope.data.name,
-                description: $scope.data.description,
-                category: $scope.data.category,
-                notes: $scope.data.notes
-                }
+        params: {
+          name: $scope.data.name,
+          description: $scope.data.description,
+          category: $scope.data.category,
+          notes: $scope.data.notes
+        }
     }).then(function(response){
       $location.path(response.data);
     });
@@ -191,6 +209,38 @@ app.factory('currentAsset', ['$http', function($http){
     currentAsset: currentAsset,
     setAsset: setAsset,
     clearCurrentAsset: clearCurrentAsset
+  };
+
+}]);
+
+app.factory('ReservationService', ['$http', function($http){
+
+  var data = {};
+
+  var getEvents = function() {
+    var siteDetails;
+    var siteId;
+
+    $http.get('/api/siteList').then(function(response){
+      siteDetails = response.data[0];
+      siteId = siteDetails.id;
+      $http.get('/api/eventList/' + siteId).then(function(response){
+        data.events = response.data.events;
+      });
+    });
+
+  };
+
+  var getAssets = function(){
+      $http.get('internal/getAssets').then(function(response){
+        data.assets = response.data;
+      });
+  };
+
+  return {
+    data: data,
+    getEvents: getEvents,
+    getAssets: getAssets
   };
 
 }]);

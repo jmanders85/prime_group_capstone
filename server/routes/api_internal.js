@@ -21,7 +21,7 @@ router.post('/newAsset', function(request, response){
     });
 
     if(err) {
-        console.log(error);
+        console.log(err);
         response.send('error');
     }
   });
@@ -80,6 +80,38 @@ router.get('/getAssets', function(request, response){
       console.log(err);
       response.send('error');
     }
+  });
+});
+
+router.post('/reservation', function(request, response){
+  pg.connect(connectionString, function(err, client, done){
+    if (err) throw err;
+
+    var newReservationId;
+    var assetsReservationsQuery = 'INSERT INTO assets_reservations (asset_id, reservation_id) VALUES ';
+
+    client
+      .query('INSERT INTO reservations (event_id, reserved_by) VALUES ($1, $2)', [parseInt(request.body.eventId), request.body.reservedBy]);
+
+    client
+      .query('SELECT * FROM reservations ORDER BY id DESC LIMIT 1')
+      .on('row', function(row){
+        newReservationId = row.id;
+      })
+      .on('end', function(){
+        for (var i = 0; i < request.body.selectedAssets.length; i++) {
+          assetsReservationsQuery += '('+ request.body.selectedAssets[i] +', '+ newReservationId +')';
+          if (i !== request.body.selectedAssets.length - 1) {
+            assetsReservationsQuery += ', ';
+          }
+        }
+        client
+          .query(assetsReservationsQuery)
+          .on('end', function(){
+            done();
+            return response.sendStatus(200);
+          });
+      });
   });
 });
 
