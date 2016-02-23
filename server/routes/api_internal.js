@@ -92,6 +92,7 @@ router.get('/getAvailable', function(request, response){
 
     var results = [];
 //Start adding stuff here!!! vv
+    //select all from assets where (join assets_reservations join reservations) reservation ID
     var query = client.query('SELECT * FROM ');
 
     query.on('row', function(row){

@@ -139,28 +139,74 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
   $scope.endTime;
   ReservationService.getEvents();
   ReservationService.getAssets();
+  ReservationService.getReservations();
 
-  var reservatione = ReservationService.getReservations;
+  var reservations = ReservationService.getReservations;
   var assets = ReservationService.getAssets;
 
   $scope.getAvailable = function(){
+    var reservationID;
     //format the date time!
     var startDateTime = ($scope.startDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
+    var endDateTime = ($scope.endDate.toISOString()).slice(0,11) + ($scope.endTime.toISOString()).slice(11,24);
 
+    //for loop, yo! run it for each asset? or each event? Definitely event...
+    for(i=0; i<ReservationService.data.events.length; i++){
+      checkEvents(ReservationService.data.events[i]);
+    }
 
-    // $http({
-    //   url: '/internal/getAvailable',
-    //   method: 'GET',
-    //   params: {
-    //     //All the date time!
-    //   }
-    // }).then(function(response){
-    //   $scope.assets = response.data;
-    // });
-    console.log($scope.startDate.toISOString());
-    console.log($scope.startTime.toISOString());
-    console.log(startDateTime);
+    function checkEvents(event){
+      var eventStatus;
+      var goodEvents = [];
+      var eventStart = ReservationService.data.events[i].start_date_time;
+      var eventEnd = ReservationService.data.events[i].end_date_time;
+      //check if event conflicts
+      if(eventStart > startDateTime && eventStart < endDateTime){
+        eventStatus = "fail";
+      }else if(eventEnd > startDateTime && eventEnd < endDateTime){
+        eventStatus = "fail";
+      }else if(startDateTime > eventStart && startDateTime < eventEnd){
+        eventStatus = "fail";
+      }else if(endDateTime > eventStart && endDateTime < eventEnd){
+        eventStatus = "fail";
+      }else{
+        eventStatus = "pass";
+      }
+      //if unconflicting, use event ID to find reservations
+      if (eventStatus == "fail"){
+        getResID(ReservationService.data.events[i].id);
+      }
+
+      function getResID(thisEvent){
+        for(i=0; i<ReservationService.data.reservations.length; i++){
+          if(ReservationService.data.reservations[i] == thisEvent){
+            // checkAssets(ReservationService.data.reservations[i].id);
+            console.log(ReservationService.data.reservations[i].id);
+          }
+        }
+      }
+
+      console.log(ReservationService.data.events[i].id + eventStatus);
+    }
+
+    function checkAssets(reservation){
+      //use event ID to call getAvailable
+        $http({
+          url: '/internal/getAvailable',
+          method: 'GET',
+          params: {reservation_id: reservationID
+          }
+        }).then(function(response){
+          $scope.assets.push(response.data);
+        });
+
+    }
+
+//if assets == [], set to ReservationService.data.assets?? (no failed events)
+
     console.log(ReservationService.data);
+    // console.log(ReservationService.data.events[0].end_date_time);
+
   };
 
   $scope.reserveAsset = function(asset){
