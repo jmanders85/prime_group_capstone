@@ -28,6 +28,10 @@
 .em-index-logo{
   vertical-align: middle;
 }
+
+.em-edit-button{
+  overflow: hidden;
+}
 ///////////////////////////////
 // Login Page
 ///////////////////////////////
@@ -79,8 +83,4 @@
 
 .em-list-asset-button{
   float: right;
-}
-
-.em-subsection-overflow{
-  overflow: hidden;
 }

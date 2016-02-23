@@ -20,6 +20,9 @@
 .em-index-logo {
   vertical-align: middle; }
 
+.em-edit-button {
+  overflow: hidden; }
+
 .em-button-login {
   margin-left: 23%; }
 
@@ -42,8 +45,5 @@
 
 .em-list-asset-button {
   float: right; }
-
-.em-subsection-overflow {
-  overflow: hidden; }
 
 /*# sourceMappingURL=stylesheet.css.map */
