@@ -6,3 +6,5 @@
 
   {{reservation}} for <span ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.title}}, {{event.start_date_time | date: 'medium'}} <span ng-if="event.end_date_time !== event.start_date_time">-- {{event.end_date_time | date: 'medium'}}</span></span>
 </div>
+
+<button ui-sref="new_reservation">new reservation</button>
