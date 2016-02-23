@@ -1,36 +1,38 @@
-<div class="em-section-all pl-centered-section">
-  <div class="pl-subsection--border">
-    <h2 class="em-heading-all pl-heading--xxlarge">View All Assets</h2>
-  </div>
-  <div class="pl-subsection--border">
-    <form>
-      <div class="pl-split__container">
-        <div class="pl-field__container pl-split--half">
-          <label for="item-name" class="pl-field__label">Item Name:</label>
-          <input id="item-name" type="text" ng-model="searchKeyword" class="pl-field--full">
-        </div>
-        <div class="pl-field__container pl-split--half">
-          <label for="sort-by" class="pl-field__label">Sort By:</label>
-          <select id="sort-by" class="pl-select--full" ng-model="sortBy">
-            <option ng-repeat="option in sortOptions">{{option}}</option>
-          </select>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="pl-subsection--border pl-form-actions">
-    <div class="pl-form-actions__button-container">
-      <button class="em-button-newAsset pl-form-actions__button pl-button" ui-sref="assets">Go Back</button>
-      <button class="pl-form-actions__button pl-button--primary" ng-click="getAssets()">View Inventory</button>
+<div class="pl-centered-container">
+  <div class="pl-centered-section">
+    <div class="pl-subsection--border">
+      <h2 class="em-heading-all pl-heading--xxlarge">View All Assets</h2>
     </div>
-  </div>
-  <div class="pl-subsection--border" ng-repeat="asset in assets">
-    <ul class="pl-detail-list">
-      <li class="pl-detail-list__pair--emphasis"><strong class="em-list-asset-key pl-detail-list__key">Name</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.name}}</span></li>
-      <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Description</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.description}}</span></li>
-      <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Category</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.category}}</span></li>
-      <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Notes</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.notes}}</span></li>
+    <div class="pl-subsection--border">
+      <form>
+        <div class="pl-split__container">
+          <div class="pl-field__container pl-split--half">
+            <label for="item-name" class="pl-field__label">Item Name:</label>
+            <input id="item-name" type="text" ng-model="searchKeyword" class="pl-field--full">
+          </div>
+          <div class="pl-field__container pl-split--half">
+            <label for="sort-by" class="pl-field__label">Sort By:</label>
+            <select id="sort-by" class="pl-select--full" ng-model="sortBy">
+              <option ng-repeat="option in sortOptions">{{option}}</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="pl-subsection--border pl-form-actions">
+      <div class="pl-form-actions__button-container">
+        <button class="em-button-newAsset pl-form-actions__button pl-button" ui-sref="assets">Go Back</button>
+        <button class="pl-form-actions__button pl-button--primary" ng-click="getAssets()">View Inventory</button>
+      </div>
+    </div>
+    <div class="em-subsection-overflow pl-subsection--border" ng-repeat="asset in assets">
+      <ul class="pl-detail-list">
+        <li class="pl-detail-list__pair--emphasis"><strong class="em-list-asset-key pl-detail-list__key">Name</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.name}}</span></li>
+        <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Description</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.description}}</span></li>
+        <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Category</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.category}}</span></li>
+        <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Notes</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.notes}}</span></li>
+      </ul>
       <button ng-click="editAsset(asset)" class="em-list-asset-button pl-button--small pl-button--primary">Edit</button>
-    </ul>
+    </div>
   </div>
 </div>

@@ -1,36 +1,38 @@
-<div class="em-section-all pl-centered-section">
-    <div class="pl-subsection--border">
-      <h2 class="em-heading-all pl-heading--xxlarge">Edit Asset</h2>
-    </div>
-    <div class="pl-subsection--border">
-      <form name="edit-asset" novalidate>
-        <div class="pl-split__container">
-          <div class="pl-field__container pl-split--half">
-            <label for="asset-name" class="pl-field__label">Name:</label>
-            <input id="asset-name" name="name" type="text" class="pl-field--full" ng-model="data.name">
+<div class="pl-centered-container">
+  <div class="pl-centered-section">
+      <div class="pl-subsection--border">
+        <h2 class="em-heading-all pl-heading--xxlarge">Edit Asset</h2>
+      </div>
+      <div class="pl-subsection--border">
+        <form name="edit-asset" novalidate>
+          <div class="pl-split__container">
+            <div class="pl-field__container pl-split--half">
+              <label for="asset-name" class="pl-field__label">Name:</label>
+              <input id="asset-name" name="name" type="text" class="pl-field--full" ng-model="data.name">
+            </div>
+            <div class="pl-field__container pl-split--half">
+              <label for="asset-category" class="pl-field__label">Category</label>
+              <select id="asset-category" class="pl-select--full" ng-model="data.category" name="category">
+                <option ng-repeat="category in categoryList">{{category}}</option>
+              </select>
+            </div>
           </div>
-          <div class="pl-field__container pl-split--half">
-            <label for="asset-category" class="pl-field__label">Category</label>
-            <select id="asset-category" class="pl-select--full" ng-model="data.category" name="category">
-              <option ng-repeat="category in categoryList">{{category}}</option>
-            </select>
+          <div class="pl-field__container">
+            <label for="asset-description" class="pl-field__label">Item Description</label>
+            <input id="asset-description" name="description" type="text" class="pl-field--large pl-field--full" ng-model="data.description">
           </div>
+          <div class="pl-field__container">
+            <label for="asset-additional-notes" class="pl-field__label">Additional Notes:</label>
+            <textarea id="asset-additional-notes" class="pl-field--full" ng-model="data.notes"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="pl-subsection--border pl-form-actions">
+        <div class="pl-form-actions__button-container">
+          <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="goBack()">Cancel</button>
+          <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="deleteAsset()">Delete Asset</button>
+          <button class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="updateAsset()">Update</button>
         </div>
-        <div class="pl-field__container">
-          <label for="asset-description" class="pl-field__label">Item Description</label>
-          <input id="asset-description" name="description" type="text" class="pl-field--large pl-field--full" ng-model="data.description">
-        </div>
-        <div class="pl-field__container">
-          <label for="asset-additional-notes" class="pl-field__label">Additional Notes:</label>
-          <textarea id="asset-additional-notes" class="pl-field--full" ng-model="data.notes"></textarea>
-        </div>
-      </form>
-    </div>
-    <div class="pl-subsection--border pl-form-actions">
-      <div class="pl-form-actions__button-container">
-        <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="goBack()">Cancel</button>
-        <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="deleteAsset()">Delete Asset</button>
-        <button class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="updateAsset()">Update</button>
       </div>
     </div>
   </div>
