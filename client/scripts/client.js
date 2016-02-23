@@ -141,25 +141,23 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
   ReservationService.getAssets();
   ReservationService.getReservations();
 
-  var reservations = ReservationService.getReservations;
-  var assets = ReservationService.getAssets;
-
   $scope.getAvailable = function(){
     var reservationID;
     //format the date time!
     var startDateTime = ($scope.startDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
     var endDateTime = ($scope.endDate.toISOString()).slice(0,11) + ($scope.endTime.toISOString()).slice(11,24);
+    var reservations = ReservationService.data.reservations;
+    var events = ReservationService.data.events;
 
     //for loop, yo! run it for each asset? or each event? Definitely event...
-    for(i=0; i<ReservationService.data.events.length; i++){
-      checkEvents(ReservationService.data.events[i]);
+    for(i=0; i<events.length; i++){
+      checkEvents(events[i]);
     }
 
     function checkEvents(event){
       var eventStatus;
-      var goodEvents = [];
-      var eventStart = ReservationService.data.events[i].start_date_time;
-      var eventEnd = ReservationService.data.events[i].end_date_time;
+      var eventStart = events[i].start_date_time;
+      var eventEnd = events[i].end_date_time;
       //check if event conflicts
       if(eventStart > startDateTime && eventStart < endDateTime){
         eventStatus = "fail";
@@ -174,19 +172,20 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
       }
       //if unconflicting, use event ID to find reservations
       if (eventStatus == "fail"){
-        getResID(ReservationService.data.events[i].id);
+        // getResID(events[i].id);
+        console.log(events[i].id);
       }
-
+      //look through reservations for matching IDs
       function getResID(thisEvent){
-        for(i=0; i<ReservationService.data.reservations.length; i++){
-          if(ReservationService.data.reservations[i] == thisEvent){
+        for(i = 0; i < reservations.length; i++){
+          if(reservations[i] == thisEvent){
             // checkAssets(ReservationService.data.reservations[i].id);
-            console.log(ReservationService.data.reservations[i].id);
+            // console.log(reservations[i].id);
           }
         }
       }
 
-      console.log(ReservationService.data.events[i].id + eventStatus);
+      // console.log(ReservationService.data.events[i].id + eventStatus);
     }
 
     function checkAssets(reservation){
@@ -204,7 +203,7 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
 
 //if assets == [], set to ReservationService.data.assets?? (no failed events)
 
-    console.log(ReservationService.data);
+    // console.log(ReservationService.data);
     // console.log(ReservationService.data.events[0].end_date_time);
 
   };
