@@ -156,6 +156,7 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
 
     function checkEvents(event){
       var eventStatus;
+      // var badEvents = [];
       var eventStart = events[i].start_date_time;
       var eventEnd = events[i].end_date_time;
       //check if event conflicts
@@ -172,15 +173,19 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
       }
       //if unconflicting, use event ID to find reservations
       if (eventStatus == "fail"){
-        // getResID(events[i].id);
-        console.log(events[i].id);
+        // badEvents.push(events[i].id);
+        // console.log(events[i].id);
+        getResID(events[i].id);
+
       }
       //look through reservations for matching IDs
+//!!! This is where the infinite loop happens!!! vv      
       function getResID(thisEvent){
         for(i = 0; i < reservations.length; i++){
-          if(reservations[i] == thisEvent){
+          if(reservations[i].event_id == thisEvent){
             // checkAssets(ReservationService.data.reservations[i].id);
-            // console.log(reservations[i].id);
+            console.log(reservations[i].id);
+            console.log(i);
           }
         }
       }
