@@ -126,20 +126,6 @@ app.controller('ReservationsController', ['$scope', '$http', '$location',  'Rese
   ReservationService.getEvents();
   $scope.data = ReservationService.data;
 
-  $scope.deleteReservation = function(id) {
-
-    $http.delete('/internal/reservation/' + id).then(function(response){
-
-      if (response.status === 200) {
-        ReservationService.getReservations();
-      } else {
-        console.log("error deleting reservation");
-      }
-
-    });
-
-  };
-
   $scope.editReservation = function(reservation) {
 
     ReservationService.data.reservationToEdit = reservation;
@@ -193,6 +179,21 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
         console.log("error");
       }
     });
+  };
+
+  $scope.deleteReservation = function() {
+
+    $http.delete('/internal/reservation/' + reservationToEdit.id).then(function(response){
+
+      if (response.status === 200) {
+        ReservationService.getReservations();
+        $location.path('/reservations');
+      } else {
+        console.log("error deleting reservation");
+      }
+
+    });
+
   };
 
 }]);
