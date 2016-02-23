@@ -10,7 +10,11 @@
       <a ui-sref="new_reservation" class="em-button-home pl-button--large">New Reservation</a>
     </div>
     <div class="pl-subsection--divider-before">
+      <a ui-sref="reservations" class="em-button-home pl-button--large">View Reservations</a>
+    </div>
+    <div class="pl-subsection--divider-before">
       <p class="em-heading-home pl-heading--large">Upcoming Reservations</p>
+      <p class="em-heading-home pl-heading--large" ng-repeat="reservation in data.reservations">{{reservation.reserved_by}} reserved <span ng-repeat="asset in reservation.assets">{{asset}}</span> for <span ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.title}}, {{event.start_date_time | date: 'medium'}} <span ng-if="event.end_date_time !== event.start_date_time">-- {{event.end_date_time | date: 'medium'}}</span></span></p>
     </div>
     <div class="pl-subsection--divider-before">
       <a ui-sref="calendar" class="em-button-home pl-button--large">View Calendar</a>

@@ -68,7 +68,12 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$window',  '
   });
 }]);
 
-app.controller('HomeController', ['ReservationService', function(ReservationService){
+app.controller('HomeController', ['$scope', 'ReservationService', function($scope, ReservationService){
+
+  ReservationService.getReservations();
+  ReservationService.getEvents();
+
+  $scope.data = ReservationService.data;
 
 }]);
 
@@ -116,13 +121,17 @@ app.controller('ReservationsController', ['$scope', '$http', 'ReservationService
   $scope.data = ReservationService.data;
 
   $scope.deleteReservation = function(id) {
+
     $http.delete('/internal/reservation/' + id).then(function(response){
+
       if (response.status === 200) {
         ReservationService.getReservations();
       } else {
         console.log("error deleting reservation");
       }
+
     });
+
   };
 
 }]);
@@ -177,6 +186,8 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
       $scope.assets = response.data;
     });
   };
+
+  $scope.getAssets();
 
   $scope.editAsset = function(asset){
     // console.log(asset);
