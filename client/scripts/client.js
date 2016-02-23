@@ -27,6 +27,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/reservations.html',
       controller: 'ReservationsController'
     })
+    .state('edit_reservation', {
+      url: 'edit_reservation',
+      tempalteUrl: 'views/edit_reservation.html',
+      controller: 'EditReservationController'
+    })
     .state('new_asset', {
       url: '/new_asset',
       templateUrl: 'views/new_asset.html',
@@ -216,6 +221,18 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
     }).then(function(response){
       $location.path(response.data);
     });
+  };
+
+  $scope.deleteAsset = function(){
+    $http.delete('/internal/asset/' + $scope.data.id)
+      .then(function(response){
+        if (response.status === 200) {
+          $location.path('/view_assets');
+        } else {
+          console.log("error deleting asset");
+        }
+      }
+    );
   };
 
   $scope.goBack = function(){

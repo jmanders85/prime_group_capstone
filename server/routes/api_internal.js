@@ -86,6 +86,19 @@ router.get('/getAssets', function(request, response){
   });
 });
 
+router.delete('/asset/:id', function(request, response){
+  pg.connect(connectionString, function(err, client, done){
+    if (err) throw err;
+
+    client
+      .query('DELETE FROM assets WHERE id = $1', [request.params.id])
+      .on('end', function(){
+        done();
+        response.sendStatus(200);
+      });
+  });
+});
+
 router.get('/getReservations', function(request, response){
   pg.connect(connectionString, function(err, client, done){
    if (err) throw err;
