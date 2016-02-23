@@ -5,6 +5,7 @@
 <div ng-repeat="reservation in data.reservations">
 
   {{reservation}} for <span ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.title}}, {{event.start_date_time | date: 'medium'}} <span ng-if="event.end_date_time !== event.start_date_time">-- {{event.end_date_time | date: 'medium'}}</span></span>
+  <button ng-click="editReservation(reservation)">Edit Reservation</button>
   <button ng-click="deleteReservation(reservation.id)">Delete Reservation</button>
 </div>
 

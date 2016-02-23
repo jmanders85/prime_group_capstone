@@ -162,6 +162,34 @@ router.post('/reservation', function(request, response){
   });
 });
 
+router.put('/reservation', function(request, response){
+  pg.connect(connectionString, function(err, client, done){
+    if (err) throw err;
+
+    var assetsReservationsQuery = 'INSERT INTO assets_reservations (asset_id, reservation_id) VALUES ';
+
+    client
+      .query('UPDATE reservations SET event_id=$1, reserved_by=$2 WHERE id=$3', [parseInt(request.body.eventId), request.body.reservedBy, request.body.id]);
+
+    client
+      .query('DELETE FROM assets_reservations WHERE reservation_id = $1', [request.body.id])
+      .on('end', function(){
+        for (var i = 0; i < request.body.selectedAssets.length; i++) {
+          assetsReservationsQuery += '('+ request.body.selectedAssets[i] +', '+ request.body.id +')';
+          if (i !== request.body.selectedAssets.length - 1) {
+            assetsReservationsQuery += ', ';
+          }
+        }
+        client
+          .query(assetsReservationsQuery)
+          .on('end', function(){
+            done();
+            return response.sendStatus(200);
+          });
+      });
+  });
+});
+
 router.delete('/reservation/:id', function(request, response){
 
   pg.connect(connectionString, function(err, client, done){

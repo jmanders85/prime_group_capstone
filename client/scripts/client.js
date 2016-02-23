@@ -28,8 +28,8 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       controller: 'ReservationsController'
     })
     .state('edit_reservation', {
-      url: 'edit_reservation',
-      tempalteUrl: 'views/edit_reservation.html',
+      url: '/edit_reservation',
+      templateUrl: 'views/edit_reservation.html',
       controller: 'EditReservationController'
     })
     .state('new_asset', {
@@ -119,9 +119,10 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
 
 }]);
 
-app.controller('ReservationsController', ['$scope', '$http', 'ReservationService', function($scope, $http, ReservationService){
+app.controller('ReservationsController', ['$scope', '$http', '$location',  'ReservationService', function($scope, $http, $location, ReservationService){
 
   ReservationService.getReservations();
+  ReservationService.getAssets();
   ReservationService.getEvents();
   $scope.data = ReservationService.data;
 
@@ -137,6 +138,61 @@ app.controller('ReservationsController', ['$scope', '$http', 'ReservationService
 
     });
 
+  };
+
+  $scope.editReservation = function(reservation) {
+
+    ReservationService.data.reservationToEdit = reservation;
+    $location.path('edit_reservation');
+
+  };
+
+}]);
+
+app.controller('EditReservationController', ['ReservationService', '$http', '$scope', '$location', function(ReservationService, $http, $scope, $location){
+
+  $scope.data = ReservationService.data;
+
+  var reservationToEdit = ReservationService.data.reservationToEdit;
+
+  $scope.reservedBy = reservationToEdit.reserved_by;
+  $scope.selectedAssets = [];
+
+  for (var i = 0; i < reservationToEdit.assets.length; i++) {
+    for (var j = 0; j < $scope.data.assets.length; j++) {
+      if (reservationToEdit.assets[i] === $scope.data.assets[j].name) {
+        $scope.data.assets[j].selected = true;
+        break;
+      }
+    }
+  }
+
+  for (var k = 0; k < $scope.data.events.length; k++) {
+    if (parseInt(reservationToEdit.event_id) === $scope.data.events[k].id) {
+      $scope.selectedEvent = $scope.data.events[k];
+      break;
+    }
+  }
+
+  $scope.updateReservation = function() {
+    for (var i = 0; i < $scope.data.assets.length; i++) {
+      if ($scope.data.assets[i].selected === true) {
+        $scope.selectedAssets.push(parseInt($scope.data.assets[i].id));
+      }
+    }
+
+    $http.put('internal/reservation', {
+      "id": reservationToEdit.id,
+      "eventId": $scope.selectedEvent.id,
+      "selectedAssets": $scope.selectedAssets,
+      "reservedBy": $scope.reservedBy
+    }).then(function(response) {
+      if (response.status === 200) {
+        $location.path('/reservations');
+      } else {
+        console.log("error");
+      }
+    });
   };
 
 }]);
