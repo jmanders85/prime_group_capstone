@@ -63,8 +63,8 @@ app.controller('LoginController', ['$location', 'ReservationService',  function(
   }
 }]);
 
-app.controller('HomeController', ['$scope', function($scope){
-
+app.controller('HomeController', ['ReservationService', function(ReservationService){
+  console.log(ReservationService.data.auth_token);
 }]);
 
 app.controller('AssetsController', ['$scope', function($scope){
