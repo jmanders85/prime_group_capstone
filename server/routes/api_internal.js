@@ -96,7 +96,7 @@ router.get('/getReservations', function(request, response){
       row.assets = [];
       results.push(row);
     });
-    
+
     query.on('end', function(){
       client
         .query('select assets.name, assets_reservations.reservation_id FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id')
@@ -116,7 +116,6 @@ router.get('/getReservations', function(request, response){
     });
   });
 });
-
 
 router.post('/reservation', function(request, response){
   pg.connect(connectionString, function(err, client, done){
@@ -148,6 +147,25 @@ router.post('/reservation', function(request, response){
           });
       });
   });
+});
+
+router.delete('/reservation/:id', function(request, response){
+
+  pg.connect(connectionString, function(err, client, done){
+    if (err) throw err;
+
+    client
+      .query('DELETE FROM assets_reservations WHERE reservation_id = $1', [request.params.id])
+      .on('end', function(){
+        client
+          .query('DELETE FROM reservations WHERE id = $1', [request.params.id])
+          .on('end', function(){
+            done();
+            response.sendStatus(200);
+          });
+      });
+  });
+
 });
 
 

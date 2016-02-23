@@ -115,7 +115,15 @@ app.controller('ReservationsController', ['$scope', '$http', 'ReservationService
   ReservationService.getEvents();
   $scope.data = ReservationService.data;
 
-
+  $scope.deleteReservation = function(id) {
+    $http.delete('/internal/reservation/' + id).then(function(response){
+      if (response.status === 200) {
+        ReservationService.getReservations();
+      } else {
+        console.log("error deleting reservation");
+      }
+    });
+  };
 
 }]);
 

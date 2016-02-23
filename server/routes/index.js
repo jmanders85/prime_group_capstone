@@ -7,7 +7,7 @@ var router = express.Router();
 
 require('dotenv').config();
 
-var accessToken = '';
+var accessToken = process.env.ACCESS_TOKEN;
 
 router.get('/', function(request, response) {
   response.sendFile(path.join(__dirname, '../public/views/index.html'));
