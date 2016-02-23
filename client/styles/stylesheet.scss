@@ -12,6 +12,10 @@
   margin-top: 5%;
 }
 
+.em-heading-all{
+  text-align: center;
+}
+
 .em-index-aside{
   background-color: #3a4247;
   color: #fff;
@@ -28,9 +32,6 @@
 // Login Page
 ///////////////////////////////
 
-.em-heading-login{
-  text-align: center;
-}
 .em-button-login{
   margin-left: 23%;
 }
@@ -40,10 +41,7 @@
 // Home page
 ///////////////////////////////
 
-.em-heading-home{
-  text-align: center;
-}
-.em-button-home {
+.em-heading-home, .em-button-home {
   width: 100%;
   text-align: center;
 }
@@ -53,9 +51,6 @@
 // Assets page
 ///////////////////////////////
 
-.em-heading-asset{
-  text-align: center;
-}
 .em-button-asset {
   width: 100%;
   text-align: center;
@@ -66,7 +61,7 @@
 // New Assets page
 ///////////////////////////////
 
-.em-heading-new-asset, .em-button-newAsset {
+.em-button-newAsset {
   text-align: center;
 }
 

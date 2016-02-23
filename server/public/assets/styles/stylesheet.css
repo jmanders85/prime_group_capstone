@@ -6,6 +6,9 @@
   margin: auto;
   margin-top: 5%; }
 
+.em-heading-all {
+  text-align: center; }
+
 .em-index-aside {
   background-color: #3a4247;
   color: #fff;
@@ -17,27 +20,18 @@
 .em-index-logo {
   vertical-align: middle; }
 
-.em-heading-login {
-  text-align: center; }
-
 .em-button-login {
   margin-left: 23%; }
 
-.em-heading-home {
-  text-align: center; }
-
-.em-button-home {
+.em-heading-home, .em-button-home {
   width: 100%;
-  text-align: center; }
-
-.em-heading-asset {
   text-align: center; }
 
 .em-button-asset {
   width: 100%;
   text-align: center; }
 
-.em-heading-new-asset, .em-button-newAsset {
+.em-button-newAsset {
   text-align: center; }
 
 .em-list-asset-key {
