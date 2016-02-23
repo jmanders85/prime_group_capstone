@@ -1,16 +1,33 @@
-<p>New Reservation Page!</p>
+<!-- <a href='/reservations'>View Reservations</a> -->
 
-<select ng-model="selectedEvent" ng-options="event as event.title for event in data.events track by event.id">
-</select> Select Event From Drop Down
-
-<div ng-repeat="asset in data.assets">
-  <input type="checkbox" ng-model="asset.selected"/>{{asset.name}}
+<div class="em-section-all pl-centered-section">
+    <div class="pl-subsection--border">
+      <h2 class="em-heading-new-asset pl-heading--xxlarge">Create Reservation</h2>
+    </div>
+    <form>
+      <div class="pl-subsection--border">
+        <label for="select-event" class="pl-field__label">Select Event</label>
+        <select id="select-event"  class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in data.events track by event.id">
+        </select>
+      </div>
+      <div class="pl-subsection--border">
+        <fieldset>
+          <legend class="pl-field__label">Select Assets</legend>
+          <div class="pl-option" ng-repeat="asset in data.assets">
+            <input type="checkbox" id="asset-{{asset.id}}" class="pl-option__input" ng-model="asset.selected">
+            <label for="asset-{{asset.id}}" class="pl-option__label">{{asset.name}}</label>
+          </div>
+        </fieldset>
+      </div>
+      <div class="pl-subsection--border">
+        <label for="reserved-by" class="pl-field__label">Reserved By:</label>
+        <input id="reserved-by" type="text" class="pl-field--full" ng-model="reservedBy">
+      </div>
+      <div class="pl-subsection--border pl-form-actions">
+        <div class="pl-form-actions__button-container">
+          <button class="em-button-newReservation pl-form-actions__button pl-button" ui-sref="home">Cancel</button>
+          <button class="em-button-newReservation pl-form-actions__button pl-button--primary" ng-click="createReservation()" value="Create Reservation">Submit</button>
+      </div>
+    </form>
+  </div>
 </div>
-
-<div>
-  Reserved By: <input type="text" ng-model="reservedBy" />
-</div>
-
-<input type="submit" ng-click="createReservation()" value="Create Reservation" />
-
-<a href='/reservations'>View Reservations</a>
