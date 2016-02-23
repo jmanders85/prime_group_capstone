@@ -86,12 +86,32 @@ router.get('/getAssets', function(request, response){
   });
 });
 
-router.get('/getAvailable', function(request, response){
+router.get('/getBadRes', function(request, response){
   pg.connect(connectionString, function(err, client, done){
    if (err) throw err;
 
     var results = [];
     var query = client.query('SELECT * FROM reservations WHERE event_id = $1 ORDER BY id', [request.query.event_id]);
+    query.on('row', function(row){
+      results.push(row);
+    });
+
+    query.on('end', function() {
+          done();
+          return response.json(results);
+        });
+
+    });
+});
+
+router.get('/getAvailable', function(request, response){
+  pg.connect(connectionString, function(err, client, done){
+   if (err) throw err;
+   console.log(request.query.reservation_id);
+   
+    var results = [];
+    var query = client.query('SELECT assets.name, assets.id, assets_reservations.reservation_id FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id WHERE assets_reservations.reservation_id = $1', [request.query.reservation_id]);
+
     query.on('row', function(row){
       results.push(row);
     });

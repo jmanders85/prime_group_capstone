@@ -132,7 +132,6 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
 }]);
 
 app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationService', 'currentAsset', function($scope, $http, ReservationService, currentAsset){
-  $scope.assets = [];
   $scope.startDate;
   $scope.startTime;
   $scope.endDate;
@@ -140,8 +139,16 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
   ReservationService.getEvents();
   ReservationService.getAssets();
   ReservationService.getReservations();
+  $scope.assetList = [];
   var badEvents = [];
   var badReservations = [];
+  var badAssets = [];
+
+  $scope.assets = ReservationService.data.assets;
+
+  for(i=0; i<ReservationService.data.assets; i++){
+    $scope.assetList.push(ReservationService.data.assets[i].name);
+  }
 
   $scope.getAvailable = function(){
     var reservationID;
@@ -175,7 +182,6 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
       //if unconflicting, use event ID to find reservations
       if (eventStatus == "fail"){
         badEvents.push(events[i].id);
-        console.log(events[i].id + status);
         // getResID(events[i].id);
       }
     }
@@ -183,38 +189,50 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
 //!!! This is where the infinite loop happens!!! vv
        getResID = function(){
         for(i = 0; i < badEvents.length; i++){
-          var event_id = badEvents[i].id;
+          var event_id = badEvents[i];
+          console.log(event_id);
+
           $http({
-            url: '/internal/getReservations',
+            url: '/internal/getBadRes',
             method: 'GET',
             params: {
               event_id: event_id
             }
           }).then(function(response){
-            console.log(response.data);
+            if(response.data[0] !== undefined){
+              // badReservations.push(response.data[0].id);
+              // console.log(response.data[0].id);
+              // console.log(badReservations);
+              checkAssets(response.data[0].id);
+            }
           });
         }
       };
 
 
-    // function checkAssets(reservation){
-    //   //use event ID to call getAvailable
-    //     $http({
-    //       url: '/internal/getAvailable',
-    //       method: 'GET',
-    //       params: {reservation_id: reservationID
-    //       }
-    //     }).then(function(response){
-    //       $scope.assets.push(response.data);
-    //     });
-    // }
+    function checkAssets(thisRes){
+        var reservationID = thisRes;
+        $http({
+          url: '/internal/getAvailable',
+          method: 'GET',
+          params: {reservation_id: reservationID
+          }
+        }).then(function(response){
+          for(i=0; i<response.data.length; i++){
+            badAsset = response.data[i].name;
+            for(i=0; assetList.length; i++){
+              if(assetList[i] == badAsset){
+                delete assetList[i];
+              }
+            }
+            badAssets.push(response.data[i].name);
+            console.log(response.data[i].name);
+          }
+          console.log(badAssets);
+        });
+    }
 
     getResID();
-//if assets == [], set to ReservationService.data.assets?? (no failed events)
-
-    // console.log(ReservationService.data);
-    // console.log(ReservationService.data.events[0].end_date_time);
-
   };
 
   $scope.reserveAsset = function(asset){
