@@ -7,7 +7,7 @@ var router = express.Router();
 
 require('dotenv').config();
 
-var accessToken = process.env.ACCESS_TOKEN;
+var accessToken = '';
 
 router.get('/', function(request, response) {
   response.sendFile(path.join(__dirname, '../public/views/index.html'));
@@ -25,6 +25,14 @@ router.get('/login/callback',
     response.redirect('/');
   }
 );
+
+router.get('/loggedIn', function(request,response){
+  if (accessToken !== '') {
+    response.send('logged in');
+  } else {
+    response.end();
+  }
+});
 
 router.get('/api/userInfo', function(request, response){
   needle.get('http://user.sportngin.com/oauth/me?access_token=' + accessToken, function(err, resp){
