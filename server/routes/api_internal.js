@@ -91,19 +91,17 @@ router.get('/getAvailable', function(request, response){
    if (err) throw err;
 
     var results = [];
-//Start adding stuff here!!! vv
-    //select all from assets where (join assets_reservations join reservations) reservation ID
-    var query = client.query('SELECT * FROM ');
-
+    var query = client.query('SELECT * FROM reservations WHERE event_id = $1 ORDER BY id', [request.query.event_id]);
     query.on('row', function(row){
       results.push(row);
     });
 
-    query.on('end', function(){
-      done();
-      return response.json(results);
+    query.on('end', function() {
+          done();
+          return response.json(results);
+        });
+
     });
-  });
 });
 
 router.get('/getReservations', function(request, response){
