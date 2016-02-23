@@ -55,11 +55,20 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
   $locationProvider.html5Mode(true);
 }]);
 
-app.controller('LoginController', ['$scope', '$http', function($scope, $http){
+app.controller('LoginController', ['$scope', '$http', '$location', '$window',  'ReservationService',  function($scope, $http, $location, $window, ReservationService){
 
+  $scope.login = function() {
+    $window.location = '/login';
+  };
+
+  $http.get('/loggedIn').then(function(response){
+    if (response.data) {
+      $location.path('/home');
+    }
+  });
 }]);
 
-app.controller('HomeController', ['$scope', function($scope){
+app.controller('HomeController', ['ReservationService', function(ReservationService){
 
 }]);
 
@@ -106,7 +115,15 @@ app.controller('ReservationsController', ['$scope', '$http', 'ReservationService
   ReservationService.getEvents();
   $scope.data = ReservationService.data;
 
-  
+  $scope.deleteReservation = function(id) {
+    $http.delete('/internal/reservation/' + id).then(function(response){
+      if (response.status === 200) {
+        ReservationService.getReservations();
+      } else {
+        console.log("error deleting reservation");
+      }
+    });
+  };
 
 }]);
 
@@ -178,12 +195,13 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
     $http({
         url: '/internal/updateAsset',
         method: 'POST',
-        params: {name: $scope.data.name,
-                description: $scope.data.description,
-                category: $scope.data.category,
-                notes: $scope.data.notes,
-                id: $scope.data.id
-                }
+        params: {
+          name: $scope.data.name,
+          description: $scope.data.description,
+          category: $scope.data.category,
+          notes: $scope.data.notes,
+          id: $scope.data.id
+        }
     }).then(function(response){
       $location.path(response.data);
     });

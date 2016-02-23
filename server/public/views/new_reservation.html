@@ -7,8 +7,10 @@
   <input type="checkbox" ng-model="asset.selected"/>{{asset.name}}
 </div>
 
-<div>  
+<div>
   Reserved By: <input type="text" ng-model="reservedBy" />
 </div>
 
 <input type="submit" ng-click="createReservation()" value="Create Reservation" />
+
+<a href='/reservations'>View Reservations</a>

@@ -26,6 +26,14 @@ router.get('/login/callback',
   }
 );
 
+router.get('/loggedIn', function(request,response){
+  if (accessToken !== '') {
+    response.send('logged in');
+  } else {
+    response.end();
+  }
+});
+
 router.get('/api/userInfo', function(request, response){
   needle.get('http://user.sportngin.com/oauth/me?access_token=' + accessToken, function(err, resp){
     if (err) console.log(err);
