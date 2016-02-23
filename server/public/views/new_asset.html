@@ -5,13 +5,13 @@
     <div class="pl-subsection--border">
       <form>
         <div class="pl-split__container">
-          <div class="pl-field__container">
+          <div class="pl-field__container pl-split--half">
             <label for="asset-name" class="pl-field__label">Name:</label>
-            <input id="asset-name" name="name" type="text" class="pl-field" ng-model="data.name">
+            <input id="asset-name" name="name" type="text" class="pl-field--full" ng-model="data.name">
           </div>
-          <div class="pl-field__container">
+          <div class="pl-field__container pl-split--half">
             <label for="asset-category" class="pl-field__label">Category</label>
-            <select id="asset-category" class="pl-select" ng-model="data.category" name="category">
+            <select id="asset-category" class="pl-select--full" ng-model="data.category" name="category">
               <option ng-repeat="category in categoryList">{{category}}</option>
             </select>
           </div>
