@@ -9,13 +9,13 @@
 <button ng-click="getAvailable()">Filter Available by Date</button>
 <a ui-sref="assets"><button>Go Back</button></a>
 
-<div ng-repeat="asset in assetList">
+<div ng-repeat="asset in assets">
   <h4>{{asset.name}}</h4>
-  <!-- <p>
+  <p>
     {{asset.description}}<br />
     {{asset.category}}<br />
     {{asset.notes}}
   </p>
   <button ng-click="reserveAsset(asset)">Reserve</button>
-  <br /> -->
+  <br />
 </div>

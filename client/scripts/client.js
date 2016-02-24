@@ -139,16 +139,9 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
   ReservationService.getEvents();
   ReservationService.getAssets();
   ReservationService.getReservations();
-  $scope.assetList = [];
   var badEvents = [];
-  var badReservations = [];
-  var badAssets = [];
 
-  $scope.assets = ReservationService.data.assets;
-
-  for(i=0; i<ReservationService.data.assets; i++){
-    $scope.assetList.push(ReservationService.data.assets[i].name);
-  }
+  $scope.assets = [];
 
   $scope.getAvailable = function(){
     var reservationID;
@@ -182,8 +175,7 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
       //if unconflicting, use event ID to find reservations
       if (eventStatus == "fail"){
         badEvents.push(" '" + events[i].id + "'");
-        console.log(events[i].id);
-        // getResID(events[i].id);
+        // console.log(events[i].id);
         }
     }//close checKEvents
 
@@ -196,10 +188,15 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
               }
             }).then(function(response){
               console.log(response.data);
+              $scope.assets.push(response.data[0]);
             });
     };
   checkAssets();
   };//close $scope.getAvailable
+
+  $scope.reserveAsset = function(asset){
+    console.log(asset.id);
+  };
 }]);
 
 app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
