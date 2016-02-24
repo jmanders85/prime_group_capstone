@@ -171,6 +171,23 @@ router.get('/getReservations', function(request, response){
   });
 });
 
+router.get('/assetReservations/:id', function(request, response){
+  pg.connect(connectionString, function(err, client, done){
+    if (err) throw err;
+
+    var results = [];
+
+    client.query('SELECT reservations.reserved_by, reservations.event_id, reservations.id, assets_reservations.asset_id FROM reservations INNER JOIN assets_reservations ON assets_reservations.reservation_id = reservations.id WHERE assets_reservations.asset_id = $1', [request.params.id]).on('row', function(row){
+      results.push(row);
+    })
+      .on('end', function() {
+        done();
+        return response.json(results);
+      });
+  });
+
+});
+
 router.post('/reservation', function(request, response){
   pg.connect(connectionString, function(err, client, done){
     if (err) throw err;

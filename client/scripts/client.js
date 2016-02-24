@@ -321,6 +321,15 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
     $location.path('edit_asset');
   };
 
+
+  $scope.viewReservations = function(id){
+    console.log(id);
+    $http.get('internal/assetReservations/' + id).then(function(response){
+      console.log(response.data);
+    });
+  }
+
+
 }]);
 
 app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
