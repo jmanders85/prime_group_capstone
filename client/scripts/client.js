@@ -224,8 +224,72 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
   };
 }]);
 
-app.controller('AvailableAssetsController', ['$scope', function($scope){
+app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationService', 'currentAsset', function($scope, $http, ReservationService, currentAsset){
+  $scope.startDate;
+  $scope.startTime;
+  $scope.endDate;
+  $scope.endTime;
+  ReservationService.getEvents();
+  ReservationService.getAssets();
+  ReservationService.getReservations();
+  var badEvents = [];
 
+  $scope.assets = [];
+
+  $scope.getAvailable = function(){
+    var reservationID;
+    //format the date time!
+    var startDateTime = ($scope.startDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
+    var endDateTime = ($scope.endDate.toISOString()).slice(0,11) + ($scope.endTime.toISOString()).slice(11,24);
+    var reservations = ReservationService.data.reservations;
+    var events = ReservationService.data.events;
+
+    //for loop, yo! run it for each asset? or each event? Definitely event...
+    for(i=0; i<events.length; i++){
+      checkEvents(events[i]);
+    }
+
+    function checkEvents(event){
+      var eventStatus;
+      var eventStart = events[i].start_date_time;
+      var eventEnd = events[i].end_date_time;
+      //check if event conflicts
+      if(eventStart > startDateTime && eventStart < endDateTime){
+        eventStatus = "fail";
+      }else if(eventEnd > startDateTime && eventEnd < endDateTime){
+        eventStatus = "fail";
+      }else if(startDateTime > eventStart && startDateTime < eventEnd){
+        eventStatus = "fail";
+      }else if(endDateTime > eventStart && endDateTime < eventEnd){
+        eventStatus = "fail";
+      }else{
+        eventStatus = "pass";
+      }
+      //if unconflicting, use event ID to find reservations
+      if (eventStatus == "fail"){
+        badEvents.push(" '" + events[i].id + "'");
+        // console.log(events[i].id);
+        }
+    }//close checKEvents
+
+    var checkAssets = function(){
+      var event_list = '"' + badEvents + '"';
+            $http({
+              url: '/internal/getAvailable',
+              method: 'GET',
+              params: {event_list: event_list
+              }
+            }).then(function(response){
+              console.log(response.data);
+              $scope.assets.push(response.data[0]);
+            });
+    };
+  checkAssets();
+  };//close $scope.getAvailable
+
+  $scope.reserveAsset = function(asset){
+    console.log(asset.id);
+  };
 }]);
 
 app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
