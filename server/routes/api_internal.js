@@ -63,7 +63,7 @@ router.get('/getAssets', function(request, response){
     if(request.query.sortBy === 'Category'){
       orderBy = 'category';
     }else if (request.query.sortBy === 'Recently Created'){
-      orderBy = 'id';
+      orderBy = 'id DESC';
     }else if (request.query.sortBy === 'Name'){
       orderBy = 'name';
     }
