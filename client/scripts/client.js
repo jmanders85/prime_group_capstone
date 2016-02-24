@@ -244,7 +244,7 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
     var reservations = ReservationService.data.reservations;
     var events = ReservationService.data.events;
 
-    //for loop, yo! run it for each asset? or each event? Definitely event...
+    //Run through each event to check it's 'status'
     for(i=0; i<events.length; i++){
       checkEvents(events[i]);
     }
@@ -273,6 +273,7 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
     }//close checKEvents
 
     var checkAssets = function(){
+      $scope.assets = [];
       var event_list = '"' + badEvents + '"';
             $http({
               url: '/internal/getAvailable',
@@ -281,7 +282,9 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
               }
             }).then(function(response){
               console.log(response.data);
-              $scope.assets.push(response.data[0]);
+              for(i=0; i<response.data.length; i++){
+                $scope.assets.push(response.data[i]);
+              }
             });
     };
   checkAssets();
@@ -327,7 +330,7 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
     $http.get('internal/assetReservations/' + id).then(function(response){
       console.log(response.data);
     });
-  }
+  };
 
 
 }]);
