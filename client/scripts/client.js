@@ -182,63 +182,20 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
       //if unconflicting, use event ID to find reservations
       if (eventStatus == "fail"){
         badEvents.push(events[i].id);
+        console.log(events[i].id);
         // getResID(events[i].id);
-      }
-    }
-      //look through reservations for matching IDs
-//!!! This is where the infinite loop happens!!! vv
-       getResID = function(){
-        for(i = 0; i < badEvents.length; i++){
-          var event_id = badEvents[i];
-          console.log(event_id);
-
-          $http({
-            url: '/internal/getBadRes',
-            method: 'GET',
-            params: {
-              event_id: event_id
+        var event_id = events[i].id;
+              $http({
+                url: '/internal/getAvailable',
+                method: 'GET',
+                params: {event_id: event_id
+                }
+              }).then(function(response){
+                console.log(response.data);
+              });
             }
-          }).then(function(response){
-            if(response.data[0] !== undefined){
-              // badReservations.push(response.data[0].id);
-              // console.log(response.data[0].id);
-              // console.log(badReservations);
-              checkAssets(response.data[0].id);
-            }
-          });
-        }
-      };
-
-
-    function checkAssets(thisRes){
-        var reservationID = thisRes;
-        $http({
-          url: '/internal/getAvailable',
-          method: 'GET',
-          params: {reservation_id: reservationID
-          }
-        }).then(function(response){
-          for(i=0; i<response.data.length; i++){
-            badAsset = response.data[i].name;
-            for(i=0; assetList.length; i++){
-              if(assetList[i] == badAsset){
-                delete assetList[i];
-              }
-            }
-            badAssets.push(response.data[i].name);
-            console.log(response.data[i].name);
-          }
-          console.log(badAssets);
-        });
-    }
-
-    getResID();
-  };
-
-  $scope.reserveAsset = function(asset){
-    console.log(asset.id);
-  };
-
+    }//close checKEvents
+  };//close $scope.getAvailable
 }]);
 
 app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
