@@ -56,7 +56,13 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       url: '/available_assets',
       templateUrl: 'views/available_assets.html',
       controller: 'AvailableAssetsController'
+    })
+      .state('asset_reservations', {
+      url: '/asset_reservations',
+      templateUrl: 'views/asset_reservations.html',
+      controller: 'AssetReservationController'
     });
+
   $locationProvider.html5Mode(true);
 }]);
 
@@ -295,7 +301,7 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
   };
 }]);
 
-app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
+app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset','ReservationService', function($scope, $http, $location, currentAsset,ReservationService){
   $scope.assets = [];
   $scope.sortBy = "Name";
   $scope.sortOptions = ["Category", "Name", "Recently Created"];
@@ -319,19 +325,18 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   $scope.getAssets();
 
   $scope.editAsset = function(asset){
-    // console.log(asset);
     currentAsset.setAsset(asset);
     $location.path('edit_asset');
   };
 
 
   $scope.viewReservations = function(id){
-    console.log(id);
     $http.get('internal/assetReservations/' + id).then(function(response){
+      ReservationService.data.assetreservation = response.data;
       console.log(response.data);
+      $location.path('asset_reservations');
     });
   };
-
 
 }]);
 
@@ -371,7 +376,11 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
   $scope.goBack = function(){
     window.history.back();
   };
+}]);
 
+app.controller('AssetReservationController', ['$scope', '$http', '$location', 'ReservationService', function($scope, $http, $location, ReservationService){
+  $scope.data = ReservationService.data;
+  //Will come back to this later. Routing purposes
 }]);
 
 
