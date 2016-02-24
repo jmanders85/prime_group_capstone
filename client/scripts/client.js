@@ -181,20 +181,24 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
       }
       //if unconflicting, use event ID to find reservations
       if (eventStatus == "fail"){
-        badEvents.push(events[i].id);
+        badEvents.push(" '" + events[i].id + "'");
         console.log(events[i].id);
         // getResID(events[i].id);
-        var event_id = events[i].id;
-              $http({
-                url: '/internal/getAvailable',
-                method: 'GET',
-                params: {event_id: event_id
-                }
-              }).then(function(response){
-                console.log(response.data);
-              });
-            }
+        }
     }//close checKEvents
+
+    var checkAssets = function(){
+      var event_list = '"' + badEvents + '"';
+            $http({
+              url: '/internal/getAvailable',
+              method: 'GET',
+              params: {event_list: event_list
+              }
+            }).then(function(response){
+              console.log(response.data);
+            });
+    };
+  checkAssets();
   };//close $scope.getAvailable
 }]);
 
