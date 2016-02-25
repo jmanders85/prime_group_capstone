@@ -278,6 +278,7 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
         }
     }//close checKEvents
 
+    //Checks available assets in the database based on the events in badEvents
     var checkAssets = function(){
       $scope.assets = [];
       var event_list = '"' + badEvents + '"';
@@ -287,7 +288,6 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
               params: {event_list: event_list
               }
             }).then(function(response){
-              console.log(response.data);
               for(i=0; i<response.data.length; i++){
                 $scope.assets.push(response.data[i]);
               }
@@ -297,7 +297,7 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
   };//close $scope.getAvailable
 
   $scope.reserveAsset = function(asset){
-    console.log(asset.id);
+    console.log(asset);
   };
 }]);
 
