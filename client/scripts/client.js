@@ -66,7 +66,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
   $locationProvider.html5Mode(true);
 }]);
 
-app.controller('LoginController', ['$scope', '$http', '$location', '$window',  'ReservationService',  function($scope, $http, $location, $window, ReservationService){
+app.controller('LoginController', ['$scope', '$http', '$location', '$window', function($scope, $http, $location, $window){
 
   $scope.login = function() {
     $window.location = '/login';
@@ -83,14 +83,15 @@ app.controller('HomeController', ['$scope', 'ReservationService', function($scop
 
   ReservationService.getReservations();
   ReservationService.getEvents();
+  ReservationService.getAssets();
 
   $scope.data = ReservationService.data;
 
 }]);
 
-app.controller('AssetsController', ['$scope', function($scope){
+app.controller('AssetsController', function(){
 
-}]);
+});
 
 app.controller('NewReservationController', ['$scope', '$http', '$location',  'ReservationService',  function($scope, $http, $location, ReservationService) {
 
@@ -202,6 +203,10 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
 
   };
 
+  $scope.cancel = function() {
+    window.history.back();
+  };
+
 }]);
 
 app.controller('CalendarController', ['$scope', '$http', 'ReservationService',  function($scope, $http, ReservationService){
@@ -281,17 +286,17 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
     var checkAssets = function(){
       $scope.assets = [];
       var event_list = '"' + badEvents + '"';
-            $http({
-              url: '/internal/getAvailable',
-              method: 'GET',
-              params: {event_list: event_list
-              }
-            }).then(function(response){
-              console.log(response.data);
-              for(i=0; i<response.data.length; i++){
-                $scope.assets.push(response.data[i]);
-              }
-            });
+        $http({
+          url: '/internal/getAvailable',
+          method: 'GET',
+          params: {event_list: event_list
+          }
+        }).then(function(response){
+          console.log(response.data);
+          for(var i = 0; i < response.data.length; i++){
+            $scope.assets.push(response.data[i]);
+          }
+        });
     };
   checkAssets();
   };//close $scope.getAvailable
@@ -330,10 +335,10 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   };
 
 
-  $scope.viewReservations = function(id){
-    $http.get('internal/assetReservations/' + id).then(function(response){
+  $scope.viewReservations = function(asset){
+    $http.get('internal/assetReservations/' + asset.id).then(function(response){
       ReservationService.data.assetreservation = response.data;
-      console.log(response.data);
+      ReservationService.data.assetreservation.name = asset.name;
       $location.path('asset_reservations');
     });
   };
@@ -381,6 +386,13 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
 app.controller('AssetReservationController', ['$scope', '$http', '$location', 'ReservationService', function($scope, $http, $location, ReservationService){
   $scope.data = ReservationService.data;
   //Will come back to this later. Routing purposes
+
+  $scope.editReservation = function(reservation) {
+    console.log(reservation);
+    ReservationService.data.reservationToEdit = reservation;
+    $location.path('edit_reservation');
+
+  };
 }]);
 
 
