@@ -124,6 +124,10 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
     });
   };
 
+  $scope.cancel = function() {
+    window.history.back();
+  };
+
 }]);
 
 app.controller('ReservationsController', ['$scope', '$http', '$location',  'ReservationService', function($scope, $http, $location, ReservationService){
