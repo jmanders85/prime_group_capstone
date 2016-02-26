@@ -6,7 +6,7 @@
       <form>
         <div class="pl-subsection--border">
           <label for="select-event" class="pl-field__label">Select Event</label>
-          <select id="select-event"  class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in data.events track by event.id" ng-change="getAvailable()">
+          <select id="select-event"  class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in events track by event.id" ng-change="getAvailable()">
           </select>
         </div>
 
@@ -16,7 +16,7 @@
             <legend class="pl-field__label">Select Assets</legend>
 
             <div class="pl-option">
-              <input type="checkbox" id="asset-{{firstAsset.id}}" class="pl-option__input" ng-model="firstAsset.selected" checked="">
+              <input type="checkbox" id="asset-{{firstAsset.id}}" class="pl-option__input" ng-model="firstAsset.selected" checked>
               <label for="asset-{{firstAsset.id}}" class="pl-option__label">{{firstAsset.name}}</label>
             </div>
 

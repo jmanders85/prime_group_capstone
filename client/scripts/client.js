@@ -114,26 +114,52 @@ app.controller('AssetsController', function(){
 app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  'ReservationService', 'currentAsset',  function($scope, $http, $location, ReservationService, currentAsset) {
 
   ReservationService.getEvents();
-  ReservationService.getAssets();
+
   $scope.data = ReservationService.data;
   $scope.firstAsset = currentAsset.currentAsset;
+  $scope.firstAsset.selected = true;
   $scope.assets = [];
 
   $scope.selectedEvent = '';
   $scope.selectedAssets = [$scope.firstAsset.id];
   $scope.reservedBy = '';
+  $scope.events = ReservationService.data.events;
+
+  //get call that brings back only events that are not associated with this asset
+  var getEventsByAsset = function(){
+    $http({
+      url: '/internal/getEventsByAsset',
+      method: 'GET',
+      params: {asset_id: $scope.firstAsset.id
+      }
+    }).then(function(response){
+      console.log(response.data);
+      for(i = 0; i < $scope.events.length; i++){
+        for(j = 0; j < response.data.length; j++){
+          if(parseInt($scope.events[i].id) == response.data[j].event_id){
+            delete $scope.events[i];
+          }
+        }
+      }
+    });
+  };
 
   $scope.getAvailable = function(){
     console.log("Event ID:", $scope.selectedEvent.id);
     var event_id = "'" + $scope.selectedEvent.id + "'";
-
+    $scope.assets = [];
     $http({
       url: '/internal/getAvailable',
       method: 'GET',
       params: {event_list: '"' + event_id + '"'
       }
     }).then(function(response){
-        $scope.assets = response.data;
+      for(i=0; response.data.length; i++)
+        if(response.data[i].id == $scope.firstAsset.id){
+          console.log(response.data[i].id);
+        }else{
+          $scope.assets.push(response.data[i]);
+        }
     });
   };
 
@@ -160,6 +186,8 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
   $scope.cancel = function() {
     window.history.back();
   };
+
+  getEventsByAsset();
 
 }]);
 

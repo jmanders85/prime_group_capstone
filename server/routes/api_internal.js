@@ -140,6 +140,25 @@ router.get('/getAvailable', function(request, response){
     });
 });
 
+router.get('/getEventsByAsset', function(request, response){
+  pg.connect(connectionString, function(err, client, done){
+   if (err) throw err;
+    var results = [];
+
+    var query = client.query('SELECT reservations.event_id FROM reservations JOIN assets_reservations ON reservations.id = assets_reservations.reservation_id JOIN assets ON assets_reservations.asset_id = assets.id WHERE assets.id = $1', [request.query.asset_id]);
+
+    query.on('row', function(row){
+      results.push(row);
+    });
+
+    query.on('end', function() {
+          done();
+          return response.json(results);
+        });
+
+    });
+});
+
 router.get('/getReservations', function(request, response){
   pg.connect(connectionString, function(err, client, done){
     if (err) throw err;
