@@ -252,18 +252,30 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
   $scope.assets = [];
 
   $scope.getAvailable = function(){
-    console.log($scope.startTime);
+    // console.log("start time:", $scope.startTime);
     //Thu Jan 01 1970 00:00:00 GMT-0600 (CST)
     //2016-01-01T06:00:00.000Z
     var reservationID;
-    //format the date time!
+    var startDateTime;
+    var endDateTime;
 
-    var startDateTime = ($scope.startDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
-    var endDateTime = ($scope.endDate.toISOString()).slice(0,11) + ($scope.endTime.toISOString()).slice(11,24);
+    //format the date time!
+    if($scope.startTime !== undefined){
+      startDateTime = ($scope.startDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
+    }else if($scope.startTime === undefined){
+      startDateTime = $scope.startDate.toISOString();
+    }
+
+    if($scope.endTime !== undefined){
+      endDateTime = ($scope.endDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
+    }else if($scope.endTime === undefined){
+      endDateTime = $scope.endDate.toISOString();
+    }
+
     var reservations = ReservationService.data.reservations;
     var events = ReservationService.data.events;
 
-    console.log(startDateTime);
+    // console.log("start date/time:", startDateTime);
 
     //Run through each event to check it's 'status'
     for(i=0; i<events.length; i++){
