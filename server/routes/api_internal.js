@@ -63,7 +63,7 @@ router.get('/getAssets', function(request, response){
     if(request.query.sortBy === 'Category'){
       orderBy = 'category';
     }else if (request.query.sortBy === 'Recently Created'){
-      orderBy = 'id';
+      orderBy = 'id DESC';
     }else if (request.query.sortBy === 'Name'){
       orderBy = 'name';
     }
@@ -126,7 +126,7 @@ router.get('/getAvailable', function(request, response){
     var str = request.query.event_list.length - 1;
     var event_list = request.query.event_list.slice(1, str);
 
-    var query = client.query('SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets EXCEPT SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id JOIN reservations ON assets_reservations.reservation_id = reservations.id WHERE reservations.event_id IN (' + event_list + ')');
+    var query = client.query('SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets EXCEPT SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id JOIN reservations ON assets_reservations.reservation_id = reservations.id WHERE reservations.event_id IN (' + event_list + ') ORDER BY name');
 
     query.on('row', function(row){
       results.push(row);
@@ -142,7 +142,7 @@ router.get('/getAvailable', function(request, response){
 
 router.get('/getReservations', function(request, response){
   pg.connect(connectionString, function(err, client, done){
-   if (err) throw err;
+    if (err) throw err;
 
     var results = [];
     var query = client.query('SELECT * FROM reservations ORDER BY id');
@@ -178,12 +178,25 @@ router.get('/assetReservations/:id', function(request, response){
     var results = [];
 
     client.query('SELECT reservations.reserved_by, reservations.event_id, reservations.id, assets_reservations.asset_id FROM reservations INNER JOIN assets_reservations ON assets_reservations.reservation_id = reservations.id WHERE assets_reservations.asset_id = $1', [request.params.id]).on('row', function(row){
+      row.assets = [];
       results.push(row);
     })
-      .on('end', function() {
-        done();
-        return response.json(results);
-      });
+    .on('end', function() {
+      client
+        .query('select assets.name, assets_reservations.reservation_id FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id')
+        .on('row', function(row){
+          for (var i = 0; i < results.length; i++) {
+            if (results[i].id === row.reservation_id) {
+              results[i].assets.push(row.name);
+              continue;
+            }
+          }
+        })
+        .on('end', function() {
+          done();
+          return response.json(results);
+        });
+    });
   });
 
 });
