@@ -81,11 +81,17 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$window', fu
 
 app.controller('HomeController', ['$scope', 'ReservationService', function($scope, ReservationService){
 
-  ReservationService.getReservations();
+  // ReservationService.getReservations();
   ReservationService.getEvents();
   ReservationService.getAssets();
 
   $scope.data = ReservationService.data;
+
+  $scope.afterToday = function(item) {
+    var itemDate = new Date(item.eventStartTime);
+    var today = new Date();
+    return itemDate > today;
+  };
 
 }]);
 
@@ -146,7 +152,7 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
 
 app.controller('ReservationsController', ['$scope', '$http', '$location',  'ReservationService', function($scope, $http, $location, ReservationService){
 
-  ReservationService.getReservations();
+  // ReservationService.getReservations();
   ReservationService.getAssets();
   ReservationService.getEvents();
   $scope.data = ReservationService.data;
@@ -374,6 +380,27 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   $scope.viewReservations = function(asset){
     $http.get('internal/assetReservations/' + asset.id).then(function(response){
       ReservationService.data.assetreservation = response.data;
+      for (var i = 0; i < ReservationService.data.assetreservation.length; i++) {
+        var thisRes = ReservationService.data.assetreservation[i];
+        var eventId = thisRes.event_id;
+
+        for (var j = 0; j < ReservationService.data.events.length; j++) {
+          var thisEvent = ReservationService.data.events[j];
+          if (parseInt(eventId) === thisEvent.id) {
+            thisRes.eventTitle = thisEvent.title;
+            thisRes.eventStartTime = thisEvent.start_date_time;
+            thisRes.eventEndTime = thisEvent.end_date_time;
+            break;
+          }
+        }
+      }
+
+    ReservationService.data.assetreservation.sort(function(a,b){
+      var aDate = new Date(a.eventStartTime);
+      var bDate = new Date(b.eventStartTime);
+      return aDate - bDate;
+    });
+    
       ReservationService.data.assetreservation.name = asset.name;
       $location.path('asset_reservations');
     });
@@ -421,7 +448,7 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
 
 app.controller('AssetReservationController', ['$scope', '$http', '$location', 'ReservationService', function($scope, $http, $location, ReservationService){
   $scope.data = ReservationService.data;
-  //Will come back to this later. Routing purposes
+
 
   $scope.editReservation = function(reservation) {
     console.log(reservation);
@@ -464,6 +491,33 @@ app.factory('ReservationService', ['$http', function($http){
 
   var data = {};
 
+  var getReservations = function() {
+    $http.get('internal/getReservations').then(function (response) {
+      data.reservations = response.data;
+
+        for (var i = 0; i < data.reservations.length; i++) {
+          var thisRes = data.reservations[i];
+          var eventId = thisRes.event_id;
+
+          for (var j = 0; j < data.events.length; j++) {
+            var thisEvent = data.events[j];
+            if (parseInt(eventId) === thisEvent.id) {
+              thisRes.eventTitle = thisEvent.title;
+              thisRes.eventStartTime = thisEvent.start_date_time;
+              thisRes.eventEndTime = thisEvent.end_date_time;
+              break;
+            }
+          }
+        }
+
+      data.reservations.sort(function(a,b){
+        var aDate = new Date(a.eventStartTime);
+        var bDate = new Date(b.eventStartTime);
+        return aDate - bDate;
+      });
+    });
+  };
+
   var getEvents = function() {
     var siteDetails;
     var siteId;
@@ -473,6 +527,7 @@ app.factory('ReservationService', ['$http', function($http){
       siteId = siteDetails.id;
       $http.get('/api/eventList/' + siteId).then(function(response){
         data.events = response.data.events;
+        getReservations();
       });
     });
 
@@ -482,12 +537,6 @@ app.factory('ReservationService', ['$http', function($http){
       $http.get('internal/getAssets').then(function(response){
         data.assets = response.data;
       });
-  };
-
-  var getReservations = function() {
-    $http.get('internal/getReservations').then(function (response) {
-      data.reservations = response.data;
-    });
   };
 
   return {
