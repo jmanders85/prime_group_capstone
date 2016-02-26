@@ -111,15 +111,16 @@ app.controller('AssetsController', function(){
 
 
 
-app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  'ReservationService', 'ReserveFromAssetService',  function($scope, $http, $location, ReservationService, ReserveFromAssetService) {
+app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  'ReservationService', 'currentAsset',  function($scope, $http, $location, ReservationService, currentAsset) {
 
   ReservationService.getEvents();
   ReservationService.getAssets();
   $scope.data = ReservationService.data;
+  $scope.firstAsset = currentAsset.currentAsset;
   $scope.assets = [];
 
   $scope.selectedEvent = '';
-  $scope.selectedAssets = [];
+  $scope.selectedAssets = [$scope.firstAsset.id];
   $scope.reservedBy = '';
 
   $scope.getAvailable = function(){
@@ -332,7 +333,7 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
   };
 }]);
 
-app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationService', 'currentAsset', 'ReserveFromAssetService', function($scope, $http, ReservationService, currentAsset, ReserveFromAssetService){
+app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationService', 'currentAsset', '$location', function($scope, $http, ReservationService, currentAsset, $location){
 
   $scope.startDate;
   $scope.startTime;
@@ -419,7 +420,8 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
 
   $scope.reserveAsset = function(asset){
     console.log(asset.id);
-
+    currentAsset.setAsset(asset);
+    $location.path('reserve_asset');
   };
 }]);
 
@@ -518,7 +520,7 @@ app.controller('AssetReservationController', ['$scope', '$http', '$location', 'R
 //                            Factories
 //[][][][][][][]][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-app.factory('currentAsset', ['$http', function($http){
+app.factory('currentAsset', [function(){
   var currentAsset = {};
 
   var setAsset = function(asset){
@@ -578,19 +580,4 @@ app.factory('ReservationService', ['$http', function($http){
     getReservations: getReservations
   };
 
-}]);
-
-app.factory('ReserveFromAssetService', ['$http', function($http){
-
-  var data = {};
-
-  var setAsset = function(asset){
-    data.asset = asset;
-    // data.events = events list????
-  };
-
-
-  return {
-    data: data
-  };
 }]);
