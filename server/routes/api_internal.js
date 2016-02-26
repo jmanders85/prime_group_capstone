@@ -172,11 +172,11 @@ router.get('/getReservations', function(request, response){
 
     query.on('end', function(){
       client
-        .query('select assets.name, assets_reservations.reservation_id FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id')
+        .query('select assets.name, assets.id, assets_reservations.reservation_id FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id')
         .on('row', function(row){
           for (var i = 0; i < results.length; i++) {
             if (results[i].id === row.reservation_id) {
-              results[i].assets.push(row.name);
+              results[i].assets.push(row);
               continue;
             }
           }
@@ -202,11 +202,11 @@ router.get('/assetReservations/:id', function(request, response){
     })
     .on('end', function() {
       client
-        .query('select assets.name, assets_reservations.reservation_id FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id')
+        .query('select assets.name, assets.id, assets_reservations.reservation_id FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id')
         .on('row', function(row){
           for (var i = 0; i < results.length; i++) {
             if (results[i].id === row.reservation_id) {
-              results[i].assets.push(row.name);
+              results[i].assets.push(row);
               continue;
             }
           }

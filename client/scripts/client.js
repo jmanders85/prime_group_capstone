@@ -99,18 +99,6 @@ app.controller('AssetsController', function(){
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  'ReservationService', 'currentAsset',  function($scope, $http, $location, ReservationService, currentAsset) {
 
   ReservationService.getEvents();
@@ -133,11 +121,10 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
       params: {asset_id: $scope.firstAsset.id
       }
     }).then(function(response){
-      console.log(response.data);
       for(i = 0; i < $scope.events.length; i++){
         for(j = 0; j < response.data.length; j++){
           if(parseInt($scope.events[i].id) == response.data[j].event_id){
-            delete $scope.events[i];
+            $scope.events.splice(i, 1);
           }
         }
       }
@@ -145,7 +132,6 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
   };
 
   $scope.getAvailable = function(){
-    console.log("Event ID:", $scope.selectedEvent.id);
     var event_id = "'" + $scope.selectedEvent.id + "'";
     $scope.assets = [];
     $http({
@@ -155,9 +141,7 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
       }
     }).then(function(response){
       for(i=0; response.data.length; i++)
-        if(response.data[i].id == $scope.firstAsset.id){
-          console.log(response.data[i].id);
-        }else{
+        if(response.data[i].id !== $scope.firstAsset.id){
           $scope.assets.push(response.data[i]);
         }
     });
@@ -190,15 +174,6 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
   getEventsByAsset();
 
 }]);
-
-
-
-
-
-
-
-
-
 
 
 app.controller('NewReservationController', ['$scope', '$http', '$location',  'ReservationService',  function($scope, $http, $location, ReservationService) {
@@ -486,6 +461,8 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
     $http.get('internal/assetReservations/' + asset.id).then(function(response){
       ReservationService.data.assetreservation = response.data;
       ReservationService.data.assetreservation.name = asset.name;
+      ReservationService.data.assetreservation.id = asset.id;
+
       $location.path('asset_reservations');
     });
   };
@@ -530,12 +507,16 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
   };
 }]);
 
-app.controller('AssetReservationController', ['$scope', '$http', '$location', 'ReservationService', function($scope, $http, $location, ReservationService){
+app.controller('AssetReservationController', ['$scope', '$http', '$location', 'ReservationService', 'currentAsset', function($scope, $http, $location, ReservationService, currentAsset){
   $scope.data = ReservationService.data;
   //Will come back to this later. Routing purposes
 
+  $scope.reserveAsset = function(asset){
+    currentAsset.setAsset(asset);
+    $location.path('reserve_asset');
+  };
+
   $scope.editReservation = function(reservation) {
-    console.log(reservation);
     ReservationService.data.reservationToEdit = reservation;
     $location.path('edit_reservation');
 

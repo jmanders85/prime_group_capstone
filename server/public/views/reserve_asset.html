@@ -5,7 +5,7 @@
       </div>
       <form>
         <div class="pl-subsection--border">
-          <label for="select-event" class="pl-field__label">Select Event</label>
+          <label for="select-event" class="pl-field__label">Select From Events Item is Available For</label>
           <select id="select-event"  class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in events track by event.id" ng-change="getAvailable()">
           </select>
         </div>
@@ -13,7 +13,7 @@
                             <!-- VV  !!!Look Here Liz!!! VV -->
         <div class="pl-subsection--border">
           <fieldset>
-            <legend class="pl-field__label">Select Assets</legend>
+            <legend class="pl-field__label">Select Additional Available Items From Inventory</legend>
 
             <div class="pl-option">
               <input type="checkbox" id="asset-{{firstAsset.id}}" class="pl-option__input" ng-model="firstAsset.selected" checked>
