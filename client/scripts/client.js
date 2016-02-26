@@ -57,6 +57,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/available_assets.html',
       controller: 'AvailableAssetsController'
     })
+    .state('reserve_asset', {
+      url: '/reserve_asset',
+      templateUrl: 'views/reserve_asset.html',
+      controller: 'ReserveFromAssetsController'
+    })
       .state('asset_reservations', {
       url: '/asset_reservations',
       templateUrl: 'views/asset_reservations.html',
@@ -92,6 +97,80 @@ app.controller('HomeController', ['$scope', 'ReservationService', function($scop
 app.controller('AssetsController', function(){
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  'ReservationService', 'ReserveFromAssetService',  function($scope, $http, $location, ReservationService, ReserveFromAssetService) {
+
+  ReservationService.getEvents();
+  ReservationService.getAssets();
+  $scope.data = ReservationService.data;
+  $scope.assets = [];
+
+  $scope.selectedEvent = '';
+  $scope.selectedAssets = [];
+  $scope.reservedBy = '';
+
+  $scope.getAvailable = function(){
+    console.log("Event ID:", $scope.selectedEvent.id);
+    var event_id = "'" + $scope.selectedEvent.id + "'";
+
+    $http({
+      url: '/internal/getAvailable',
+      method: 'GET',
+      params: {event_list: '"' + event_id + '"'
+      }
+    }).then(function(response){
+        $scope.assets = response.data;
+    });
+  };
+
+  $scope.createReservation = function() {
+    for (var i = 0; i < $scope.assets.length; i++) {
+      if ($scope.assets[i].selected === true) {
+        $scope.selectedAssets.push(parseInt($scope.assets[i].id));
+      }
+    }
+
+    $http.post('internal/reservation', {
+      "eventId": $scope.selectedEvent.id,
+      "selectedAssets": $scope.selectedAssets,
+      "reservedBy": $scope.reservedBy
+    }).then(function(response) {
+      if (response.status === 200) {
+        $location.path('/reservations');
+      } else {
+        console.log("error");
+      }
+    });
+  };
+
+  $scope.cancel = function() {
+    window.history.back();
+  };
+
+}]);
+
+
+
+
+
+
+
+
+
+
 
 app.controller('NewReservationController', ['$scope', '$http', '$location',  'ReservationService',  function($scope, $http, $location, ReservationService) {
 
@@ -253,7 +332,8 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
   };
 }]);
 
-app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationService', 'currentAsset', function($scope, $http, ReservationService, currentAsset){
+app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationService', 'currentAsset', 'ReserveFromAssetService', function($scope, $http, ReservationService, currentAsset, ReserveFromAssetService){
+
   $scope.startDate;
   $scope.startTime;
   $scope.endDate;
@@ -338,7 +418,8 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
   };//close $scope.getAvailable
 
   $scope.reserveAsset = function(asset){
-    console.log(asset);
+    console.log(asset.id);
+
   };
 }]);
 
@@ -497,4 +578,19 @@ app.factory('ReservationService', ['$http', function($http){
     getReservations: getReservations
   };
 
+}]);
+
+app.factory('ReserveFromAssetService', ['$http', function($http){
+
+  var data = {};
+
+  var setAsset = function(asset){
+    data.asset = asset;
+    // data.events = events list????
+  };
+
+
+  return {
+    data: data
+  };
 }]);

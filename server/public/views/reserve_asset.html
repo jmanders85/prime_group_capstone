@@ -9,6 +9,8 @@
           <select id="select-event"  class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in data.events track by event.id" ng-change="getAvailable()">
           </select>
         </div>
+
+                            <!-- VV  !!!Look Here Liz!!! VV -->
         <div class="pl-subsection--border">
           <fieldset>
             <legend class="pl-field__label">Select Assets</legend>
@@ -18,6 +20,8 @@
             </div>
           </fieldset>
         </div>
+                                  <!-- Stop Looking -->
+
         <div class="pl-subsection--border">
           <label for="reserved-by" class="pl-field__label">Reserved By:</label>
           <input id="reserved-by" type="text" class="pl-field--full" ng-model="reservedBy">
