@@ -98,11 +98,25 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
   ReservationService.getEvents();
   ReservationService.getAssets();
   $scope.data = ReservationService.data;
+  $scope.assets = [];
 
   $scope.selectedEvent = '';
   $scope.selectedAssets = [];
   $scope.reservedBy = '';
 
+  $scope.getAvailable = function(){
+    console.log("Event ID:", $scope.selectedEvent.id);
+    var event_id = "'" + $scope.selectedEvent.id + "'";
+
+    $http({
+      url: '/internal/getAvailable',
+      method: 'GET',
+      params: {event_list: '"' + event_id + '"'
+      }
+    }).then(function(response){
+        $scope.assets = response.data;
+    });
+  };
 
   $scope.createReservation = function() {
     for (var i = 0; i < $scope.data.assets.length; i++) {
