@@ -119,9 +119,9 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
   };
 
   $scope.createReservation = function() {
-    for (var i = 0; i < $scope.data.assets.length; i++) {
-      if ($scope.data.assets[i].selected === true) {
-        $scope.selectedAssets.push(parseInt($scope.data.assets[i].id));
+    for (var i = 0; i < $scope.assets.length; i++) {
+      if ($scope.assets[i].selected === true) {
+        $scope.selectedAssets.push(parseInt($scope.assets[i].id));
       }
     }
 
