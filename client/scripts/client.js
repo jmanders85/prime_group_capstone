@@ -260,7 +260,7 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
 
   for (var i = 0; i < reservationToEdit.assets.length; i++) {
     for (var j = 0; j < $scope.data.assets.length; j++) {
-      if (reservationToEdit.assets[i] === $scope.data.assets[j].name) {
+      if (reservationToEdit.assets[i].name === $scope.data.assets[j].name) {
         $scope.data.assets[j].selected = true;
         break;
       }
