@@ -32,6 +32,10 @@
 .em-edit-button{
   overflow: hidden;
 }
+
+.em-back-button{
+  margin: 5px 0 0 5px;
+}
 ///////////////////////////////
 // Login Page
 ///////////////////////////////
@@ -83,4 +87,22 @@
 
 .em-list-asset-button{
   float: right;
+}
+
+.em-list-asset-button-view-res{
+  float: right;
+  margin-right: 5px;
+}
+
+/////////////////////////////////
+// View Assets page
+///////////////////////////////
+
+.em-button-available-assets{
+  float: right;
+  margin-top: 10px;
+}
+
+.em-subsection-available-assets{
+  overflow: hidden;
 }

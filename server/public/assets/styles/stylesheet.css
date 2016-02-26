@@ -23,6 +23,9 @@
 .em-edit-button {
   overflow: hidden; }
 
+.em-back-button {
+  margin: 5px 0 0 5px; }
+
 .em-button-login {
   margin-left: 23%; }
 
@@ -45,5 +48,16 @@
 
 .em-list-asset-button {
   float: right; }
+
+.em-list-asset-button-view-res {
+  float: right;
+  margin-right: 5px; }
+
+.em-button-available-assets {
+  float: right;
+  margin-top: 10px; }
+
+.em-subsection-available-assets {
+  overflow: hidden; }
 
 /*# sourceMappingURL=stylesheet.css.map */
