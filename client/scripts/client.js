@@ -486,7 +486,7 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
       var bDate = new Date(b.eventStartTime);
       return aDate - bDate;
     });
-    
+
       ReservationService.data.assetreservation.name = asset.name;
       ReservationService.data.assetreservation.id = asset.id;
 
