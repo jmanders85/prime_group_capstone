@@ -81,7 +81,8 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$window', fu
 
 app.controller('HomeController', ['$scope', 'ReservationService', function($scope, ReservationService){
 
-  // ReservationService.getReservations();
+  $scope.loading = true;
+
   ReservationService.getEvents();
   ReservationService.getAssets();
 
@@ -400,7 +401,7 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
       var bDate = new Date(b.eventStartTime);
       return aDate - bDate;
     });
-    
+
       ReservationService.data.assetreservation.name = asset.name;
       $location.path('asset_reservations');
     });
