@@ -119,6 +119,7 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
   $scope.selectedAssets = [$scope.firstAsset.id];
   $scope.reservedBy = '';
   $scope.events = ReservationService.data.events;
+  var badEvents = [];
 
   //get call that brings back only events that are not associated with this asset
   var getEventsByAsset = function(){
@@ -131,10 +132,43 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
       for(i = 0; i < $scope.events.length; i++){
         for(j = 0; j < response.data.length; j++){
           if(parseInt($scope.events[i].id) == response.data[j].event_id){
+            badEvents.push($scope.events[i]);
             $scope.events.splice(i, 1);
           }
         }
+      }//close first for loop (i)
+      //This checks the dates of each bad event against the other events.
+      // console.log($scope.events);
+      for(i=0; i<badEvents.length; i++){
+        checkEvents(badEvents[i]);
       }
+
+      function checkEvents(badEvent){
+        for(i=0; i < $scope.events.length; i++){
+          var eventStatus;
+          var eventStart = $scope.events[i].start_date_time;
+          var eventEnd = $scope.events[i].end_date_time;
+          var badStart = badEvent.start_date_time;
+          var badEnd = badEvent.end_date_time;
+          //check if event conflicts
+          if(eventStart > badStart && eventStart < badEnd){
+            eventStatus = "fail";
+          }else if(eventEnd > badStart && eventEnd < badEnd){
+            eventStatus = "fail";
+          }else if(badStart > eventStart && badStart < eventEnd){
+            eventStatus = "fail";
+          }else if(badEnd > eventStart && badEnd < eventEnd){
+            eventStatus = "fail";
+          }else{
+            eventStatus = "pass";
+          }
+          if (eventStatus == "fail"){
+            //splice from $scope.events
+            $scope.events.splice(i, 1);
+            console.log($scope.events);
+            }
+        }//close for loop
+      }//close checKEvents
     });
   };
 
