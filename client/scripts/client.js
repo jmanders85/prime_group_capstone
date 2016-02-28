@@ -248,22 +248,46 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
   ReservationService.getAssets();
   $scope.data = ReservationService.data;
   $scope.assets = [];
+  $scope.events = ReservationService.data.events;
 
   $scope.selectedEvent = '';
   $scope.selectedAssets = [];
   $scope.reservedBy = '';
 
   $scope.getAvailable = function(){
-    console.log("Event ID:", $scope.selectedEvent.id);
-    var event_id = "'" + $scope.selectedEvent.id + "'";
+    var eventsList = ["'" + $scope.selectedEvent.id + "'"];
+    for(i=0; i < $scope.events.length; i++){
+      var eventStatus;
+      var eventStart = $scope.events[i].start_date_time;
+      var eventEnd = $scope.events[i].end_date_time;
+      var badStart = $scope.selectedEvent.start_date_time;
+      var badEnd = $scope.selectedEvent.end_date_time;
+      //check if event conflicts
+      if(eventStart > badStart && eventStart < badEnd){
+        eventStatus = "fail";
+      }else if(eventEnd > badStart && eventEnd < badEnd){
+        eventStatus = "fail";
+      }else if(badStart > eventStart && badStart < eventEnd){
+        eventStatus = "fail";
+      }else if(badEnd > eventStart && badEnd < eventEnd){
+        eventStatus = "fail";
+      }else{
+        eventStatus = "pass";
+      }
+      if (eventStatus == "fail"){
+        eventsList.push("'" + $scope.events[i].id + "'");
+        }
+    }//close for loop
+    $scope.assets = [];
+    // console.log(eventsList);
 
     $http({
       url: '/internal/getAvailable',
       method: 'GET',
-      params: {event_list: '"' + event_id + '"'
+      params: {event_list: '"' + eventsList + '"'
       }
     }).then(function(response){
-        $scope.assets = response.data;
+          $scope.assets = response.data;
     });
   };
 
