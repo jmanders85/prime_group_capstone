@@ -173,15 +173,40 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
   };
 
   $scope.getAvailable = function(){
-    var event_id = "'" + $scope.selectedEvent.id + "'";
+    var eventsList = ["'" + $scope.selectedEvent.id + "'"];
+    for(i=0; i < $scope.events.length; i++){
+      var eventStatus;
+      var eventStart = $scope.events[i].start_date_time;
+      var eventEnd = $scope.events[i].end_date_time;
+      var badStart = $scope.selectedEvent.start_date_time;
+      var badEnd = $scope.selectedEvent.end_date_time;
+      //check if event conflicts
+      if(eventStart > badStart && eventStart < badEnd){
+        eventStatus = "fail";
+      }else if(eventEnd > badStart && eventEnd < badEnd){
+        eventStatus = "fail";
+      }else if(badStart > eventStart && badStart < eventEnd){
+        eventStatus = "fail";
+      }else if(badEnd > eventStart && badEnd < eventEnd){
+        eventStatus = "fail";
+      }else{
+        eventStatus = "pass";
+      }
+      if (eventStatus == "fail"){
+        eventsList.push("'" + $scope.events[i].id + "'");
+        }
+    }//close for loop
     $scope.assets = [];
+    // console.log(eventsList);
+
     $http({
       url: '/internal/getAvailable',
       method: 'GET',
-      params: {event_list: '"' + event_id + '"'
+      params: {event_list: '"' + eventsList + '"'
       }
     }).then(function(response){
       for(i=0; response.data.length; i++)
+      //make sure our initial item doesn't get added again
         if(response.data[i].id !== $scope.firstAsset.id){
           $scope.assets.push(response.data[i]);
         }

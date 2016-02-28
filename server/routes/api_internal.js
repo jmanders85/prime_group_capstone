@@ -122,6 +122,7 @@ router.get('/getAvailable', function(request, response){
   pg.connect(connectionString, function(err, client, done){
    if (err) throw err;
     var results = [];
+    // console.log(request.query.event_list);
 
     var str = request.query.event_list.length - 1;
     var event_list = request.query.event_list.slice(1, str);
