@@ -42,11 +42,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/view_assets.html',
       controller: 'ViewAssetsController'
     })
-    .state('calendar', {
-      url: '/calendar',
-      templateUrl: 'views/calendar.html',
-      controller: 'CalendarController'
-    })
     .state('edit_asset', {
       url: '/edit_asset',
       templateUrl: 'views/edit_asset.html',
@@ -398,11 +393,6 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
     window.history.back();
   };
 
-}]);
-
-app.controller('CalendarController', ['$scope', '$http', 'ReservationService',  function($scope, $http, ReservationService){
-  ReservationService.getEvents();
-  $scope.data = ReservationService.data;
 }]);
 
 app.controller('NewAssetController', ['$scope', '$http', '$location', function($scope, $http, $location){

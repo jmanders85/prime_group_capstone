@@ -8,6 +8,9 @@
         <a ui-sref="assets" class="em-button-home pl-button--large">Manage Inventory</a>
       </div>
       <div class="pl-subsection--divider-before">
+        <a ui-sref="new_reservation" class="em-button-home pl-button--large">New Reservation</a>
+      </div>
+      <div class="pl-subsection--divider-before">
         <a ui-sref="reservations" class="em-button-home pl-button--large">View Reservations</a>
       </div>
       <div class="pl-subsection--divider-before">
@@ -26,9 +29,6 @@
           <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Event</strong><span class="em-list-asset-value pl-detail-list__value" ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.title}}</span></li>
           <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Time</strong><span class="em-list-asset-value pl-detail-list__value">{{reservation.eventStartTime | date: 'short'}}</span></li>
         </ul>
-      </div>
-      <div class="pl-subsection--divider-before">
-        <a ui-sref="calendar" class="em-button-home pl-button--large">View Calendar</a>
       </div>
     </div>
   </div>
