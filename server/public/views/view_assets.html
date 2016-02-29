@@ -31,8 +31,11 @@
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Category</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.category}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Notes</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.notes}}</span></li>
       </ul>
-      <button ng-click="editAsset(asset)" class="em-list-asset-button pl-button--small pl-button--primary">Edit</button>
+      <button ng-click="editAsset(asset)" ng-click="true" class="em-list-asset-button pl-button--small pl-button--primary">Edit</button>
       <button ng-click="viewReservations(asset)" class="em-list-asset-button-view-res pl-button--small pl-button">View Reservations</button>
     </div>
   </div>
+  <p ng-show="noRecord">
+    NO ASSETS AVAILABLE THAT MEET THAT DESCRIPTION
+  </p>
 </div>

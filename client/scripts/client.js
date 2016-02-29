@@ -521,7 +521,6 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   $scope.assets = [];
   $scope.sortBy = "Name";
   $scope.sortOptions = ["Category", "Name", "Recently Created"];
-  $scope.searchKeyword = '';
 
   $scope.getAssets = function(){
     var keyword = '%' + $scope.searchKeyword + '%';
@@ -535,10 +534,15 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
       }
     }).then(function(response){
       $scope.assets = response.data;
+    }).then(function(){
+      if ($scope.assets.length >= 1) {
+        return $scope.noRecord = false;
+      }
+      else {
+        return $scope.noRecord = true;
+      }
     });
   };
-
-  $scope.getAssets();
 
   $scope.editAsset = function(asset){
     currentAsset.setAsset(asset);
