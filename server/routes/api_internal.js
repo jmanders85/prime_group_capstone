@@ -122,12 +122,20 @@ router.get('/getAvailable', function(request, response){
   pg.connect(connectionString, function(err, client, done){
    if (err) throw err;
     var results = [];
+
     // console.log(request.query.event_list);
 
+    var query;
     var str = request.query.event_list.length - 1;
     var event_list = request.query.event_list.slice(1, str);
 
-    var query = client.query('SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets EXCEPT SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id JOIN reservations ON assets_reservations.reservation_id = reservations.id WHERE reservations.event_id IN (' + event_list + ') ORDER BY name');
+    if(request.query.event_list === '""'){
+      query = client.query('SELECT * FROM assets ORDER BY name');
+    }else{
+      query = client.query('SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets EXCEPT SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id JOIN reservations ON assets_reservations.reservation_id = reservations.id WHERE reservations.event_id IN (' + event_list + ') ORDER BY name');
+    }
+
+    // console.log(query);
 
     query.on('row', function(row){
       results.push(row);
