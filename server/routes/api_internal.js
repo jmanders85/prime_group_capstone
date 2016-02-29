@@ -265,6 +265,7 @@ router.put('/reservation', function(request, response){
   pg.connect(connectionString, function(err, client, done){
     if (err) throw err;
 
+
     var assetsReservationsQuery = 'INSERT INTO assets_reservations (asset_id, reservation_id) VALUES ';
 
     client

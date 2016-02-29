@@ -1,8 +1,0 @@
-<p>calendar Page!</p>
-
-<div ng-repeat="event in data.events">
-  <h4>{{event.title}}</h4>
-  <p>
-    {{event.start_date_time | date: 'medium'}}  <span ng-show="event.start_date_time !== event.end_date_time"> -- {{event.end_date_time | date: 'hh:mm a'}}</span>
-  </p>
-</div>

@@ -42,11 +42,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/view_assets.html',
       controller: 'ViewAssetsController'
     })
-    .state('calendar', {
-      url: '/calendar',
-      templateUrl: 'views/calendar.html',
-      controller: 'CalendarController'
-    })
     .state('edit_asset', {
       url: '/edit_asset',
       templateUrl: 'views/edit_asset.html',
@@ -118,7 +113,7 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
   $scope.selectedEvent = '';
   $scope.selectedAssets = [$scope.firstAsset.id];
   $scope.reservedBy = '';
-  $scope.events = ReservationService.data.events;
+  $scope.events = ReservationService.data.eventsAfterToday;
   var badEvents = [];
 
   //get call that brings back only events that are not associated with this asset
@@ -247,7 +242,7 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
   ReservationService.getAssets();
   $scope.data = ReservationService.data;
   $scope.assets = [];
-  $scope.events = ReservationService.data.events;
+  $scope.events = ReservationService.data.eventsAfterToday;
 
   $scope.selectedEvent = '';
   $scope.selectedAssets = [];
@@ -314,11 +309,11 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
     window.history.back();
   };
 
+
 }]);
 
 app.controller('ReservationsController', ['$scope', '$http', '$location',  'ReservationService', function($scope, $http, $location, ReservationService){
 
-  // ReservationService.getReservations();
   ReservationService.getAssets();
   ReservationService.getEvents();
   $scope.data = ReservationService.data;
@@ -335,32 +330,90 @@ app.controller('ReservationsController', ['$scope', '$http', '$location',  'Rese
 app.controller('EditReservationController', ['ReservationService', '$http', '$scope', '$location', function(ReservationService, $http, $scope, $location){
 
   $scope.data = ReservationService.data;
+  $scope.events = ReservationService.data.events;
+  $scope.assets = [];
+  $scope.eventsAfterToday = ReservationService.data.eventsAfterToday;
 
   var reservationToEdit = ReservationService.data.reservationToEdit;
+
+  var resToEditStartDate = new Date(reservationToEdit.eventStartTime);
+  var today = new Date();
+
+  if (resToEditStartDate < today) {
+    $scope.eventsAfterToday.unshift({
+      id: parseInt(reservationToEdit.event_id),
+      title: reservationToEdit.eventTitle
+    });
+  }
 
   $scope.reservedBy = reservationToEdit.reserved_by;
   $scope.selectedAssets = [];
 
-  for (var i = 0; i < reservationToEdit.assets.length; i++) {
-    for (var j = 0; j < $scope.data.assets.length; j++) {
-      if (reservationToEdit.assets[i].name === $scope.data.assets[j].name) {
-        $scope.data.assets[j].selected = true;
-        break;
-      }
-    }
-  }
 
   for (var k = 0; k < $scope.data.events.length; k++) {
-    if (parseInt(reservationToEdit.event_id) === $scope.data.events[k].id) {
-      $scope.selectedEvent = $scope.data.events[k];
+    if (parseInt(reservationToEdit.event_id) === $scope.events[k].id) {
+      $scope.selectedEvent = $scope.events[k];
       break;
     }
   }
 
+  $scope.getAvailable = function(){
+    var eventsList = ["'" + $scope.selectedEvent.id + "'"];
+    for(i=0; i < $scope.events.length; i++){
+      var eventStatus;
+      var eventStart = $scope.events[i].start_date_time;
+      var eventEnd = $scope.events[i].end_date_time;
+      var badStart = $scope.selectedEvent.start_date_time;
+      var badEnd = $scope.selectedEvent.end_date_time;
+      //check if event conflicts
+      if(eventStart > badStart && eventStart < badEnd){
+        eventStatus = "fail";
+      }else if(eventEnd > badStart && eventEnd < badEnd){
+        eventStatus = "fail";
+      }else if(badStart > eventStart && badStart < eventEnd){
+        eventStatus = "fail";
+      }else if(badEnd > eventStart && badEnd < eventEnd){
+        eventStatus = "fail";
+      }else{
+        eventStatus = "pass";
+      }
+      if (eventStatus == "fail"){
+        eventsList.push("'" + $scope.events[i].id + "'");
+        }
+    }//close for loop
+    $scope.assets = [];
+    // console.log(eventsList);
+
+    $http({
+      url: '/internal/getAvailable',
+      method: 'GET',
+      params: {event_list: '"' + eventsList + '"'
+      }
+    }).then(function(response){
+      $scope.assets = response.data;
+      for (var i = 0; i < reservationToEdit.assets.length; i++) {
+        for (var j = 0; j < $scope.assets.length; j++) {
+          if (reservationToEdit.assets[i].name === $scope.assets[j].name) {
+            $scope.assets[j].selected = true;
+            break;
+          }
+        }
+      }
+      if (reservationToEdit.event_id == $scope.selectedEvent.id) {
+        for (var it = 0; it < reservationToEdit.assets.length; it++) {
+          reservationToEdit.assets[it].selected = true;
+          $scope.assets.push(reservationToEdit.assets[it]);
+        }
+      }
+    });
+  };
+
+  $scope.getAvailable();
+
   $scope.updateReservation = function() {
-    for (var i = 0; i < $scope.data.assets.length; i++) {
-      if ($scope.data.assets[i].selected === true) {
-        $scope.selectedAssets.push(parseInt($scope.data.assets[i].id));
+    for (var i = 0; i < $scope.assets.length; i++) {
+      if ($scope.assets[i].selected === true) {
+        $scope.selectedAssets.push($scope.assets[i].id);
       }
     }
 
@@ -371,6 +424,7 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
       "reservedBy": $scope.reservedBy
     }).then(function(response) {
       if (response.status === 200) {
+        ReservationService.getReservations();
         $location.path('/reservations');
       } else {
         console.log("error");
@@ -397,11 +451,6 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
     window.history.back();
   };
 
-}]);
-
-app.controller('CalendarController', ['$scope', '$http', 'ReservationService',  function($scope, $http, ReservationService){
-  ReservationService.getEvents();
-  $scope.data = ReservationService.data;
 }]);
 
 app.controller('NewAssetController', ['$scope', '$http', '$location', function($scope, $http, $location){
@@ -706,6 +755,14 @@ app.factory('ReservationService', ['$http', function($http){
       siteId = siteDetails.id;
       $http.get('/api/eventList/' + siteId).then(function(response){
         data.events = response.data.events;
+        data.eventsAfterToday = [];
+        for (var i = 0; i < response.data.events.length; i++) {
+          var eventDate = new Date(response.data.events[i].start_date_time);
+          var today = new Date();
+          if (eventDate >= today) {
+            data.eventsAfterToday.push(response.data.events[i]);
+          }
+        }
         getReservations();
       });
     });
