@@ -165,7 +165,6 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
           if (eventStatus == "fail"){
             //splice from $scope.events
             $scope.events.splice(i, 1);
-            console.log($scope.events);
             }
         }//close for loop
       }//close checKEvents
@@ -194,7 +193,7 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
       }
       if (eventStatus == "fail"){
         eventsList.push("'" + $scope.events[i].id + "'");
-        }
+      }
     }//close for loop
     $scope.assets = [];
     // console.log(eventsList);
