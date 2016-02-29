@@ -574,6 +574,7 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   $scope.noRecord = false;
 
   $scope.getAssets = function(){
+    $scope.noRecord = false;
     var keyword = '%' + $scope.searchKeyword + '%';
 
     $http({
