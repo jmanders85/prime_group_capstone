@@ -35,7 +35,14 @@
       <button ng-click="viewReservations(asset)" class="em-list-asset-button-view-res pl-button--small pl-button">View Reservations</button>
     </div>
   </div>
-  <p ng-show="noRecord">
-    NO ASSETS AVAILABLE THAT MEET THAT DESCRIPTION
-  </p>
-</div>
+
+  <div class="pl-alert-panel" ng-show="noRecord">
+    <div class="pl-alert-panel__inner">
+      <button title="Close" class="pl-alert-panel__close">Close</button>
+      <svg class="pl-alert-panel__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-info-circle-o"></use></svg>
+      <div class="pl-alert-panel__content">
+        <h4 class="pl-alert-panel__title">Not Available</h4>
+        <p>There are no assets avaialbe that meet that description</p>
+      </div>
+    </div>
+  </div>
