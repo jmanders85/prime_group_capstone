@@ -314,6 +314,7 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
     window.history.back();
   };
 
+
 }]);
 
 app.controller('ReservationsController', ['$scope', '$http', '$location',  'ReservationService', function($scope, $http, $location, ReservationService){
@@ -702,6 +703,14 @@ app.factory('ReservationService', ['$http', function($http){
       siteId = siteDetails.id;
       $http.get('/api/eventList/' + siteId).then(function(response){
         data.events = response.data.events;
+        data.eventsAfterToday = [];
+        for (var i = 0; i < response.data.events.length; i++) {
+          var eventDate = new Date(response.data.events[i].start_date_time);
+          var today = new Date();
+          if (eventDate >= today) {
+            data.eventsAfterToday.push(response.data.events[i]);
+          }
+        }
         getReservations();
       });
     });

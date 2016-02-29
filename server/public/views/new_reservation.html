@@ -6,7 +6,7 @@
       <form>
         <div class="pl-subsection--border">
           <label for="select-event" class="pl-field__label">Select Event</label>
-          <select id="select-event"  class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in data.events track by event.id" ng-change="getAvailable()">
+          <select id="select-event"  class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in data.eventsAfterToday track by event.id" ng-change="getAvailable()">
           </select>
         </div>
         <div class="pl-subsection--border">
