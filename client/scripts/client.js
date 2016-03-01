@@ -433,18 +433,19 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
   };
 
   $scope.deleteReservation = function() {
+    var deleteConfirm = confirm("You are about to permanantly delete this reservation. Click 'OK' to continue.");
+    if (deleteConfirm === true){
+      $http.delete('/internal/reservation/' + reservationToEdit.id).then(function(response){
 
-    $http.delete('/internal/reservation/' + reservationToEdit.id).then(function(response){
+        if (response.status === 200) {
+          ReservationService.getReservations();
+          $location.path('/reservations');
+        } else {
+          console.log("error deleting reservation");
+        }
 
-      if (response.status === 200) {
-        ReservationService.getReservations();
-        $location.path('/reservations');
-      } else {
-        console.log("error deleting reservation");
-      }
-
-    });
-
+      });
+    }
   };
 
   $scope.cancel = function() {
