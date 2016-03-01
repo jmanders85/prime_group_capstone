@@ -470,12 +470,14 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', 'Reservati
     }).then(function(response){
       if (response.status === 200) {
         ReservationService.data.showOverlay = false;
+        $location.path('view_assets');
       }
     });
   };
 
   $scope.closeOverlay = function() {
     ReservationService.data.showOverlay = false;
+    $location.path('view_assets');
   };
 
 }]);
