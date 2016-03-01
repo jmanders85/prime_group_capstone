@@ -452,12 +452,12 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
 
 }]);
 
-app.controller('NewAssetController', ['$scope', '$http', '$location', function($scope, $http, $location){
+app.controller('NewAssetController', ['$scope', '$http', '$location', 'ReservationService', function($scope, $http, $location, ReservationService){
   $scope.data = {};
   $scope.categoryList = ["Practice", "Player Equipment", "Game", "Other"]; //***If you change these, change the ones in the EditAssetController!
 
   $scope.submitAsset = function(){
-    console.log($scope.data);
+
     $http({
       url: '/internal/newAsset',
       method: 'POST',
@@ -468,9 +468,16 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
         notes: $scope.data.notes
       }
     }).then(function(response){
-      $location.path(response.data);
+      if (response.status === 200) {
+        ReservationService.data.showOverlay = false;
+      }
     });
   };
+
+  $scope.closeOverlay = function() {
+    ReservationService.data.showOverlay = false;
+  };
+
 }]);
 
 // app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationService', 'currentAsset', '$location', function($scope, $http, ReservationService, currentAsset, $location){
@@ -566,6 +573,7 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
 // }]);
 
 app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset','ReservationService', function($scope, $http, $location, currentAsset,ReservationService){
+  $scope.data = ReservationService.data;
   $scope.assets = [];
   $scope.sortBy = "Name";
   $scope.sortOptions = ["Category", "Name", "Recently Created"];
