@@ -12,7 +12,7 @@
       <hr>
         <p class="em-heading-home pl-heading--large">Upcoming Reservations</p>
       <hr>
-      <div class="em-home-progress-bar pl-progress__container" ng-hide="data.reservations.length || noRecord">
+      <div class="em-home-progress-bar pl-progress__container" ng-hide="data.reservations.length">
         <p class="pl-progress__label">Loading...</p>
         <div class="pl-progress">
           <div role="progressbar" class="pl-progress__bar--indeterminate"></div>
@@ -25,15 +25,6 @@
           <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Event</strong><span class="em-list-asset-value pl-detail-list__value" ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.title}}</span></li>
           <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Time</strong><span class="em-list-asset-value pl-detail-list__value">{{reservation.eventStartTime | date: 'short'}}</span></li>
         </ul>
-      </div>
-      <div class="pl-alert-panel" ng-show="noRecord">
-        <div class="pl-alert-panel__inner">
-          <svg class="pl-alert-panel__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-info-circle-o"></use></svg>
-          <div class="pl-alert-panel__content">
-            <h4 class="pl-alert-panel__title">Not Available</h4>
-            <p>There are no reservations</p>
-          </div>
-        </div>
       </div>
     </div>
   </div>
