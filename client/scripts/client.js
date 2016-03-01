@@ -657,7 +657,12 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
     });
   };
 
+
+
+
   $scope.deleteAsset = function(){
+    var deleteConfirm = confirm("You are about to permanantly delete this item from the inventory. Click 'OK' to continue.");
+    if (deleteConfirm === true){
     $http.delete('/internal/asset/' + $scope.data.id)
         .then(function(response){
               if (response.status === 200) {
@@ -667,6 +672,7 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
               }
             }
         );
+    }
   };
 
   $scope.goBack = function(){
