@@ -1,4 +1,55 @@
-var app = angular.module('sportApp', ['ui.router']);
+//For icons throughout app
+;(function(){
+
+  var $ = angular.element
+
+  angular.module('svgSprites', [])
+
+
+    // EXAMPLE USE:
+    // <svg-sprite src="'/images/icon-sprite.svg'"></svg-sprite>
+
+    .directive('svgSprite', ['$http', '$log', function($http, $log) {
+      return {
+        restrict: 'E',
+        scope: {
+          src: '@'
+        },
+        link: function($scope, $element) {
+          if (!$scope.src) return $log.error('svg-sprite `src` attribute cannot be blank')
+
+          $http
+            .get($scope.src)
+            .success($element.replaceWith.bind($element))
+            .error($log.error)
+        }
+      }
+    }])
+
+    // EXAMPLE USE:
+    // <svg-img class="pl-icon pl-icon--player" use="avatar"></svg-img>
+    // <svg class="pl-icon pl-icon--player"><use xlink:href="#svg-avatar"></use></svg>
+
+    .directive('svgImg', ['$log', function($log) {
+      return {
+        restrict:'E',
+        scope: {
+          class: '=',
+          use: '='
+        },
+        link: function($scope, $element) {
+          if (!$scope.use) return $log.error('svg-img `use` attribute cannot be blank')
+
+          var classAttr = $scope.class ? ' class="' + $scope.class + '"' : ''
+          var markup = $('<svg' + classAttr + '><use xlink:href="#svg-' + $scope.use + '"></use></svg>')
+          $element.replaceWith(markup)
+        }
+      }
+    }])
+
+})();
+
+var app = angular.module('sportApp', ['ui.router', 'svgSprites']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider){
   $stateProvider
@@ -36,9 +87,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         url: '/view_assets',
         templateUrl: 'views/view_assets.html',
         controller: 'ViewAssetsController',
-        // views: {
-        //   "new_assets": { template: "kitty" }
-        // }
       })
       .state('edit_asset', {
         url: '/edit_asset',
@@ -565,7 +613,7 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
 //   };
 // }]);
 
-app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset','ReservationService', function($scope, $http, $location, currentAsset,ReservationService){
+app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset','ReservationService', function($scope, $http, $location, currentAsset, ReservationService){
   $scope.assets = [];
   $scope.sortBy = "Name";
   $scope.sortOptions = ["Category", "Name", "Recently Created"];
