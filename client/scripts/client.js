@@ -102,7 +102,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         templateUrl: 'views/reserve_asset.html',
         controller: 'ReserveFromAssetsController'
       })
-      .state('asset_reservations', {
+      .state('view_assets.asset_reservations', {
         url: '/asset_reservations',
         templateUrl: 'views/asset_reservations.html',
         controller: 'AssetReservationController'
@@ -273,7 +273,7 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
   };
 
   $scope.cancel = function() {
-    window.history.back();
+    $location.path('view_assets');
   };
 
   getEventsByAsset();
@@ -351,7 +351,7 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
   };
 
   $scope.cancel = function() {
-    window.history.back();
+    $location.path('home');
   };
 
 
@@ -525,7 +525,7 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
   };
 
   $scope.cancel = function() {
-    window.history.back();
+    $location.path('reservations');
   };
 
 }]);
@@ -776,6 +776,8 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
 
 
   $scope.viewReservations = function(asset){
+    ReservationService.data.showOverlay = true;
+
     $http.get('internal/assetReservations/' + asset.id).then(function(response){
       ReservationService.data.assetreservation = response.data;
       for (var i = 0; i < ReservationService.data.assetreservation.length; i++) {
@@ -858,12 +860,19 @@ app.controller('AssetReservationController', ['$scope', '$http', '$location', 'R
 
   $scope.data = ReservationService.data;
 
+  $scope.goBack = function() {
+    ReservationService.data.showOverlay = false;
+    $location.path('view_assets');
+  };
+
   $scope.reserveAsset = function(asset){
+    ReservationService.data.showOverlay = false;
     currentAsset.setAsset(asset);
     $location.path('reserve_asset');
   };
 
   $scope.editReservation = function(reservation) {
+    ReservationService.data.showOverlay = false;
     ReservationService.data.reservationToEdit = reservation;
     $location.path('edit_reservation');
   };

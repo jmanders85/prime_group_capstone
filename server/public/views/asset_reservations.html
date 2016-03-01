@@ -3,12 +3,6 @@
     <div class="pl-subsection--border">
       <h2 class="em-heading-all pl-heading--large">Reservations For {{data.assetreservation.name}}</h2>
     </div>
-    <div class="pl-subsection--border pl-form-actions">
-      <div class="pl-form-actions__button-container">
-        <button class="em-button-newAsset pl-form-actions__button pl-button" ui-sref="view_assets">Go Back</button>
-        <button class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="reserveAsset(data.assetreservation)">New Reservation</button>
-      </div>
-    </div>
     <div class="em-edit-button pl-subsection--border" ng-repeat="reservation in data.assetreservation">
       <ul class="pl-detail-list">
         <li class="pl-detail-list__pair--emphasis"><strong class="em-list-asset-key pl-detail-list__key">Reserver</strong><span class="em-list-asset-value pl-detail-list__value">{{reservation.reserved_by}}</span></li>
@@ -16,6 +10,12 @@
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Time</strong><span class="em-list-asset-value pl-detail-list__value" ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.start_date_time | date: 'short'}}</span></li>
         <button ng-click="editReservation(reservation)" class="em-list-asset-button pl-button--small pl-button">Edit</button>
       </ul>
+    </div>
+    <div class="pl-subsection--border pl-form-actions">
+      <div class="pl-form-actions__button-container">
+        <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="goBack()">Close</button>
+        <button class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="reserveAsset(data.assetreservation)">New Reservation</button>
+      </div>
     </div>
   </div>
 </div>
