@@ -12,11 +12,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         templateUrl: 'views/home.html',
         controller: 'HomeController'
       })
-      .state('assets', {
-        url: '/assets',
-        templateUrl: 'views/assets.html',
-        controller: 'AssetsController'
-      })
       .state('new_reservation', {
         url: '/new_reservation',
         templateUrl: 'views/new_reservation.html',
@@ -32,7 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         templateUrl: 'views/edit_reservation.html',
         controller: 'EditReservationController'
       })
-      .state('new_asset', {
+      .state('view_assets.new_asset', {
         url: '/new_asset',
         templateUrl: 'views/new_asset.html',
         controller: 'NewAssetController'
