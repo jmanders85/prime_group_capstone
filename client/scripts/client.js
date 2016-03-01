@@ -40,7 +40,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       .state('view_assets', {
         url: '/view_assets',
         templateUrl: 'views/view_assets.html',
-        controller: 'ViewAssetsController'
+        controller: 'ViewAssetsController',
+        // views: {
+        //   "new_assets": { template: "kitty" }
+        // }
       })
       .state('edit_asset', {
         url: '/edit_asset',
@@ -568,7 +571,6 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
 // }]);
 
 app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset','ReservationService', function($scope, $http, $location, currentAsset,ReservationService){
-
   $scope.assets = [];
   $scope.sortBy = "Name";
   $scope.sortOptions = ["Category", "Name", "Recently Created"];

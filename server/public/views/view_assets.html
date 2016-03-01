@@ -1,7 +1,20 @@
 <div class="pl-centered-container">
   <div class="pl-centered-section">
     <div class="pl-subsection--border">
-      <a class="em-add-button-assets pl-button" ui-sref="new_asset">Add item</a>
+      <a class="em-add-button-assets pl-button--primary" ng-click="showOverlay = true">Add item</a>
+      <div class="pl-overlay" ng-if="showOverlay">
+        <div class="pl-centered-container">
+          <div class="pl-centered-section">
+            <div class="pl-subsection--border pl-form-actions">
+              <!--Ui-view should go somewhere around here?-->
+              <div ui-view="new_assets"></div>
+              <div class="pl-form-actions__button-container">
+                <button class="pl-button--primary" ng-click="$parent.showOverlay = false">Close Overlay</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <h2 class="em-heading-assets pl-heading--large">View Inventory</h2>
     </div>
     <div class="pl-subsection--border">
