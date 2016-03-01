@@ -73,4 +73,10 @@
   margin-top: 20px;
   margin-bottom: 20px; }
 
+.em-calendar__container {
+  max-width: 100%;
+  padding-left: 1.7143rem;
+  padding-right: 1.7143rem;
+  width: 596px; }
+
 /*# sourceMappingURL=stylesheet.css.map */
