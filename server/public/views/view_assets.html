@@ -47,7 +47,7 @@
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Category</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.category}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Notes</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.notes}}</span></li>
       </ul>
-      <button ng-click="editAsset(asset)" class="em-list-asset-button pl-button--small pl-button">
+      <button ui-sref="view_assets.edit_asset" ng-click="editAsset(asset)" class="em-list-asset-button pl-button--small pl-button">
         <svg class="pl-icon--left"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-pencil"></use></svg>Edit
       </button>
       <button ng-click="viewReservations(asset)" class="em-list-asset-button-view-res pl-button--small pl-button">View Reservations</button>

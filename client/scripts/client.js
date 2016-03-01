@@ -3,50 +3,49 @@
 
   var $ = angular.element
 
-  angular.module('svgSprites', [])
+  angular.module('svgSprites', []);
 
 
-    // EXAMPLE USE:
-    // <svg-sprite src="'/images/icon-sprite.svg'"></svg-sprite>
+  // EXAMPLE USE:
+  // <svg-sprite src="'/images/icon-sprite.svg'"></svg-sprite>
 
-    .directive('svgSprite', ['$http', '$log', function($http, $log) {
-      return {
-        restrict: 'E',
-        scope: {
-          src: '@'
-        },
-        link: function($scope, $element) {
-          if (!$scope.src) return $log.error('svg-sprite `src` attribute cannot be blank')
+  .directive('svgSprite', ['$http', '$log', function($http, $log) {
+    return {
+      restrict: 'E',
+      scope: {
+        src: '@'
+      },
+      link: function($scope, $element) {
+        if (!$scope.src) return $log.error('svg-sprite `src` attribute cannot be blank');
 
-          $http
-            .get($scope.src)
-            .success($element.replaceWith.bind($element))
-            .error($log.error)
-        }
+        $http
+        .get($scope.src);
+        .success($element.replaceWith.bind($element));
+        .error($log.error);
       }
-    }])
+    }
+  }]);
 
-    // EXAMPLE USE:
-    // <svg-img class="pl-icon pl-icon--player" use="avatar"></svg-img>
-    // <svg class="pl-icon pl-icon--player"><use xlink:href="#svg-avatar"></use></svg>
+  // EXAMPLE USE:
+  // <svg-img class="pl-icon pl-icon--player" use="avatar"></svg-img>
+  // <svg class="pl-icon pl-icon--player"><use xlink:href="#svg-avatar"></use></svg>
 
-    .directive('svgImg', ['$log', function($log) {
-      return {
-        restrict:'E',
-        scope: {
-          class: '=',
-          use: '='
-        },
-        link: function($scope, $element) {
-          if (!$scope.use) return $log.error('svg-img `use` attribute cannot be blank')
+  .directive('svgImg', ['$log', function($log) {
+    return {
+      restrict:'E',
+      scope: {
+        class: '=',
+        use: '='
+      },
+      link: function($scope, $element) {
+        if (!$scope.use) return $log.error('svg-img `use` attribute cannot be blank');
 
-          var classAttr = $scope.class ? ' class="' + $scope.class + '"' : ''
-          var markup = $('<svg' + classAttr + '><use xlink:href="#svg-' + $scope.use + '"></use></svg>')
-          $element.replaceWith(markup)
-        }
+        var classAttr = $scope.class ? ' class="' + $scope.class + '"' : ''
+        var markup = $('<svg' + classAttr + '><use xlink:href="#svg-' + $scope.use + '"></use></svg>');
+        $element.replaceWith(markup);
       }
-    }])
-
+    }
+  }])
 })();
 
 var app = angular.module('sportApp', ['ui.router', 'svgSprites']);
