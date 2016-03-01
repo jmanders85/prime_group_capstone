@@ -35,7 +35,7 @@
         </div>
       </form>
     </div>
-    <div class="em-view-assets-progress-bar pl-progress__container" ng-hide="assets.length">
+    <div class="em-view-assets-progress-bar pl-progress__container" ng-hide="assets.length || noRecord">
       <p class="pl-progress__label">Loading...</p>
       <div class="pl-progress">
         <div role="progressbar" class="pl-progress__bar--indeterminate"></div>
@@ -57,7 +57,6 @@
 
   <div class="pl-alert-panel" ng-show="noRecord">
     <div class="pl-alert-panel__inner">
-      <!--<button title="Close" class="pl-alert-panel__close">Close</button>-->
       <svg class="pl-alert-panel__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-info-circle-o"></use></svg>
       <div class="pl-alert-panel__content">
         <h4 class="pl-alert-panel__title">Not Available</h4>
