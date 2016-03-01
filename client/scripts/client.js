@@ -360,16 +360,47 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
 
 app.controller('ReservationsController', ['$scope', '$http', '$location',  'ReservationService', function($scope, $http, $location, ReservationService){
 
+  $scope.noRecord = false;
+  $scope.all  = {id: 0, title: "All Events"};
+  $scope.eventsList = [$scope.all];
   ReservationService.getAssets();
   ReservationService.getEvents();
   $scope.data = ReservationService.data;
+  $scope.selectedEvent = $scope.all;
+  $scope.reservations = [];
+
+  for(i = 0; i < $scope.data.eventsAfterToday.length; i++){
+      $scope.eventsList.push($scope.data.eventsAfterToday[i]);
+  }
+
+
+
+  $scope.filterReservations = function(){
+    $scope.reservations = [];
+
+    if($scope.selectedEvent.id === 0){
+      $scope.reservations = ReservationService.data.reservations;
+    }else{
+        for(i = 0; i < ReservationService.data.reservations.length; i++){
+          if(ReservationService.data.reservations[i].event_id == $scope.selectedEvent.id){
+            $scope.reservations.push(ReservationService.data.reservations[i]);
+          }
+        }
+    }
+    if ($scope.reservations.length >= 1) {
+      $scope.noRecord = false;
+    }
+    else {
+      $scope.noRecord = true;
+    }
+  };
 
   $scope.editReservation = function(reservation) {
-
     ReservationService.data.reservationToEdit = reservation;
     $location.path('edit_reservation');
-
   };
+
+  $scope.filterReservations();
 
 }]);
 
