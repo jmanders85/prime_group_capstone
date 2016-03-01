@@ -51,7 +51,7 @@
       <button ui-sref="view_assets.edit_asset" ng-click="editAsset(asset)" class="em-list-asset-button pl-button--small pl-button">
         <svg class="pl-icon--left"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-pencil"></use></svg>Edit
       </button>
-      <button ng-click="viewReservations(asset)" class="em-list-asset-button-view-res pl-button--small pl-button">View Reservations</button>
+      <button ui-sref="view_assets.asset_reservations" ng-click="viewReservations(asset)" class="em-list-asset-button-view-res pl-button--small pl-button">View Reservations</button>
     </div>
   </div>
   <div class="pl-alert-panel" ng-show="noRecord">
