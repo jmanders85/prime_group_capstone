@@ -475,18 +475,134 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
   };
 }]);
 
-app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationService', 'currentAsset', '$location', function($scope, $http, ReservationService, currentAsset, $location){
+// app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationService', 'currentAsset', '$location', function($scope, $http, ReservationService, currentAsset, $location){
+//
+//   $scope.startDate;
+//   $scope.startTime;
+//   $scope.endDate;
+//   $scope.endTime;
+//   var badEvents = [];
+//   ReservationService.getEvents();
+//   ReservationService.getAssets();
+//   ReservationService.getReservations();
+//
+//   $scope.assets = [];
+//
+//   $scope.getAvailable = function(){
+//     // console.log("start time:", $scope.startTime);
+//     //Thu Jan 01 1970 00:00:00 GMT-0600 (CST)
+//     //2016-01-01T06:00:00.000Z
+//     var reservationID;
+//     var startDateTime;
+//     var endDateTime;
+//
+//     //format the date time!
+//     if($scope.startTime !== undefined){
+//       startDateTime = ($scope.startDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
+//     }else if($scope.startTime === undefined){
+//       startDateTime = $scope.startDate.toISOString();
+//     }
+//
+//     if($scope.endTime !== undefined){
+//       endDateTime = ($scope.endDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
+//     }else if($scope.endTime === undefined){
+//       endDateTime = $scope.endDate.toISOString();
+//     }
+//
+//     var reservations = ReservationService.data.reservations;
+//     var events = ReservationService.data.events;
+//
+//     // console.log("start date/time:", startDateTime);
+//
+//     //Run through each event to check it's 'status'
+//     for(i=0; i<events.length; i++){
+//       checkEvents(events[i]);
+//     }
+//
+//     function checkEvents(event){
+//       var eventStatus;
+//       var eventStart = events[i].start_date_time;
+//       var eventEnd = events[i].end_date_time;
+//       //check if event conflicts
+//       if(eventStart > startDateTime && eventStart < endDateTime){
+//         eventStatus = "fail";
+//       }else if(eventEnd > startDateTime && eventEnd < endDateTime){
+//         eventStatus = "fail";
+//       }else if(startDateTime > eventStart && startDateTime < eventEnd){
+//         eventStatus = "fail";
+//       }else if(endDateTime > eventStart && endDateTime < eventEnd){
+//         eventStatus = "fail";
+//       }else{
+//         eventStatus = "pass";
+//       }
+//       //if unconflicting, use event ID to find reservations
+//       if (eventStatus == "fail"){
+//         badEvents.push(" '" + events[i].id + "'");
+//         // console.log(events[i].id);
+//       }
+//     }//close checKEvents
+//
+//     //Checks available assets in the database based on the events in badEvents
+//     var checkAssets = function(){
+//       $scope.assets = [];
+//       var event_list = '"' + badEvents + '"';
+//       $http({
+//         url: '/internal/getAvailable',
+//         method: 'GET',
+//         params: {event_list: event_list
+//         }
+//       }).then(function(response){
+//         for(i=0; i<response.data.length; i++){
+//           $scope.assets.push(response.data[i]);
+//         }
+//       });
+//     };
+//     checkAssets();
+//   };//close $scope.getAvailable
+//
+//   $scope.reserveAsset = function(asset){
+//     console.log(asset.id);
+//     currentAsset.setAsset(asset);
+//     $location.path('reserve_asset');
+//   };
+// }]);
 
+app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset','ReservationService', function($scope, $http, $location, currentAsset,ReservationService){
+  $scope.assets = [];
+  $scope.sortBy = "Name";
+  $scope.sortOptions = ["Category", "Name", "Recently Created"];
+  $scope.searchKeyword = '';
+  $scope.noRecord = false;
   $scope.startDate;
   $scope.startTime;
   $scope.endDate;
   $scope.endTime;
+  var badEvents = [];
   ReservationService.getEvents();
   ReservationService.getAssets();
   ReservationService.getReservations();
-  var badEvents = [];
 
-  $scope.assets = [];
+  $scope.getAssets = function(){
+    $scope.noRecord = false;
+    var keyword = '%' + $scope.searchKeyword + '%';
+
+    $http({
+      url: '/internal/getAssets',
+      method: 'GET',
+      params: {
+        sortBy: $scope.sortBy,
+        keyword: keyword
+      }
+    }).then(function(response){
+      $scope.assets = response.data;
+      if ($scope.assets.length >= 1) {
+        $scope.noRecord = false;
+      }
+      else {
+        $scope.noRecord = true;
+      }
+    });
+  };
 
   $scope.getAvailable = function(){
     // console.log("start time:", $scope.startTime);
@@ -560,41 +676,6 @@ app.controller('AvailableAssetsController', ['$scope', '$http', 'ReservationServ
     checkAssets();
   };//close $scope.getAvailable
 
-  $scope.reserveAsset = function(asset){
-    console.log(asset.id);
-    currentAsset.setAsset(asset);
-    $location.path('reserve_asset');
-  };
-}]);
-
-app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset','ReservationService', function($scope, $http, $location, currentAsset,ReservationService){
-  $scope.assets = [];
-  $scope.sortBy = "Name";
-  $scope.sortOptions = ["Category", "Name", "Recently Created"];
-  $scope.searchKeyword = '';
-  $scope.noRecord = false;
-
-  $scope.getAssets = function(){
-    $scope.noRecord = false;
-    var keyword = '%' + $scope.searchKeyword + '%';
-
-    $http({
-      url: '/internal/getAssets',
-      method: 'GET',
-      params: {
-        sortBy: $scope.sortBy,
-        keyword: keyword
-      }
-    }).then(function(response){
-      $scope.assets = response.data;
-      if ($scope.assets.length >= 1) {
-        $scope.noRecord = false;
-      }
-      else {
-        $scope.noRecord = true;
-      }
-    });
-  };
 
   $scope.getAssets();
 
