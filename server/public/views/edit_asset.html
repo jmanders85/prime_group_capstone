@@ -30,8 +30,8 @@
       <div class="pl-subsection--border pl-form-actions">
         <div class="pl-form-actions__button-container">
           <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="goBack()">Cancel</button>
-          <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="deleteAsset()">Delete Item</button>
-          <button class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="updateAsset()">Update</button>
+          <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="deleteAsset()" ui-sref="view_assets({new:true})" ui-sref-opts="{reload: true, notify: true}">Delete Item</button>
+          <button class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="updateAsset()" ui-sref="view_assets({new:true})" ui-sref-opts="{reload: true, notify: true}">Update</button>
         </div>
       </div>
   </div>
