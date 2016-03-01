@@ -91,10 +91,14 @@ router.delete('/asset/:id', function(request, response){
     if (err) throw err;
 
     client
-      .query('DELETE FROM assets WHERE id = $1', [request.params.id])
+      .query('DELETE FROM assets_reservations WHERE asset_id = $1', [request.params.id])
       .on('end', function(){
-        done();
-        response.sendStatus(200);
+        client
+          .query('DELETE FROM assets WHERE id = $1', [request.params.id])
+          .on('end', function(){
+            done();
+            response.sendStatus(200);
+          });
       });
   });
 });
@@ -264,6 +268,7 @@ router.post('/reservation', function(request, response){
 router.put('/reservation', function(request, response){
   pg.connect(connectionString, function(err, client, done){
     if (err) throw err;
+
 
     var assetsReservationsQuery = 'INSERT INTO assets_reservations (asset_id, reservation_id) VALUES ';
 
