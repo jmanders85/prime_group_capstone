@@ -3,10 +3,10 @@
       <div class="pl-subsection--border">
         <h2 class="em-heading-all pl-heading--xxlarge">Create Reservation</h2>
       </div>
-      <form>
+      <form name="selectEvent">
         <div class="pl-subsection--border">
           <label for="select-event" class="pl-field__label">Select Event</label>
-          <select id="select-event"  class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in data.eventsAfterToday track by event.id" ng-change="getAvailable()">
+          <select id="select-event" class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in data.eventsAfterToday track by event.id" ng-change="getAvailable()">
           </select>
         </div>
         <div class="pl-subsection--border">
@@ -15,6 +15,14 @@
             <div class="pl-option" ng-repeat="asset in assets">
               <input type="checkbox" id="asset-{{asset.id}}" class="pl-option__input" ng-model="asset.selected">
               <label for="asset-{{asset.id}}" class="pl-option__label">{{asset.name}}</label>
+            </div>
+            <div class="pl-alert-panel" ng-if="!selectedEvent">
+              <div class="pl-alert-panel__inner">
+                <svg class="pl-alert-panel__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-info-circle-o"></use></svg>
+                <div class="pl-alert-panel__content">
+                  <h4 class="pl-alert-panel__title">Please Select an Event</h4>
+                </div>
+              </div>
             </div>
           </fieldset>
         </div>
