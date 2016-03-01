@@ -1,21 +1,17 @@
 <div class="pl-centered-container">
   <div class="pl-centered-section">
     <div class="pl-subsection--border">
-      <h2 class="em-heading-all pl-heading--xxlarge">Equipment Manager</h2>
+      <h2 class="pl-heading--xlarge">Equipment Manager</h2>
     </div>
     <div class="pl-subsection--divider-before">
-      <div class="pl-subsection--divider-before">
-        <a ui-sref="assets" class="em-button-home pl-button--large">Manage Inventory</a>
-      </div>
-      <div class="pl-subsection--divider-before">
+      <a ui-sref="view_assets" class="em-button-home pl-button--large">Manage Inventory</a>
+      <hr>
         <a ui-sref="new_reservation" class="em-button-home pl-button--large">New Reservation</a>
-      </div>
-      <div class="pl-subsection--divider-before">
+      <hr>
         <a ui-sref="reservations" class="em-button-home pl-button--large">View Reservations</a>
-      </div>
-      <div class="pl-subsection--divider-before">
+      <hr>
         <p class="em-heading-home pl-heading--large">Upcoming Reservations</p>
-      </div>
+      <hr>
       <div class="em-home-progress-bar pl-progress__container" ng-hide="data.reservations.length">
         <p class="pl-progress__label">Loading...</p>
         <div class="pl-progress">
