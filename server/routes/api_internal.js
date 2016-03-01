@@ -153,6 +153,47 @@ router.get('/getAvailable', function(request, response){
     });
 });
 
+router.get('/getAssetsComplex', function(request, response){
+  pg.connect(connectionString, function(err, client, done){
+   if (err) throw err;
+    var results = [];
+    var orderBy = 'name';
+    var keyword = request.query.keyword || '%%';
+
+    if(request.query.sortBy === 'Category'){
+      orderBy = 'category';
+    }else if (request.query.sortBy === 'Recently Created'){
+      orderBy = 'id DESC';
+    }else if (request.query.sortBy === 'Name'){
+      orderBy = 'name';
+    }
+
+    // console.log(request.query.event_list);
+
+    var query;
+    var str = request.query.event_list.length - 1;
+    var event_list = request.query.event_list.slice(1, str);
+
+    if(request.query.event_list === '""'){
+      query = client.query('SELECT * FROM assets WHERE LOWER(name) LIKE LOWER($1) ORDER BY ' + orderBy + ';', [keyword]);
+    }else{
+      query = client.query('SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets WHERE LOWER(assets.name) LIKE LOWER($1) EXCEPT SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id JOIN reservations ON assets_reservations.reservation_id = reservations.id WHERE reservations.event_id IN (' + event_list + ') ORDER BY ' + orderBy + ';', [keyword]);
+    }
+
+    // console.log(query);
+
+    query.on('row', function(row){
+      results.push(row);
+    });
+
+    query.on('end', function() {
+          done();
+          return response.json(results);
+        });
+
+    });
+});
+
 router.get('/getEventsByAsset', function(request, response){
   pg.connect(connectionString, function(err, client, done){
    if (err) throw err;

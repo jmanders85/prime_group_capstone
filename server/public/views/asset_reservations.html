@@ -14,7 +14,7 @@
         <li class="pl-detail-list__pair--emphasis"><strong class="em-list-asset-key pl-detail-list__key">Reserver</strong><span class="em-list-asset-value pl-detail-list__value">{{reservation.reserved_by}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Event</strong><span class="em-list-asset-value pl-detail-list__value" ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.title}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Time</strong><span class="em-list-asset-value pl-detail-list__value" ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.start_date_time | date: 'short'}}</span></li>
-        <button ng-click="editReservation(reservation)" class="em-list-asset-button pl-button--small pl-button--primary">Edit</button>
+        <button ng-click="editReservation(reservation)" class="em-list-asset-button pl-button--small pl-button">Edit</button>
       </ul>
     </div>
   </div>
