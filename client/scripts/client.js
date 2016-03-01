@@ -568,15 +568,14 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', function($
 // }]);
 
 app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'currentAsset','ReservationService', function($scope, $http, $location, currentAsset,ReservationService){
+
   $scope.assets = [];
   $scope.sortBy = "Name";
   $scope.sortOptions = ["Category", "Name", "Recently Created"];
   $scope.searchKeyword = '';
   $scope.noRecord = false;
   $scope.startDate;
-  $scope.startTime;
   $scope.endDate;
-  $scope.endTime;
   var badEvents = [];
   ReservationService.getEvents();
   ReservationService.getAssets();
@@ -609,21 +608,8 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
     //Thu Jan 01 1970 00:00:00 GMT-0600 (CST)
     //2016-01-01T06:00:00.000Z
     var reservationID;
-    var startDateTime;
-    var endDateTime;
-
-    //format the date time!
-    if($scope.startTime !== undefined){
-      startDateTime = ($scope.startDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
-    }else if($scope.startTime === undefined){
-      startDateTime = $scope.startDate.toISOString();
-    }
-
-    if($scope.endTime !== undefined){
-      endDateTime = ($scope.endDate.toISOString()).slice(0,11) + ($scope.startTime.toISOString()).slice(11,24);
-    }else if($scope.endTime === undefined){
-      endDateTime = $scope.endDate.toISOString();
-    }
+    var startDateTime = $scope.startDate.toISOString();
+    var endDateTime = $scope.endDate.toISOString();
 
     var reservations = ReservationService.data.reservations;
     var events = ReservationService.data.events;
