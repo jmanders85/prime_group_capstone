@@ -578,44 +578,51 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   ReservationService.getAssets();
   ReservationService.getReservations();
 
-  $scope.getAssets = function(){
-    $scope.noRecord = false;
-    var keyword = '%' + $scope.searchKeyword + '%';
-
-    $http({
-      url: '/internal/getAssets',
-      method: 'GET',
-      params: {
-        sortBy: $scope.sortBy,
-        keyword: keyword
-      }
-    }).then(function(response){
-      $scope.assets = response.data;
-      if ($scope.assets.length >= 1) {
-        $scope.noRecord = false;
-      }
-      else {
-        $scope.noRecord = true;
-      }
-    });
-  };
+  // $scope.getAssets = function(){
+  //   $scope.noRecord = false;
+  //   var keyword = '%' + $scope.searchKeyword + '%';
+  //
+  //   $http({
+  //     url: '/internal/getAssets',
+  //     method: 'GET',
+  //     params: {
+  //       sortBy: $scope.sortBy,
+  //       keyword: keyword
+  //     }
+  //   }).then(function(response){
+  //     $scope.assets = response.data;
+      // if ($scope.assets.length >= 1) {
+      //   $scope.noRecord = false;
+      // }
+      // else {
+      //   $scope.noRecord = true;
+      // }
+  //   });
+  // };
 
   $scope.getAvailable = function(){
-    // console.log("start time:", $scope.startTime);
-    //Thu Jan 01 1970 00:00:00 GMT-0600 (CST)
-    //2016-01-01T06:00:00.000Z
+    $scope.assets = [];
+    badEvents = [];
     var reservationID;
-    var startDateTime = $scope.startDate.toISOString();
-    var endDateTime = $scope.endDate.toISOString();
+    var startDateTime;
+    var endDateTime;
+
+    $scope.noRecord = false;
+    var keyword = '%' + $scope.searchKeyword + '%';
 
     var reservations = ReservationService.data.reservations;
     var events = ReservationService.data.events;
 
-    // console.log("start date/time:", startDateTime);
+    if($scope.startDate !== undefined && $scope.endDate !== undefined){
+      startDateTime = $scope.startDate.toISOString();
+      endDateTime = $scope.endDate.toISOString();
+    }
 
-    //Run through each event to check it's 'status'
-    for(i=0; i<events.length; i++){
-      checkEvents(events[i]);
+    if(startDateTime !== undefined){
+      //Run through each event to check it's 'status'
+      for(i=0; i<events.length; i++){
+        checkEvents(events[i]);
+      }
     }
 
     function checkEvents(event){
@@ -623,6 +630,7 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
       var eventStart = events[i].start_date_time;
       var eventEnd = events[i].end_date_time;
       //check if event conflicts
+
       if(eventStart > startDateTime && eventStart < endDateTime){
         eventStatus = "fail";
       }else if(eventEnd > startDateTime && eventEnd < endDateTime){
@@ -645,14 +653,23 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
     var checkAssets = function(){
       $scope.assets = [];
       var event_list = '"' + badEvents + '"';
+
       $http({
-        url: '/internal/getAvailable',
+        url: '/internal/getAssetsComplex',
         method: 'GET',
-        params: {event_list: event_list
+        params: {event_list: event_list,
+                sortBy: $scope.sortBy,
+                keyword: keyword
         }
       }).then(function(response){
-        for(i=0; i<response.data.length; i++){
-          $scope.assets.push(response.data[i]);
+
+        $scope.assets = response.data;
+
+        if ($scope.assets.length >= 1) {
+          $scope.noRecord = false;
+        }
+        else {
+          $scope.noRecord = true;
         }
       });
     };
@@ -660,7 +677,8 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   };//close $scope.getAvailable
 
 
-  $scope.getAssets();
+  // $scope.getAssets();
+  $scope.getAvailable();
 
   $scope.editAsset = function(asset){
     currentAsset.setAsset(asset);

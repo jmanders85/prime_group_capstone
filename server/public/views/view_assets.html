@@ -22,11 +22,11 @@
         <div class="pl-split__container">
           <div class="pl-field__container pl-split--half">
             <label for="item-name" class="pl-field__label">Item Name</label>
-            <input id="item-name" type="text" ng-model="searchKeyword" class="pl-field--full" ng-change="getAssets()">
+            <input id="item-name" type="text" ng-model="searchKeyword" class="pl-field--full" ng-change="getAvailable()">
           </div>
           <div class="pl-field__container pl-split--half">
             <label for="sort-by" class="pl-field__label">Sort By</label>
-            <select id="sort-by" class="pl-select--full" ng-model="sortBy" ng-change="getAssets()">
+            <select id="sort-by" class="pl-select--full" ng-model="sortBy" ng-change="getAvailable()">
               <option ng-repeat="option in sortOptions">{{option}}</option>
             </select>
           </div>
