@@ -11,7 +11,7 @@
         </div>
         <div class="pl-subsection--border">
           <fieldset>
-            <legend class="pl-field__label">Select Assets</legend>
+            <legend class="pl-field__label">Select Available Items</legend>
             <div class="pl-option" ng-repeat="asset in assets track by $index">
               <input type="checkbox" id="asset-{{asset.id}}" class="pl-option__input" ng-model="asset.selected">
               <label for="asset-{{asset.id}}" class="pl-option__label">{{asset.name}}</label>
