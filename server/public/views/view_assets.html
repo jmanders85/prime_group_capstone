@@ -35,11 +35,12 @@
         </div>
       </form>
     </div>
-    <!-- <div class="pl-subsection--border pl-form-actions">
-      <div class="pl-form-actions__button-container">
-        <button class="pl-form-actions__button pl-button--primary" ng-click="getAssets(); getAvailable()">Search Inventory</button>
+    <div class="em-view-assets-progress-bar pl-progress__container" ng-hide="assets.length">
+      <p class="pl-progress__label">Loading...</p>
+      <div class="pl-progress">
+        <div role="progressbar" class="pl-progress__bar--indeterminate"></div>
       </div>
-    </div> -->
+    </div>
     <div class="em-edit-button pl-subsection--border" ng-repeat="asset in assets">
       <ul class="pl-detail-list">
         <li class="pl-detail-list__pair--emphasis"><strong class="em-list-asset-key pl-detail-list__key">Name</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.name}}</span></li>
