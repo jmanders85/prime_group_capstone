@@ -751,22 +751,19 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
     });
   };
 
-
-
-
   $scope.deleteAsset = function(){
     var deleteConfirm = confirm("You are about to permanantly delete this item from the inventory. Click 'OK' to continue.");
     if (deleteConfirm === true){
     $http.delete('/internal/asset/' + $scope.data.id)
-        .then(function(response){
-            if (response.status === 200) {
-              ReservationService.data.showOverlay = false;
-              $location.path('/view_assets');
-            } else {
-              console.log("error deleting asset");
-            }
+      .then(function(response){
+          if (response.status === 200) {
+            ReservationService.data.showOverlay = false;
+            $location.path('/view_assets');
+          } else {
+            console.log("error deleting asset");
           }
-        );
+        }
+      );
     }
   };
 
@@ -777,8 +774,8 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
 }]);
 
 app.controller('AssetReservationController', ['$scope', '$http', '$location', 'ReservationService', 'currentAsset', function($scope, $http, $location, ReservationService, currentAsset){
-  $scope.data = ReservationService.data;
 
+  $scope.data = ReservationService.data;
 
   $scope.reserveAsset = function(asset){
     currentAsset.setAsset(asset);
@@ -788,8 +785,8 @@ app.controller('AssetReservationController', ['$scope', '$http', '$location', 'R
   $scope.editReservation = function(reservation) {
     ReservationService.data.reservationToEdit = reservation;
     $location.path('edit_reservation');
-
   };
+  
 }]);
 
 
