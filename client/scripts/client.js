@@ -36,11 +36,8 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         url: '/view_assets',
         templateUrl: 'views/view_assets.html',
         controller: 'ViewAssetsController',
-        // views: {
-        //   "new_assets": { template: "kitty" }
-        // }
       })
-      .state('edit_asset', {
+      .state('view_assets.edit_asset', {
         url: '/edit_asset',
         templateUrl: 'views/edit_asset.html',
         controller: 'EditAssetController'
@@ -667,9 +664,10 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
       $http({
         url: '/internal/getAssetsComplex',
         method: 'GET',
-        params: {event_list: event_list,
-                sortBy: $scope.sortBy,
-                keyword: keyword
+        params: {
+          event_list: event_list,
+          sortBy: $scope.sortBy,
+          keyword: keyword
         }
       }).then(function(response){
 
@@ -691,8 +689,8 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   $scope.getAvailable();
 
   $scope.editAsset = function(asset){
+    ReservationService.data.showOverlay = true;
     currentAsset.setAsset(asset);
-    $location.path('edit_asset');
   };
 
 
@@ -729,12 +727,12 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
 
 }]);
 
-app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentAsset', function($scope, $http, $location, currentAsset){
+app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentAsset', 'ReservationService', function($scope, $http, $location, currentAsset, ReservationService){
   $scope.data = currentAsset.currentAsset;
   $scope.categoryList = ["Practice", "Player Equipment", "Game", "Other"]; //***If you change these, change the ones in the NewAssetController
 
   $scope.updateAsset = function(){
-    console.log($scope.data);
+
     $http({
       url: '/internal/updateAsset',
       method: 'POST',
@@ -746,7 +744,10 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
         id: $scope.data.id
       }
     }).then(function(response){
-      $location.path(response.data);
+      if (response.status === 200) {
+        ReservationService.data.showOverlay = false;
+        $location.path('view_assets');
+      }
     });
   };
 
@@ -758,18 +759,20 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
     if (deleteConfirm === true){
     $http.delete('/internal/asset/' + $scope.data.id)
         .then(function(response){
-              if (response.status === 200) {
-                $location.path('/view_assets');
-              } else {
-                console.log("error deleting asset");
-              }
+            if (response.status === 200) {
+              ReservationService.data.showOverlay = false;
+              $location.path('/view_assets');
+            } else {
+              console.log("error deleting asset");
             }
+          }
         );
     }
   };
 
   $scope.goBack = function(){
-    window.history.back();
+    ReservationService.data.showOverlay = false;
+    $location.path('view_assets');
   };
 }]);
 
