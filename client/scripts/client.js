@@ -353,6 +353,11 @@ app.controller('ReservationsController', ['$scope', '$http', '$location',  'Rese
     ReservationService.data.reservationToEdit = reservation;
     $location.path('edit_reservation');
   };
+  $scope.afterToday = function(item) {
+    var itemDate = new Date(item.eventStartTime);
+    var today = new Date();
+    return itemDate > today;
+  };
 
   $scope.filterReservations();
 
@@ -831,7 +836,11 @@ app.controller('AssetReservationController', ['$scope', '$http', '$location', 'R
     ReservationService.data.reservationToEdit = reservation;
     $location.path('edit_reservation');
   };
-
+  $scope.afterToday = function(item) {
+    var itemDate = new Date(item.eventStartTime);
+    var today = new Date();
+    return itemDate > today;
+  };
 }]);
 
 app.controller('CalendarController', function(){
