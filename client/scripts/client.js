@@ -486,6 +486,9 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
 
   $scope.cancel = function() {
     $location.path('reservations');
+    if (resToEditStartDate < today) {
+      $scope.eventsAfterToday.shift();
+    }
   };
 
 }]);
@@ -819,6 +822,7 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
 app.controller('AssetReservationController', ['$scope', '$http', '$location', 'ReservationService', 'currentAsset', function($scope, $http, $location, ReservationService, currentAsset){
 
   $scope.data = ReservationService.data;
+  $scope.noPast = true;
 
   $scope.goBack = function() {
     ReservationService.data.showOverlay = false;
@@ -836,11 +840,29 @@ app.controller('AssetReservationController', ['$scope', '$http', '$location', 'R
     ReservationService.data.reservationToEdit = reservation;
     $location.path('edit_reservation');
   };
+
   $scope.afterToday = function(item) {
     var itemDate = new Date(item.eventStartTime);
     var today = new Date();
     return itemDate > today;
   };
+
+  $scope.showPast = function() {
+    $scope.noPast = false;
+    $scope.afterToday = function(item) {
+      return true;
+    };
+  };
+
+  $scope.hidePast = function() {
+    $scope.noPast = true;
+    $scope.afterToday = function(item) {
+      var itemDate = new Date(item.eventStartTime);
+      var today = new Date();
+      return itemDate > today;
+    };
+  };
+
 }]);
 
 app.controller('CalendarController', function(){

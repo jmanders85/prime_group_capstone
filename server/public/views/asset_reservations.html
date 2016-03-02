@@ -1,7 +1,7 @@
 <div class="pl-centered-container">
   <div class="pl-centered-section">
     <div class="pl-subsection--border">
-      <h2 class="em-heading-all pl-heading--large">Reservations For {{data.assetreservation.name}}</h2>
+      <h2 class="pl-heading--large">Reservations For {{data.assetreservation.name}}</h2>
     </div>
     <div class="em-edit-button pl-subsection--border" ng-repeat="reservation in data.assetreservation | filter: afterToday ">
       <ul class="pl-detail-list">
@@ -14,6 +14,8 @@
     <div class="pl-subsection--border pl-form-actions">
       <div class="pl-form-actions__button-container">
         <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="goBack()">Close</button>
+        <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="showPast()" ng-show="noPast">Show Past Reservations</button>
+        <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="hidePast()" ng-hide="noPast">Hide Past Reservations</button>
         <button class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="reserveAsset(data.assetreservation)">New Reservation</button>
       </div>
     </div>
