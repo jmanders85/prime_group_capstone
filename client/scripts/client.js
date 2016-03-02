@@ -617,6 +617,7 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   $scope.startDate;
   $scope.endDate;
   var badEvents = [];
+  ReservationService.data.showOverlay = false;
   ReservationService.getEvents();
   ReservationService.getAssets();
   ReservationService.getReservations();
@@ -759,7 +760,6 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
       ReservationService.data.assetreservation.name = asset.name;
       ReservationService.data.assetreservation.id = asset.id;
 
-      $location.path('asset_reservations');
     });
   };
 
