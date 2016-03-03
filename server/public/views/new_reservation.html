@@ -6,7 +6,7 @@
       <form name="selectEvent">
         <div class="pl-subsection--border">
           <label for="select-event" class="pl-field__label">Select Event</label>
-          <select id="select-event" class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in data.eventsAfterToday track by event.id" ng-change="getAvailable()">
+          <select name="event" id="select-event" class="pl-select--full" ng-model="selectedEvent" ng-options="event as event.title for event in data.eventsAfterToday track by event.id" ng-change="getAvailable()" required="">
           </select>
         </div>
         <div class="pl-subsection--border">
@@ -28,12 +28,15 @@
         </div>
         <div class="pl-subsection--border">
           <label for="reserved-by" class="pl-field__label">Reserved By:</label>
-          <input id="reserved-by" type="text" class="pl-field--full" ng-model="reservedBy">
+          <input name="reservedBy" id="reserved-by" type="text" class="pl-field--full" ng-model="reservedBy" required="">
+          <div ng-show="selectEvent.$submitted || selectEvent.reservedBy.$touched">
+            <div ng-show="selectEvent.reservedBy.$error.required">*Reserved For  Required*</div>
+          </div>
         </div>
         <div class="pl-subsection--border pl-form-actions">
           <div class="pl-form-actions__button-container">
             <button class="em-button-newReservation pl-form-actions__button pl-button" ng-click="cancel()">Cancel</button>
-            <button class="em-button-newReservation pl-form-actions__button pl-button--primary" ng-click="createReservation()" value="Create Reservation">Submit</button>
+            <button type="submit" ng-disabled="selectEvent.reservedBy.$error.required || selectEvent.event.$error.required" class="em-button-newReservation pl-form-actions__button pl-button--primary" ng-click="createReservation()" value="Create Reservation">Submit</button>
         </div>
       </form>
     </div>
