@@ -37,10 +37,11 @@ router.post('/updateAsset', function(request, response){
       name: request.query.name,
       description: request.query.description,
       category: request.query.category,
-      notes: request.query.notes
+      notes: request.query.notes,
+      img_path: request.query.imgPath
     };
 
-    var query = client.query('UPDATE assets SET name=$1, description=$2, category=$3, notes=$4 WHERE id=$5', [asset.name, asset.description, asset.category, asset.notes, asset.id]);
+    var query = client.query('UPDATE assets SET name=$1, description=$2, category=$3, notes=$4, img_path=$5 WHERE id=$6', [asset.name, asset.description, asset.category, asset.notes, asset.img_path, asset.id]);
 
 
     query.on('end', function(){
@@ -137,10 +138,8 @@ router.get('/getAvailable', function(request, response){
     if(request.query.event_list === '""'){
       query = client.query('SELECT * FROM assets ORDER BY name');
     }else{
-      query = client.query('SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets EXCEPT SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id JOIN reservations ON assets_reservations.reservation_id = reservations.id WHERE reservations.event_id IN (' + event_list + ') ORDER BY name');
+      query = client.query('SELECT assets.name, assets.id, assets.description, assets.category, assets.notes, assets.img_path FROM assets EXCEPT SELECT assets.name, assets.id, assets.description, assets.category, assets.notes, assets.img_path FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id JOIN reservations ON assets_reservations.reservation_id = reservations.id WHERE reservations.event_id IN (' + event_list + ') ORDER BY name');
     }
-
-    // console.log(query);
 
     query.on('row', function(row){
       results.push(row);
@@ -178,10 +177,8 @@ router.get('/getAssetsComplex', function(request, response){
     if(request.query.event_list === '""'){
       query = client.query('SELECT * FROM assets WHERE LOWER(name) LIKE LOWER($1) ORDER BY ' + orderBy + ';', [keyword]);
     }else{
-      query = client.query('SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets WHERE LOWER(assets.name) LIKE LOWER($1) EXCEPT SELECT assets.name, assets.id, assets.description, assets.category, assets.notes FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id JOIN reservations ON assets_reservations.reservation_id = reservations.id WHERE reservations.event_id IN (' + event_list + ') ORDER BY ' + orderBy + ';', [keyword]);
+      query = client.query('SELECT assets.name, assets.id, assets.description, assets.category, assets.notes, assets.img_path FROM assets WHERE LOWER(assets.name) LIKE LOWER($1) EXCEPT SELECT assets.name, assets.id, assets.description, assets.category, assets.notes, assets.img_path FROM assets JOIN assets_reservations ON assets.id = assets_reservations.asset_id JOIN reservations ON assets_reservations.reservation_id = reservations.id WHERE reservations.event_id IN (' + event_list + ') ORDER BY ' + orderBy + ';', [keyword]);
     }
-
-    // console.log(query);
 
     query.on('row', function(row){
       results.push(row);

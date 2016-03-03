@@ -511,7 +511,6 @@ app.controller('NewAssetController', ['$scope', '$http', '$location', 'Upload', 
           category: $scope.data.category,
           notes: $scope.data.notes,
           imgPath: response.data.path
-
         }
       }).then(function(response){
         if (response.status === 200) {
@@ -785,28 +784,57 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
 
 }]);
 
-app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentAsset', 'ReservationService', function($scope, $http, $location, currentAsset, ReservationService){
+app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentAsset', 'ReservationService', 'Upload', function($scope, $http, $location, currentAsset, ReservationService, Upload){
   $scope.data = currentAsset.currentAsset;
+
   $scope.categoryList = ["Practice", "Player Equipment", "Game", "Other"]; //***If you change these, change the ones in the NewAssetController
 
   $scope.updateAsset = function(){
 
-    $http({
-      url: '/internal/updateAsset',
-      method: 'POST',
-      params: {
-        name: $scope.data.name,
-        description: $scope.data.description,
-        category: $scope.data.category,
-        notes: $scope.data.notes,
-        id: $scope.data.id
-      }
-    }).then(function(response){
-      if (response.status === 200) {
-        ReservationService.data.showOverlay = false;
-        $location.path('view_assets');
-      }
-    });
+    if ($scope.upload.file === undefined) {
+      Upload.upload({
+        url: '/uploads',
+        method: 'post',
+        data: $scope.upload
+      }).then(function(response) {
+        $http({
+          url: '/internal/updateAsset',
+          method: 'POST',
+          params: {
+            name: $scope.data.name,
+            description: $scope.data.description,
+            category: $scope.data.category,
+            notes: $scope.data.notes,
+            id: $scope.data.id,
+            imgPath: response.data.path
+          }
+        }).then(function(response){
+          if (response.status === 200) {
+            ReservationService.data.showOverlay = false;
+            ReservationService.getAssets();
+            $location.path('view_assets');
+          }
+        });
+      });
+    } else {
+      $http({
+        url: '/internal/updateAsset',
+        method: 'POST',
+        params: {
+          name: $scope.data.name,
+          description: $scope.data.description,
+          category: $scope.data.category,
+          notes: $scope.data.notes,
+          id: $scope.data.id
+        }
+      }).then(function(response){
+        if (response.status === 200) {
+          ReservationService.data.showOverlay = false;
+          ReservationService.getAssets();
+          $location.path('view_assets');
+        }
+      });
+    }
   };
 
   $scope.deleteAsset = function(){
@@ -969,6 +997,7 @@ app.factory('currentAsset', [function(){
     currentAsset.description = asset.description;
     currentAsset.category = asset.category;
     currentAsset.notes = asset.notes;
+    currentAsset.img_path = asset.img_path;
   };
 
   var clearCurrentAsset = function(){
