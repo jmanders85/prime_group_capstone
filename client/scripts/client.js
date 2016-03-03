@@ -327,6 +327,12 @@ app.controller('ReservationsController', ['$scope', '$http', '$location',  'Rese
       $scope.eventsList.push($scope.data.eventsAfterToday[i]);
   }
 
+  $scope.afterToday = function(item) {
+    var itemDate = new Date(item.eventStartTime);
+    var today = new Date();
+    return itemDate > today;
+  };
+
   $scope.filterReservations = function(){
     $scope.reservations = [];
 
@@ -618,6 +624,7 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
   $scope.startDate;
   $scope.endDate;
   var badEvents = [];
+  ReservationService.data.showOverlay = false;
   ReservationService.getEvents();
   ReservationService.getAssets();
   ReservationService.getReservations();
@@ -760,7 +767,6 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
       ReservationService.data.assetreservation.name = asset.name;
       ReservationService.data.assetreservation.id = asset.id;
 
-      $location.path('asset_reservations');
     });
   };
 
