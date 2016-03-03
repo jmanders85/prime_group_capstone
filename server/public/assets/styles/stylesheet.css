@@ -30,7 +30,8 @@
   margin-bottom: 20px; }
 
 .em-button-login {
-  margin-left: 23%; }
+  display: block;
+  margin: auto; }
 
 .em-heading-home, .em-button-home {
   width: 100%;
@@ -74,9 +75,54 @@
   margin-bottom: 20px; }
 
 .em-calendar__container {
-  max-width: 100%;
   padding-left: 1.7143rem;
-  padding-right: 1.7143rem;
-  width: 596px; }
+  padding-right: 1.7143rem; }
+
+.em-calendar__section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; }
+
+.em-calendar__event {
+  background: white;
+  border-color: #d4d9dc;
+  border-style: solid;
+  margin-bottom: 1.2rem;
+  margin-top: 1.7143rem;
+  border-radius: 2px;
+  border-width: 1px;
+  padding: 1.7143rem .8571rem;
+  width: 80%; }
+
+.em-calendar__event--same-date {
+  margin-top: 0; }
+
+.em-calendar__date {
+  padding-right: 10px;
+  width: 20%;
+  text-align: center; }
+
+@media screen and (min-width: 480px) {
+  .em-calendar__date {
+    width: 10%; }
+
+  .em-calendar__event {
+    width: 90%; } }
+.em-calendar__date-num {
+  display: block;
+  font-size: 25px;
+  font-weight: bold; }
+
+.em-calendar__date-weekday {
+  display: block;
+  font-size: 15px; }
+
+.em-heading__large {
+  text-align: center;
+  font-weight: 400;
+  font-size: 1.7411rem; }
+
+.em-heading__small {
+  color: gba(35, 40, 43, 0.7); }
 
 /*# sourceMappingURL=stylesheet.css.map */

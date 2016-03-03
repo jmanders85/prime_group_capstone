@@ -236,7 +236,7 @@ app.controller('ReserveFromAssetsController', ['$scope', '$http', '$location',  
 }]);
 
 
-app.controller('NewReservationController', ['$scope', '$http', '$location',  'ReservationService',  function($scope, $http, $location, ReservationService) {
+app.controller('NewReservationController', ['$scope', '$http', '$location', 'ReservationService', function($scope, $http, $location, ReservationService) {
 
   ReservationService.getEvents();
   ReservationService.getAssets();
@@ -312,7 +312,7 @@ app.controller('NewReservationController', ['$scope', '$http', '$location',  'Re
 
 }]);
 
-app.controller('ReservationsController', ['$scope', '$http', '$location',  'ReservationService', function($scope, $http, $location, ReservationService){
+app.controller('ReservationsController', ['$scope', '$http', '$location', 'ReservationService', function($scope, $http, $location, ReservationService){
 
   $scope.noRecord = false;
   $scope.all  = {id: 0, title: "All Events"};
@@ -834,9 +834,73 @@ app.controller('AssetReservationController', ['$scope', '$http', '$location', 'R
 
 }]);
 
-app.controller('CalendarController', function(){
+app.controller('CalendarController', ['$scope', '$http', '$location', 'ReservationService', '$filter', function($scope, $http, $location, ReservationService, $filter){
+  $scope.noRecord = false;
+  $scope.all  = {id: 0, title: "All Events"};
+  $scope.eventsList = [$scope.all];
+  ReservationService.getAssets();
+  ReservationService.getEvents();
+  $scope.data = ReservationService.data;
+  $scope.selectedEvent = $scope.all;
+  $scope.reservations = [];
 
-});
+  for(i = 0; i < $scope.data.eventsAfterToday.length; i++){
+      $scope.eventsList.push($scope.data.eventsAfterToday[i]);
+  }
+
+  $scope.filterReservations = function(){
+    $scope.reservations = [];
+
+    if($scope.selectedEvent.id === 0){
+      $scope.reservations = ReservationService.data.reservations;
+      console.log($scope.reservations);
+    }else{
+        for(i = 0; i < ReservationService.data.reservations.length; i++){
+          if(ReservationService.data.reservations[i].event_id == $scope.selectedEvent.id){
+            $scope.reservations.push(ReservationService.data.reservations[i]);
+          }
+        }
+    }
+    if ($scope.reservations.length >= 1) {
+      $scope.noRecord = false;
+    }
+    else {
+      $scope.noRecord = true;
+    }
+  };
+
+  $scope.editReservation = function(reservation) {
+    ReservationService.data.reservationToEdit = reservation;
+    $location.path('edit_reservation');
+  };
+
+  $scope.dateFilter = function(currentDate, previousDate){
+    var newCurrentDate = $filter('date')(currentDate, 'dd/MM/yyyy');
+    var newPreviousDate = $filter('date')(previousDate, 'dd/MM/yyyy');
+    if(newCurrentDate == newPreviousDate){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  $scope.monthFilter = function(MonthDate, previousMonthDate){
+    var newMonthDate = $filter('date')(MonthDate, 'MMM');
+    var newPreviousMonthDate = $filter('date')(previousMonthDate, 'MMM');
+    console.log(newMonthDate);
+    console.log(newPreviousMonthDate);
+    if(newMonthDate == newPreviousMonthDate){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  $scope.filterReservations();
+
+}]);
 
 
 
