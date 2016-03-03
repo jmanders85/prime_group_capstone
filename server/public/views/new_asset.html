@@ -4,11 +4,11 @@
       <h2 class="em-heading-all pl-heading--large">Add New Item to Inventory</h2>
     </div>
     <div class="pl-subsection--border">
-      <form>
+      <form name="form">
         <div class="pl-split__container">
           <div class="pl-field__container pl-split--half">
             <label for="asset-name" class="pl-field__label">Name:</label>
-            <input id="asset-name" name="name" type="text" class="pl-field--full" ng-model="data.name">
+            <input id="asset-name" name="name" type="text" class="pl-field--full" ng-model="data.name" required="">
           </div>
           <div class="pl-field__container pl-split--half">
             <label for="asset-category" class="pl-field__label">Category</label>
@@ -17,6 +17,11 @@
             </select>
           </div>
         </div>
+
+        <div ng-show="form.$submitted || form.name.$touched">
+          <div ng-show="form.name.$error.required">*Item Name Required*</div>
+        </div>
+
         <div class="pl-field__container">
           <label for="asset-description" class="pl-field__label">Item Description</label>
           <input id="asset-description" name="description" type="text" class="pl-field pl-field--full" ng-model="data.description">
@@ -34,7 +39,7 @@
     <div class="pl-subsection--border pl-form-actions">
       <div class="pl-form-actions__button-container">
         <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="closeOverlay()">Cancel</button>
-        <button class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="submitAsset()" ui-sref="view_assets({new:true})" ui-sref-opts="{reload: true, notify: true}">Submit</button>
+        <button type="submit" ng-disabled="form.name.$error.required" class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="submitAsset()" ui-sref="view_assets({new:true})" ui-sref-opts="{reload: true, notify: true}">Submit</button>
       </div>
     </div>
   </div>
