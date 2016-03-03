@@ -3,7 +3,7 @@
     <div class="pl-subsection--border">
       <a class="em-add-button-assets pl-button--primary" ui-sref="view_assets.new_asset" ui-sref-opts="{location: replace}" ng-click="data.showOverlay = true">Add item</a>
       <div class="pl-overlay" ng-if="data.showOverlay">
-        <div class="pl-centered-container">
+        <div class="pl-overlay__content pl-centered-container">
           <div ui-view></div>
         </div>
       </div>

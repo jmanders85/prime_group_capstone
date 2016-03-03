@@ -1,1 +1,19 @@
-<div class="em-calendar__container">"working?"</div>
+<div class="em-calendar__container">
+  <div class="em-calendar__section" ng-repeat="event in data.events">
+    <div class="em-calendar__date" ng-if="dateFilter(event.start_date_time, data.events[$index - 1].start_date_time)">
+      <span class="em-calendar__date-num" ng-if="monthFilter(event.start_date_time, data.events[$index - 1].start_date_time)">{{event.start_date_time | date: 'MMM'}}</span>
+      <span class="em-calendar__date-weekday">{{event.start_date_time | date: 'd EEE'}}</span>
+    </div>
+    <div class="em-calendar__event" ng-class="{ 'em-calendar__event--same-date' : !dateFilter(event.start_date_time, data.events[$index - 1].start_date_time)}">
+      <p>{{event.title}} {{event.start_date_time | date: 'h:mm'}}{{event.end_date_time | date: '- h:mm a'}}</p>
+      <p>
+        <span>
+          {{event.start_date_time | date: 'h:mm'}}
+        </span>
+        <span>
+          {{event.end_date_time | date: '- h:mm a'}}
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
