@@ -38,7 +38,7 @@
     </div>
     <div class="pl-subsection--border pl-form-actions">
       <div class="pl-form-actions__button-container">
-        <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="closeOverlay()">Cancel</button>
+        <button class="em-button-newAsset pl-form-actions__button pl-button" ng-click="closeOverlay()" ui-sref="view_assets({new:true})" ui-sref-opts="{reload: true, notify: true}">Cancel</button>
         <button type="submit" ng-disabled="form.name.$error.required" class="em-button-newAsset pl-form-actions__button pl-button--primary" ng-click="submitAsset()" ui-sref="view_assets({new:true})" ui-sref-opts="{reload: true, notify: true}">Submit</button>
       </div>
     </div>

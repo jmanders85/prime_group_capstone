@@ -15,7 +15,7 @@
         </select>
       </div>
     </form>
-    <div class="em-edit-button pl-subsection--border" ng-repeat="reservation in reservations | filter: afterToday ">
+    <div class="em-edit-button pl-subsection--border" ng-repeat="reservation in reservations | filter: afterToday | orderBy: '+eventStartTime'">
       <ul class="pl-detail-list">
         <li class="pl-detail-list__pair--emphasis"><strong class="em-list-asset-key pl-detail-list__key">Reserver</strong><span class="em-list-asset-value pl-detail-list__value">{{reservation.reserved_by}}</span></li>
         <li class="pl-detail-list__pair" ng-repeat="asset in reservation.assets"><strong class="em-list-asset-key pl-detail-list__key" ng-show="$index === 0">Items</strong><strong class="em-list-asset-key pl-detail-list__key" ng-hide="$index === 0">&zwnj;</strong><span class="em-list-asset-value pl-detail-list__value" >{{asset.name}}</span></li>

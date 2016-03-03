@@ -45,18 +45,9 @@
       <ul class="pl-detail-list">
 
 
-
-
-
-
         <li>
-          <p>{{upload.name}}</p>
-          <a ng-href="{{upload.file.path + '/' + upload.file.originalname}}">{{upload.file.originalname}}</a>
-          <img ng-src="{{asset.img_path}}" width="120" height="100">
+          <img ng-if="asset.img_path" ng-src="{{asset.img_path}}" width="120" height="100">
         </li>
-
-
-
 
 
 
