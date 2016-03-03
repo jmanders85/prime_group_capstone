@@ -1,4 +1,4 @@
-var app = angular.module('sportApp', ['ui.router', 'svgSprites']);
+var app = angular.module('sportApp', ['ui.router', 'svgSprites', 'ngFileUpload']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider){
   $stateProvider
@@ -490,32 +490,45 @@ app.controller('EditReservationController', ['ReservationService', '$http', '$sc
 
 }]);
 
-app.controller('NewAssetController', ['$scope', '$http', '$location', 'ReservationService', function($scope, $http, $location, ReservationService){
+app.controller('NewAssetController', ['$scope', '$http', '$location', 'Upload', 'ReservationService', function($scope, $http, $location, Upload, ReservationService){
   $scope.data = {};
   $scope.categoryList = ["Practice", "Player Equipment", "Game", "Other"]; //***If you change these, change the ones in the EditAssetController!
 
   $scope.submitAsset = function(){
-
-    $http({
-      url: '/internal/newAsset',
-      method: 'POST',
-      params: {
-        name: $scope.data.name,
-        description: $scope.data.description,
-        category: $scope.data.category,
-        notes: $scope.data.notes
-      }
+    Upload.upload({
+      url: '/uploads',
+      method: 'post',
+      data: $scope.upload
     }).then(function(response){
-      if (response.status === 200) {
+      $http({
+        url: '/internal/newAsset',
+        method: 'POST',
+        params: {
+          name: $scope.data.name,
+          description: $scope.data.description,
+          category: $scope.data.category,
+          notes: $scope.data.notes,
+          imgPath: response.data.path
+
+        }
+      }).then(function(response){
+        if (response.status === 200) {
+          ReservationService.data.showOverlay = false;
+          $location.path('view_assets');
+        }
+      });
+
+      $scope.closeOverlay = function() {
         ReservationService.data.showOverlay = false;
         $location.path('view_assets');
-      }
+      };
+      console.log(response.data);
     });
-  };
 
-  $scope.closeOverlay = function() {
-    ReservationService.data.showOverlay = false;
-    $location.path('view_assets');
+  $http.get('/uploads').then(function(response){
+    console.log(response.data);
+    $scope.uploads = response.data;
+  })
   };
 
 }]);
@@ -669,7 +682,7 @@ app.controller('ViewAssetsController', ['$scope', '$http', '$location', 'current
 
     if(startDateTime !== undefined){
       //Run through each event to check it's 'status'
-      for(i=0; i<events.length; i++){
+      for(i=0; i<events.length; i++){// no var in front of the i?
         checkEvents(events[i]);
       }
     }
@@ -814,6 +827,15 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
     ReservationService.data.showOverlay = false;
     $location.path('view_assets');
   };
+
+
+
+
+
+
+
+
+
 }]);
 
 app.controller('AssetReservationController', ['$scope', '$http', '$location', 'ReservationService', 'currentAsset', function($scope, $http, $location, ReservationService, currentAsset){

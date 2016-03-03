@@ -43,6 +43,23 @@
     </div>
     <div class="em-edit-button pl-subsection--border" ng-repeat="asset in assets">
       <ul class="pl-detail-list">
+
+
+
+
+
+
+        <li>
+          <p>{{upload.name}}</p>
+          <a ng-href="{{upload.file.path + '/' + upload.file.originalname}}">{{upload.file.originalname}}</a>
+          <img ng-src="{{asset.img_path}}" width="120" height="100">
+        </li>
+
+
+
+
+
+
         <li class="pl-detail-list__pair--emphasis"><strong class="em-list-asset-key pl-detail-list__key">Name</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.name}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Description</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.description}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Category</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.category}}</span></li>
@@ -59,7 +76,7 @@
       <svg class="pl-alert-panel__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-info-circle-o"></use></svg>
       <div class="pl-alert-panel__content">
         <h4 class="pl-alert-panel__title">Not Available</h4>
-        <p>There are no assets avaialbe that meet that description</p>
+        <p>There are no assets available that meet that description</p>
       </div>
     </div>
   </div>

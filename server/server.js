@@ -1,6 +1,18 @@
 var express = require('express');
 var passport = require('passport');
-var bodyParser = require('body-parser');
+
+
+
+
+var bodyParser = require('body-parser');//add
+var logger = require('morgan');//add
+var uploads = require('./routes/uploads');//add
+
+
+
+
+
+
 
 var OAuth2Strategy = require('passport-oauth2');
 
@@ -28,11 +40,43 @@ passport.use('oauth', new OAuth2Strategy(
   }
 ));
 
+
+
+
+
+app.use(logger('dev'));//add
+app.use(bodyParser.urlencoded({extended: false}));//add
+
+
+
+
+
+
+
 app.use(bodyParser.json());
 app.use(express.static('server/public'));
 
+
+app.use('/uploads', uploads);//add
+app.use('/uploads', express.static('uploads'));//add
+
+
 app.use('/internal', internal);
 app.use('/', index);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var server = app.listen(3000, function() {
   var port = server.address().port;

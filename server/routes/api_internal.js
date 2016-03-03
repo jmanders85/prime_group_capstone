@@ -10,10 +10,11 @@ router.post('/newAsset', function(request, response){
       name: request.query.name,
       description: request.query.description,
       category: request.query.category,
-      notes: request.query.notes
+      notes: request.query.notes,
+      imgPath: request.query.imgPath//add path here
     };
 
-    var query = client.query('INSERT INTO assets (name, description, category, notes) VALUES ($1, $2, $3, $4)', [newAsset.name, newAsset.description, newAsset.category, newAsset.notes]);
+    var query = client.query('INSERT INTO assets (name, description, category, notes, img_path) VALUES ($1, $2, $3, $4, $5)', [newAsset.name, newAsset.description, newAsset.category, newAsset.notes, newAsset.imgPath]);
 
 
     query.on('end', function(){
