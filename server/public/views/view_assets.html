@@ -42,22 +42,15 @@
       </div>
     </div>
     <div class="em-edit-button pl-subsection--border" ng-repeat="asset in assets">
-      <ul class="pl-detail-list">
-
-
-        <li ng-if="asset.img_path">
-          <img ng-src="{{asset.img_path}}" width="120" height="100">
-        </li>
-
-
-
+      <img class="em-asset__image" ng-if="asset.img_path" ng-src="{{asset.img_path}}" width="120" height="100">
+      <ul ng-class="{'em-asset__list': asset.img_path}" class="pl-detail-list">
         <li class="pl-detail-list__pair--emphasis"><strong class="em-list-asset-key pl-detail-list__key">Name</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.name}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Description</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.description}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Category</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.category}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Notes</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.notes}}</span></li>
       </ul>
       <button ui-sref="view_assets.edit_asset" ui-sref-opts="{location: replace}" ng-click="editAsset(asset)" class="em-list-asset-button pl-button--small pl-button">
-        <svg class="pl-icon--left"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-pencil"></use></svg>Edit
+        <svg class="pl-icon--left"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-pencil"></use></svg> Edit
       </button>
       <button ui-sref="view_assets.asset_reservations" ui-sref-opts="{location: replace}" ng-click="viewReservations(asset)" class="em-list-asset-button-view-res pl-button--small pl-button">View Reservations</button>
     </div>

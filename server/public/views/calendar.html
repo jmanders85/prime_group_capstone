@@ -1,19 +1,17 @@
 <div class="em-calendar__container">
-  <div class="em-calendar__section" ng-repeat="event in data.events">
-    <div class="em-calendar__date" ng-if="dateFilter(event.start_date_time, data.events[$index - 1].start_date_time)">
-      <span class="em-calendar__date-num" ng-if="monthFilter(event.start_date_time, data.events[$index - 1].start_date_time)">{{event.start_date_time | date: 'MMM'}}</span>
-      <span class="em-calendar__date-weekday">{{event.start_date_time | date: 'd EEE'}}</span>
+  <div class="em-calendar__nav"></div>
+  <div class="em-calendar__section" ng-repeat="reservation in reservations | orderBy:'-eventStartTime':true | filter:afterToday">
+    <div class="em-calendar__date" ng-if="dateFilter(reservation.eventStartTime, reservations[$index - 1].eventStartTime)">
+      <span class="em-calendar__date-num">{{reservation.eventStartTime | date: 'MMM'}}</span>
+      <span class="em-calendar__date-weekday">{{reservation.eventStartTime | date: 'd EEE'}}</span>
     </div>
-    <div class="em-calendar__event" ng-class="{ 'em-calendar__event--same-date' : !dateFilter(event.start_date_time, data.events[$index - 1].start_date_time)}">
-      <p>{{event.title}} {{event.start_date_time | date: 'h:mm'}}{{event.end_date_time | date: '- h:mm a'}}</p>
-      <p>
-        <span>
-          {{event.start_date_time | date: 'h:mm'}}
-        </span>
-        <span>
-          {{event.end_date_time | date: '- h:mm a'}}
-        </span>
-      </p>
+    <div class="em-calendar__event" ng-class="{ 'em-calendar__event--same-date' : !dateFilter(reservation.eventStartTime, reservations[$index - 1].eventStartTime)}">
+      <div class="em-calendar__event--time">
+        <p>{{reservation.eventStartTime | date: 'h:mm'}}{{reservation.eventEndTime | date: '- h:mm a'}}</p>
+      </div>
+      <div class="em-calendar__event--info">
+        <p>{{reservation.eventTitle}}</p>
+      </div>
     </div>
   </div>
 </div>
