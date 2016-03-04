@@ -1060,7 +1060,30 @@ app.factory('ReservationService', ['$http', function($http){
             data.eventsAfterToday.push(response.data.events[i]);
           }
         }
-        getReservations();
+        $http.get('internal/getReservations').then(function (response) {
+          data.reservations = response.data;
+
+          for (var i = 0; i < data.reservations.length; i++) {
+            var thisRes = data.reservations[i];
+            var eventId = thisRes.event_id;
+
+            for (var j = 0; j < data.events.length; j++) {
+              var thisEvent = data.events[j];
+              if (parseInt(eventId) === thisEvent.id) {
+                thisRes.eventTitle = thisEvent.title;
+                thisRes.eventStartTime = thisEvent.start_date_time;
+                thisRes.eventEndTime = thisEvent.end_date_time;
+                break;
+              }
+            }
+          }
+
+          data.reservations.sort(function(a,b){
+            var aDate = new Date(a.eventStartTime);
+            var bDate = new Date(b.eventStartTime);
+            return aDate - bDate;
+          });
+        });
       });
     });
 
