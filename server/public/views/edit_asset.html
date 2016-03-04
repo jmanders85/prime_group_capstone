@@ -25,6 +25,11 @@
             <label for="asset-additional-notes" class="pl-field__label">Additional Notes:</label>
             <textarea id="asset-additional-notes" class="pl-field--full" ng-model="data.notes"></textarea>
           </div>
+          <br/>
+          <div>
+            <input type="file" name="file" id="file" ng-model="upload.file" ngf-select ngf-max-size="25MB" required/>
+            <img ng-if="data.img_path" ng-hide="upload" ng-src="{{data.img_path}}" width="120" height="100">
+          </div>
         </form>
       </div>
       <div class="pl-subsection--border pl-form-actions">
