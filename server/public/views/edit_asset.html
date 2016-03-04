@@ -27,8 +27,8 @@
           </div>
           <br/>
           <div>
-            <input type="file" name="file" id="file" ng-model="upload.file" ngf-select ngf-max-size="25MB" required/>
-            <img ng-if="data.img_path" ng-hide="upload" ng-src="{{data.img_path}}" width="120" height="100">
+            <img class="em-img__edit-asset" ng-if="data.img_path" ng-hide="upload" ng-src="{{data.img_path}}" width="120" height="100">
+            <button class="pl-button--small" type="file" name="file" id="file" ng-model="upload.file" ngf-select ngf-max-size="25MB" required>upload</button>
           </div>
         </form>
       </div>
