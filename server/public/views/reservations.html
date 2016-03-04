@@ -1,12 +1,8 @@
 <div class="pl-centered-container">
   <div class="pl-centered-section">
     <div class="pl-subsection--border">
-      <h2 class="pl-heading--xlarge">Reservations</h2>
-    </div>
-    <div class="pl-subsection--border pl-form-actions">
-      <div class="pl-form-actions__button-container">
-        <button class="em-button-newAsset pl-form-actions__button pl-button--primary" ui-sref="new_reservation">New Reservation</button>
-      </div>
+      <a class="em-button-new-reservation pl-button--primary" ui-sref="new_reservation">add inventory</a>
+      <h2 class="em-heading-reservation pl-heading--large">Reservations</h2>
     </div>
     <form>
       <div class="pl-subsection--border">
@@ -15,12 +11,20 @@
         </select>
       </div>
     </form>
-    <div class="em-edit-button pl-subsection--border" ng-repeat="reservation in reservations | filter: afterToday ">
-      <ul class="pl-detail-list">
+    <div class="em-edit-button pl-subsection--border" ng-repeat="reservation in reservations | filter: afterToday | orderBy:'-eventStartTime':true">
+      <div class="em-calendar__date">
+        <span class="em-calendar__date--month" ng-repeat="event in data.events | filter: {'id': reservation.event_id}">
+          {{event.start_date_time | date: 'MMM'}}
+        </span></br>
+        <span class="em-calendar__date--week-and-day" ng-repeat="event in data.events | filter: {'id': reservation.event_id}">
+          {{event.start_date_time | date: 'd EEE'}}
+        </span>
+      </div>
+      <ul class="em-calendar__ul-list pl-detail-list">
         <li class="pl-detail-list__pair--emphasis"><strong class="em-list-asset-key pl-detail-list__key">Reserver</strong><span class="em-list-asset-value pl-detail-list__value">{{reservation.reserved_by}}</span></li>
         <li class="pl-detail-list__pair" ng-repeat="asset in reservation.assets"><strong class="em-list-asset-key pl-detail-list__key" ng-show="$index === 0">Items</strong><strong class="em-list-asset-key pl-detail-list__key" ng-hide="$index === 0">&zwnj;</strong><span class="em-list-asset-value pl-detail-list__value" >{{asset.name}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Event</strong><span class="em-list-asset-value pl-detail-list__value" ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.title}}</span></li>
-        <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Time</strong><span class="em-list-asset-value pl-detail-list__value" ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.start_date_time | date: 'short'}}</span></li>
+        <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Time</strong><span class="em-list-asset-value pl-detail-list__value" ng-repeat="event in data.events | filter: {'id': reservation.event_id}">{{event.start_date_time | date: 'h:mm'}}{{event.end_date_time | date: ' - h:mm a'}}</span></li>
         <button ng-click="editReservation(reservation)" class="em-list-asset-button pl-button--small pl-button">Edit</button>
       </ul>
     </div>
