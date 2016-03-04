@@ -58,6 +58,10 @@
   text-align: center;
 }
 
+.em-calendar-home__ul-list{
+  display: inline-block;
+  width: 80%;
+}
 
 ///////////////////////////////
 // Assets page
@@ -144,6 +148,15 @@
     display: block;
     margin: auto;
   }
+}
+
+/////////////////////////////////
+// View Asset Reservation
+/////////////////////////////////
+
+.em-calendar-asset-reservations__ul-list{
+  display: inline-block;
+  width: 80%;
 }
 
 /////////////////////////////////

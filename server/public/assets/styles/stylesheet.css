@@ -37,6 +37,10 @@
   width: 100%;
   text-align: center; }
 
+.em-calendar-home__ul-list {
+  display: inline-block;
+  width: 80%; }
+
 .em-button-asset {
   width: 100%;
   text-align: center; }
@@ -93,6 +97,10 @@
     float: none;
     display: block;
     margin: auto; } }
+.em-calendar-asset-reservations__ul-list {
+  display: inline-block;
+  width: 80%; }
+
 .em-img__edit-asset {
   display: block;
   margin: auto; }
