@@ -42,8 +42,8 @@
       </div>
     </div>
     <div class="em-edit-button pl-subsection--border" ng-repeat="asset in assets">
-      <img ng-if="asset.img_path" ng-src="{{asset.img_path}}" width="120" height="100">
-      <ul class="pl-detail-list">
+      <img class="em-asset__image" ng-if="asset.img_path" ng-src="{{asset.img_path}}" width="120" height="100">
+      <ul ng-class="{'em-asset__list': asset.img_path}" class="pl-detail-list">
         <li class="pl-detail-list__pair--emphasis"><strong class="em-list-asset-key pl-detail-list__key">Name</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.name}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Description</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.description}}</span></li>
         <li class="pl-detail-list__pair"><strong class="em-list-asset-key pl-detail-list__key">Category</strong><span class="em-list-asset-value pl-detail-list__value">{{asset.category}}</span></li>
