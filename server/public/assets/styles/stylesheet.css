@@ -74,6 +74,29 @@
   margin-top: 20px;
   margin-bottom: 20px; }
 
+.em-asset__image {
+  float: left; }
+
+.em-asset__list {
+  display: inline-block;
+  min-width: 50%; }
+
+@media screen and (max-width: 626px) {
+  .em-asset__list {
+    width: 50%; } }
+@media screen and (max-width: 600px) {
+  .em-asset__list {
+    width: 100%;
+    display: block; }
+
+  .em-asset__image {
+    float: none;
+    display: block;
+    margin: auto; } }
+.em-img__edit-asset {
+  display: block;
+  margin: auto; }
+
 .em-button-new-reservation {
   float: right; }
 
