@@ -83,7 +83,7 @@
 
 .em-asset__list {
   display: inline-block;
-  min-width: 50%; }
+  width: 50%; }
 
 @media screen and (max-width: 626px) {
   .em-asset__list {
@@ -108,6 +108,10 @@
 .em-button-new-reservation {
   float: right; }
 
+@media screen and (max-width: 400px) {
+  .em-button-new-reservation {
+    display: block;
+    margin: auto; } }
 .em-heading-reservation {
   margin: 0; }
 
