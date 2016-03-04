@@ -57,11 +57,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         templateUrl: 'views/asset_reservations.html',
         controller: 'AssetReservationController'
       })
-      .state('calendar', {
-        url: '/calendar',
-        templateUrl: 'views/calendar.html',
-        controller: 'CalendarController'
-      });
 
   $locationProvider.html5Mode(true);
 }]);
@@ -864,73 +859,81 @@ app.controller('AssetReservationController', ['$scope', '$http', '$location', 'R
 
 }]);
 
-app.controller('CalendarController', ['$scope', '$http', '$location', 'ReservationService', '$filter', function($scope, $http, $location, ReservationService, $filter){
-  $scope.noRecord = false;
-  $scope.all  = {id: 0, title: "All Events"};
-  $scope.eventsList = [$scope.all];
-  ReservationService.getAssets();
-  ReservationService.getEvents();
-  $scope.data = ReservationService.data;
-  $scope.selectedEvent = $scope.all;
-  $scope.reservations = [];
+///////Calendar controller that we didn't have time to finish//////
 
-  for(i = 0; i < $scope.data.eventsAfterToday.length; i++){
-      $scope.eventsList.push($scope.data.eventsAfterToday[i]);
-  }
-
-  $scope.filterReservations = function(){
-    $scope.reservations = [];
-
-    if($scope.selectedEvent.id === 0){
-      $scope.reservations = ReservationService.data.reservations;
-      console.log($scope.reservations);
-    }else{
-        for(i = 0; i < ReservationService.data.reservations.length; i++){
-          if(ReservationService.data.reservations[i].event_id == $scope.selectedEvent.id){
-            $scope.reservations.push(ReservationService.data.reservations[i]);
-          }
-        }
-    }
-    if ($scope.reservations.length >= 1) {
-      $scope.noRecord = false;
-    }
-    else {
-      $scope.noRecord = true;
-    }
-  };
-
-  $scope.editReservation = function(reservation) {
-    ReservationService.data.reservationToEdit = reservation;
-    $location.path('edit_reservation');
-  };
-
-  $scope.dateFilter = function(currentDate, previousDate){
-    var newCurrentDate = $filter('date')(currentDate, 'dd/MM/yyyy');
-    var newPreviousDate = $filter('date')(previousDate, 'dd/MM/yyyy');
-    if(newCurrentDate == newPreviousDate){
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-
-  $scope.monthFilter = function(MonthDate, previousMonthDate){
-    var newMonthDate = $filter('date')(MonthDate, 'MMM');
-    var newPreviousMonthDate = $filter('date')(previousMonthDate, 'MMM');
-    console.log(newMonthDate);
-    console.log(newPreviousMonthDate);
-    if(newMonthDate == newPreviousMonthDate){
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-
-  $scope.filterReservations();
-
-}]);
+// app.controller('CalendarController', ['$scope', '$http', '$location', 'ReservationService', '$filter', function($scope, $http, $location, ReservationService, $filter){
+//   $scope.noRecord = false;
+//   $scope.all  = {id: 0, title: "All Events"};
+//   $scope.eventsList = [$scope.all];
+//   ReservationService.getAssets();
+//   ReservationService.getEvents();
+//   $scope.data = ReservationService.data;
+//   $scope.selectedEvent = $scope.all;
+//   $scope.reservations = [];
+//
+//   for(i = 0; i < $scope.data.eventsAfterToday.length; i++){
+//       $scope.eventsList.push($scope.data.eventsAfterToday[i]);
+//   }
+//
+//   $scope.filterReservations = function(){
+//     $scope.reservations = [];
+//
+//     if($scope.selectedEvent.id === 0){
+//       $scope.reservations = ReservationService.data.reservations;
+//       console.log($scope.reservations);
+//     }else{
+//         for(i = 0; i < ReservationService.data.reservations.length; i++){
+//           if(ReservationService.data.reservations[i].event_id == $scope.selectedEvent.id){
+//             $scope.reservations.push(ReservationService.data.reservations[i]);
+//           }
+//         }
+//     }
+//     if ($scope.reservations.length >= 1) {
+//       $scope.noRecord = false;
+//     }
+//     else {
+//       $scope.noRecord = true;
+//     }
+//   };
+//
+//   $scope.editReservation = function(reservation) {
+//     ReservationService.data.reservationToEdit = reservation;
+//     $location.path('edit_reservation');
+//   };
+//
+//   $scope.dateFilter = function(currentDate, previousDate){
+//     var newCurrentDate = $filter('date')(currentDate, 'MM/dd/yyyy');
+//     var newPreviousDate = $filter('date')(previousDate, 'MM/dd/yyyy');
+//     console.log(newCurrentDate);
+//     console.log(newPreviousDate);
+//     if(newCurrentDate == newPreviousDate){
+//       return false;
+//     }
+//     else{
+//       return true;
+//     }
+//   }
+//
+//   $scope.monthFilter = function(MonthDate, previousMonthDate){
+//     var newMonthDate = $filter('date')(MonthDate, 'MMM');
+//     var newPreviousMonthDate = $filter('date')(previousMonthDate, 'MMM');
+//     if(newMonthDate == newPreviousMonthDate){
+//       return false;
+//     }
+//     else{
+//       return true;
+//     }
+//   }
+//
+//   $scope.afterToday = function(item) {
+//     var itemDate = new Date(item.eventStartTime);
+//     var today = new Date();
+//     return itemDate > today;
+//   };
+//
+//   $scope.filterReservations();
+//
+// }]);
 
 
 
