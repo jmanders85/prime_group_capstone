@@ -40,8 +40,14 @@ router.post('/updateAsset', function(request, response){
       notes: request.query.notes,
       img_path: request.query.imgPath
     };
+    var query;
 
-    var query = client.query('UPDATE assets SET name=$1, description=$2, category=$3, notes=$4, img_path=$5 WHERE id=$6', [asset.name, asset.description, asset.category, asset.notes, asset.img_path, asset.id]);
+
+    if (asset.img_path !== undefined) {
+      query = client.query('UPDATE assets SET name=$1, description=$2, category=$3, notes=$4, img_path=$5 WHERE id=$6', [asset.name, asset.description, asset.category, asset.notes, asset.img_path, asset.id]);
+    } else {
+      query = client.query('UPDATE assets SET name=$1, description=$2, category=$3, notes=$4 WHERE id=$5', [asset.name, asset.description, asset.category, asset.notes, asset.id]);
+    }
 
 
     query.on('end', function(){

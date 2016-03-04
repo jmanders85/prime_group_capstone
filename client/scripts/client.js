@@ -786,7 +786,7 @@ app.controller('EditAssetController', ['$scope', '$http', '$location', 'currentA
 
   $scope.updateAsset = function(){
 
-    if ($scope.upload.file === undefined) {
+    if ($scope.upload !== undefined) {
       Upload.upload({
         url: '/uploads',
         method: 'post',
