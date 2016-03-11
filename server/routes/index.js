@@ -7,6 +7,7 @@ var router = express.Router();
 
 require('dotenv').config();
 
+//re-enable the process.env if you don't want to log in each time you test.
 var accessToken = '';//process.env.ACCESS_TOKEN;
 
 router.get('/', function(request, response) {
